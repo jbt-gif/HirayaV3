@@ -1,0 +1,27 @@
+# Unused assets
+Fluid1.jpg
+Fluid2.jpg
+Fluid3.jpg
+Fluid4.jpg
+FluidFinal.mp4
+mtn-1.png
+mtn-2.png
+mtn-3.png
+mtn-4.png
+sky.jpg
+stars.png
+mist.png
+horizon-glow.png
+reflection.png
+
+# Dev/planning files
+PLANNING.md
+SCROLL-ANIMATION-TECHNIQUE.md
+mockup.html
+mockup2.html
+parallax-bg.html
+projects/
+
+# OS
+.DS_Store
+Thumbs.db
