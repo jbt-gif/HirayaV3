@@ -902,6 +902,35 @@
       animation: shimmerSweep 1.6s ease-out forwards;
     }
 
+    /* ── GLOBAL TEXT CONTRAST (fluid backgrounds bleed across all breakpoints) ── */
+    .hero-sub, .hero-right p,
+    .bottom-left, .bottom-right,
+    .section-label, .section-body, .section-body p,
+    .step-content p,
+    .service-card p, .service-num,
+    .pain-item,
+    .portfolio-type,
+    .cta-sub,
+    .stat-label, .footer-logo, .footer-copy {
+      text-shadow: 0 1px 14px rgba(0,0,0,0.98), 0 0 40px rgba(0,0,0,0.92), 0 0 70px rgba(0,0,0,0.7);
+    }
+    #hl-cta.shimmer-on { text-shadow: none; }
+
+    /* ── TARGETED: sections that lose visibility on small laptops ── */
+    .hero-sub, .hero-right p,
+    .step-content p {
+      color: rgba(255,255,255,0.75);
+      text-shadow: 0 1px 20px rgba(0,0,0,1), 0 0 60px rgba(0,0,0,1), 0 0 100px rgba(0,0,0,0.95);
+    }
+
+    @media (max-width: 768px) {
+      .hero-sub { color: rgba(255,255,255,0.85); }
+    }
+    .cta-sub, .cta-secondary {
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 1px 24px rgba(0,0,0,1), 0 0 80px rgba(0,0,0,1), 0 0 130px rgba(0,0,0,0.98);
+    }
+
     /* ── MOBILE ── */
     /* ── TABLET ── */
     @media (max-width: 900px) {
@@ -927,6 +956,60 @@
       :root { --body: rgba(255,255,255,0.97); --muted: rgba(255,255,255,0.75); }
       p, .section-body, .step-content p, .service-card p, .pain-item, .hero-right p, .cta-sub {
         text-shadow: 0 1px 12px rgba(0,0,0,0.98), 0 0 40px rgba(0,0,0,0.95), 0 0 60px rgba(0,0,0,0.7);
+      }
+
+      /* No shadow on parent headlines */
+      .hero-headline, .section-headline, .step-content h3, .service-card h3 {
+        text-shadow: none;
+      }
+
+      /* em text fully opaque on mobile — fluid bleeds through at 55% */
+      .hero-headline em { color: rgba(255,255,255,0.9); }
+
+      /* Process step body text — mirrors hero-sub settings */
+      .step-content p {
+        color: rgba(255,255,255,0.85);
+        opacity: 1;
+        -webkit-text-stroke: unset;
+        text-shadow: 0 1px 20px rgba(0,0,0,1), 0 0 60px rgba(0,0,0,1), 0 0 100px rgba(0,0,0,0.95);
+      }
+
+      /* Process fluid — mobile */
+      #fluid-process-wrap { opacity: 0.75; }
+
+      /* CTA section — fluid is fullscreen on mobile, needs maximum contrast */
+      .cta-sub, .cta-secondary {
+        color: rgba(255,255,255,0.95);
+        text-shadow: 0 0 12px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,1), 0 0 80px rgba(0,0,0,1), 0 0 140px rgba(0,0,0,1), 0 2px 4px rgba(0,0,0,1);
+      }
+
+      /* Reduce fluid intensity at source — mobile only */
+      #fluid-bl-wrap { opacity: 0.3; }
+      .fluid-tr { opacity: 0.75; }
+
+      /* Vignette over fluid — mobile only */
+      #cta::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.82) 50%, rgba(0,0,0,0.55) 80%, transparent 100%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      #cta .container { position: relative; z-index: 1; }
+
+      /* CTA headline — disable shimmer on mobile, fluid colors bleed through transparent fill */
+      #hl-cta, #hl-cta.shimmer-on {
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        -webkit-text-fill-color: var(--white) !important;
+        animation: none !important;
+        color: var(--white);
+        text-shadow: 0 2px 20px rgba(0,0,0,1), 0 0 60px rgba(0,0,0,1), 0 0 100px rgba(0,0,0,1) !important;
+      }
+      #cta .section-label {
+        text-shadow: 0 1px 12px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,1);
       }
 
       /* Hero */
@@ -1087,17 +1170,17 @@
 
         <!-- Right -->
         <div class="hero-right">
-          <h3>AI-Driven</h3>
-          <p>Stay ahead with intelligent systems built for speed, scale, and impact — turning complex problems into elegant automated solutions.</p>
+          <h3>You work with the builders.</h3>
+          <p>No account managers. No handoffs. The people scoping your system are the ones writing the code.</p>
         </div>
 
       </div>
 
       <!-- Bottom bar -->
       <div class="hero-bottom fade-up delay-1">
-        <div class="bottom-left">We build<br>the future</div>
-        <a href="#cta" class="btn-outline">Get Started</a>
-        <div class="bottom-right">15 min free consultation<br>pitching ideas for the future</div>
+        <div class="bottom-left">We fix what's leaking.</div>
+        <a href="#cta" class="btn-outline">Book a Discovery Call</a>
+        <div class="bottom-right">We map your operation before writing a single line of code.</div>
       </div>
 
     </div>
@@ -1311,7 +1394,7 @@
             </p>
           </div>
           <div class="stat-row fade-up delay-3">
-            <div class="stat"><span class="stat-val">7</span><span class="stat-label">Core systems</span></div>
+            <div class="stat"><span class="stat-val">6</span><span class="stat-label">Core systems</span></div>
             <div class="stat"><span class="stat-val">4</span><span class="stat-label">Step process</span></div>
             <div class="stat"><span class="stat-val">2024</span><span class="stat-label">Founded</span></div>
           </div>
@@ -1348,7 +1431,7 @@
   <!-- FOOTER -->
   <footer>
     <div class="footer-logo">Hiraya Systems — 2026</div>
-    <div class="footer-copy">Built to show what's possible. &nbsp;hirayasystems.com</div>
+    <div class="footer-copy">hirayasystems.com</div>
   </footer>
   </div><!-- /.cta-footer-wrap -->
 
@@ -1605,6 +1688,7 @@
         }
       });
     }
+
   })();
   </script>
 
