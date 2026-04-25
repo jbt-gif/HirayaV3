@@ -574,38 +574,99 @@
     }
     .process-fluid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 
-    .process-header { text-align: center; margin-bottom: 5rem; }
+    .process-header { text-align: center; margin-bottom: 3rem; }
     .process-header .section-label { justify-content: center; }
 
-    .steps { display: flex; flex-direction: column; position: relative; }
-    .steps::before {
-      content: '';
-      position: absolute;
-      left: 2.5rem;
-      top: 3rem; bottom: 3rem;
-      width: 1px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+    /* ── Interactive Step Switcher ── */
+    .proc-switcher { position: relative; }
+
+    .proc-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: relative;
     }
 
-    .step {
-      display: grid;
-      grid-template-columns: 5rem 1fr;
-      gap: 2rem;
-      padding: 2.5rem 0;
-      border-bottom: 1px solid var(--border);
+    .proc-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3rem;
+      padding: 0 0 1.4rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      opacity: 0.28;
+      transition: opacity 0.3s;
     }
-    .step:last-child { border-bottom: none; }
+    .proc-tab:hover { opacity: 0.65; }
+    .proc-tab.active { opacity: 1; }
 
-    .step-num {
+    .proc-tab-num {
       font-family: 'Instrument Serif', serif;
-      font-size: 2.8rem;
-      color: rgba(255,255,255,0.2);
+      font-size: clamp(2rem, 3.2vw, 2.8rem);
+      font-style: italic;
+      color: var(--white);
       line-height: 1;
-      padding-top: 0.2rem;
+    }
+    .proc-tab-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
     }
 
-    .step-content h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .step-content p  { color: var(--body); font-size: var(--fs-body); line-height: 1.7; }
+    .proc-tab-indicator {
+      position: absolute;
+      bottom: -1px;
+      height: 2px;
+      background: rgba(255,255,255,0.65);
+      transition: left 0.4s cubic-bezier(0.25,0.46,0.45,0.94), width 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      pointer-events: none;
+    }
+
+    .proc-panels {
+      display: grid;
+      padding-top: 3rem;
+    }
+    .proc-panel {
+      grid-row: 1;
+      grid-column: 1;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+    .proc-panel.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .proc-panel-tag {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      margin-bottom: 1.1rem;
+    }
+    .proc-panel h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+      line-height: 1.1;
+    }
+    .proc-panel p {
+      color: var(--body);
+      font-size: var(--fs-body);
+      line-height: 1.8;
+      max-width: 520px;
+    }
 
     /* ── SERVICES ── */
     #services { background: transparent; }
@@ -786,6 +847,187 @@
 
     .portfolio-meta h3 { font-size: var(--fs-body); font-weight: 600; color: var(--white); }
 
+    /* ── AUTOMATION PANEL (case study lightbox) ── */
+    #funnel-lightbox-panel {
+      width: 100%; height: 100%;
+      display: none;
+      overflow-y: auto;
+      background: #080808;
+    }
+    .ap-layout {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      min-height: 100%;
+    }
+    .ap-diagram {
+      position: sticky;
+      top: 0;
+      height: 100%;
+      background: #050505;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .ap-diagram svg { width: 100%; height: auto; border-radius: 12px; }
+    .ap-detail {
+      padding: 3rem 2.5rem;
+      overflow-y: auto;
+    }
+    .cs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .cs-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(0,229,255,0.7);
+      background: rgba(0,229,255,0.07);
+      border: 1px solid rgba(0,229,255,0.18);
+      border-radius: 999px;
+      padding: 5px 14px;
+      margin-bottom: 1.5rem;
+    }
+    .cs-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #00e5ff; opacity: 0.8; }
+    .cs-headline {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 2rem;
+    }
+    .cs-block { margin-bottom: 1.5rem; }
+    .cs-block-label {
+      font-size: 9px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 0.4rem;
+    }
+    .cs-block p {
+      font-size: var(--fs-body);
+      color: var(--body);
+      line-height: 1.7;
+    }
+    .cs-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 2rem 0;
+    }
+    .cs-metric {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-top-color: rgba(0,229,255,0.15);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+    }
+    .cs-metric-val {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2rem;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .cs-metric-val span { color: rgba(0,229,255,0.8); font-size: 1.2rem; }
+    .cs-metric-label {
+      font-size: 11px;
+      font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.4;
+    }
+    .cs-quote {
+      border-left: 2px solid rgba(0,229,255,0.3);
+      padding-left: 1.25rem;
+      margin-top: 2rem;
+    }
+    .cs-quote p {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+    .cs-quote cite {
+      font-size: 11px;
+      font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.25);
+      font-style: normal;
+      letter-spacing: 0.04em;
+    }
+    .cs-visual { position: relative; }
+    .cs-frame {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top-color: rgba(0,229,255,0.25);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 40px 80px rgba(0,0,0,0.7), 0 0 60px rgba(0,229,255,0.06);
+      position: relative;
+    }
+    .cs-frame img { width: 100%; display: block; }
+    .cs-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 70%, rgba(0,0,0,0.5) 100%);
+      pointer-events: none;
+    }
+    .cs-frame-bar {
+      background: #0a0a0a;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cs-frame-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .cs-frame-url {
+      margin-left: 10px;
+      font-size: 10px;
+      font-family: monospace;
+      color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+      padding: 2px 10px;
+      flex: 1;
+    }
+    .cs-badge {
+      position: absolute;
+      bottom: -18px;
+      right: 24px;
+      background: #0a0a0a;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top-color: rgba(0,229,255,0.2);
+      border-radius: 12px;
+      padding: 0.7rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    }
+    .cs-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.6); flex-shrink: 0; }
+    .cs-badge span { font-size: 11px; font-family: 'Space Grotesk', sans-serif; color: rgba(255,255,255,0.5); }
+    .cs-badge strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+    @media (max-width: 768px) {
+      .cs-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .cs-visual { order: -1; }
+      .cs-metrics { grid-template-columns: 1fr 1fr; }
+    }
+
     /* ── ABOUT ── */
     #about { background: transparent; }
 
@@ -881,6 +1123,24 @@
     .fade-up.delay-3 { transition-delay: 0.3s; }
     .fade-up.delay-4 { transition-delay: 0.4s; }
 
+    /* ── 60FPS COMPOSITOR HINTS ── */
+    .fade-up,
+    .split-inner,
+    .split-char { will-change: transform, opacity; }
+    .glitch-letter { will-change: transform, filter; }
+    .fluid-accent,
+    .process-fluid,
+    .marquee-track { will-change: transform; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+
     /* ── GSAP HEADLINE INITIAL STATES ── */
     #hl-problem, #hl-process, #hl-services, #hl-portfolio, #hl-about, #hl-cta { opacity: 0; }
 
@@ -906,7 +1166,7 @@
     .hero-sub, .hero-right p,
     .bottom-left, .bottom-right,
     .section-label, .section-body, .section-body p,
-    .step-content p,
+    .proc-panel p,
     .service-card p, .service-num,
     .pain-item,
     .portfolio-type,
@@ -918,7 +1178,7 @@
 
     /* ── TARGETED: sections that lose visibility on small laptops ── */
     .hero-sub, .hero-right p,
-    .step-content p {
+    .proc-panel p {
       color: rgba(255,255,255,0.75);
       text-shadow: 0 1px 20px rgba(0,0,0,1), 0 0 60px rgba(0,0,0,1), 0 0 100px rgba(0,0,0,0.95);
     }
@@ -954,12 +1214,12 @@
 
       /* Brighter subtext on mobile */
       :root { --body: rgba(255,255,255,0.97); --muted: rgba(255,255,255,0.75); }
-      p, .section-body, .step-content p, .service-card p, .pain-item, .hero-right p, .cta-sub {
+      p, .section-body, .proc-panel p, .service-card p, .pain-item, .hero-right p, .cta-sub {
         text-shadow: 0 1px 12px rgba(0,0,0,0.98), 0 0 40px rgba(0,0,0,0.95), 0 0 60px rgba(0,0,0,0.7);
       }
 
       /* No shadow on parent headlines */
-      .hero-headline, .section-headline, .step-content h3, .service-card h3 {
+      .hero-headline, .section-headline, .proc-panel h3, .service-card h3 {
         text-shadow: none;
       }
 
@@ -967,7 +1227,7 @@
       .hero-headline em { color: rgba(255,255,255,0.9); }
 
       /* Process step body text — mirrors hero-sub settings */
-      .step-content p {
+      .proc-panel p {
         color: rgba(255,255,255,0.85);
         opacity: 1;
         -webkit-text-stroke: unset;
@@ -1024,8 +1284,11 @@
       .problem-grid { grid-template-columns: 1fr; gap: 2.5rem; }
 
       /* Process */
-      .step { grid-template-columns: 3rem 1fr; gap: 1rem; }
-      .steps::before { left: 1.5rem; }
+      .proc-tab-label { display: none; }
+      .proc-tab-num { font-size: 1.6rem; }
+      .proc-tab { padding-bottom: 1rem; }
+      .proc-panel h3 { font-size: 1.8rem; }
+      .proc-panels { padding-top: 2rem; }
 
       /* Services */
       .services-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
@@ -1043,6 +1306,412 @@
       /* Footer */
       footer { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 2rem 1.5rem; }
     }
+
+    /* ── FUNNEL STRIPS ── */
+    .funnel-strips {
+      margin-top: 4rem;
+      /* break out of max-width container to full viewport */
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+    }
+
+    .funnel-section-title {
+      font-size: var(--fs-label);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 1.25rem;
+      padding-left: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .funnel-section-title::before { content: ''; width: 24px; height: 1px; background: rgba(255,255,255,0.3); }
+
+    .funnel-strip-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .funnel-strip-track {
+      display: flex;
+      gap: 20px;
+      width: max-content;
+      animation: funnelScroll 36s linear infinite;
+    }
+    .funnel-strip-wrap:hover .funnel-strip-track { animation-play-state: paused; }
+
+    @keyframes funnelScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .funnel-card {
+      width: calc(33.333vw - 14px);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-top-color: rgba(255,255,255,0.28);
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(160deg, #0a0a0a 0%, #000000 50%);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.9), 0 8px 20px rgba(0,0,0,0.6);
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: box-shadow 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.35s;
+      will-change: transform;
+    }
+    .funnel-card:hover {
+      border-top-color: rgba(255,255,255,0.65);
+      border-color: rgba(255,255,255,0.22);
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.22) inset,
+        0 10px 0 rgba(0,0,0,0.95),
+        0 20px 50px rgba(0,0,0,0.85),
+        0 0 20px rgba(255,255,255,0.06);
+    }
+
+    .funnel-card-preview {
+      aspect-ratio: 16/9;
+      height: auto;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .funnel-card-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      display: block;
+    }
+
+    /* "View" overlay on card hover */
+    .funnel-card-preview::after {
+      content: 'View →';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--fs-ui);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      transition: opacity 0.25s;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .funnel-card:hover .funnel-card-preview::after { opacity: 1; }
+
+    /* shimmer sweep */
+    .funnel-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255,255,255,0.07) 50%,
+        transparent 100%
+      );
+      transform: translateX(-160%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .funnel-card:hover::before {
+      transform: translateX(300%);
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .funnel-card-name {
+      padding: 0.85rem 1.25rem;
+      border-top: 1px solid var(--border);
+      font-size: var(--fs-ui);
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 768px) {
+      .funnel-strips { margin-left: calc(-50vw + 50%); }
+      .funnel-card { width: 80vw; }
+      .funnel-card-preview { aspect-ratio: 16/9; height: auto; }
+      .funnel-section-title { padding-left: 1.5rem; }
+    }
+
+    /* ── PORTFOLIO TABS ── */
+    .portfolio-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      padding: 0 3rem 2rem;
+    }
+    .ptab {
+      padding: 0.38rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.4);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .ptab:hover {
+      color: rgba(255,255,255,0.75);
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.07);
+    }
+    .ptab.active {
+      color: var(--white);
+      border-color: rgba(255,255,255,0.32);
+      background: rgba(255,255,255,0.1);
+    }
+    .portfolio-stage { position: relative; }
+    .pcat-hidden { display: none !important; }
+    .pcat-static {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 0 3rem;
+    }
+    .pcat-placeholder {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top-color: rgba(255,255,255,0.18);
+      background: linear-gradient(160deg, #0a0a0a 0%, #000000 50%);
+      overflow: hidden;
+      position: relative;
+    }
+    .pcat-ph-inner {
+      aspect-ratio: 16/9;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(255,255,255,0.02) 0px,
+        rgba(255,255,255,0.02) 1px,
+        transparent 1px,
+        transparent 24px
+      );
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .pcat-ph-name {
+      padding: 0.85rem 1.25rem;
+      font-size: var(--fs-ui);
+      font-weight: 600;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.02em;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    @media (max-width: 768px) {
+      .portfolio-tabs { padding: 0 1.5rem 1.5rem; }
+      .pcat-static { grid-template-columns: 1fr; padding: 0 1.5rem; }
+    }
+
+    /* ── STRIP CARDS (non-funnel panels marquee) ── */
+    .pcat-strip-card {
+      width: calc(33.333vw - 14px);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-top-color: rgba(255,255,255,0.28);
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(160deg, #0a0a0a 0%, #000000 50%);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.9), 0 8px 20px rgba(0,0,0,0.6);
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: box-shadow 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.35s;
+    }
+    .pcat-strip-card:hover {
+      border-top-color: rgba(255,255,255,0.65);
+      border-color: rgba(255,255,255,0.22);
+      box-shadow: 0 2px 0 rgba(255,255,255,0.22) inset, 0 10px 0 rgba(0,0,0,0.95), 0 20px 50px rgba(0,0,0,0.85), 0 0 20px rgba(255,255,255,0.06);
+    }
+    .pcat-strip-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 55%; height: 100%;
+      background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.07) 50%, transparent 100%);
+      transform: translateX(-160%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .pcat-strip-card:hover::before {
+      transform: translateX(300%);
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .pcat-strip-card:hover .funnel-card-preview::after { opacity: 1; }
+    .pcat-video-card.pcat-strip-card .funnel-card-preview::after { display: none; }
+    @media (max-width: 768px) { .pcat-strip-card { width: 80vw; } }
+
+    /* ── DASHBOARD CARDS ── */
+    .pcat-db-card { cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+    .pcat-db-card:hover { border-color: rgba(255,255,255,0.28); box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.5); }
+    .pcat-db-preview {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .pcat-db-preview img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .pcat-db-card:hover .pcat-db-preview img { transform: scale(1.03); }
+    .pcat-db-preview::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.55) 100%);
+      pointer-events: none;
+    }
+    .pcat-db-open {
+      position: absolute;
+      top: 12px; right: 14px;
+      color: rgba(255,255,255,0.25);
+      transition: color 0.2s, transform 0.2s;
+    }
+    .pcat-db-card:hover .pcat-db-open { color: rgba(255,255,255,0.8); transform: translateX(3px); }
+    .pcat-db-tag {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    /* ── VIDEO CARDS ── */
+    .pcat-video-card {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top-color: rgba(255,255,255,0.18);
+      background: linear-gradient(160deg, #0a0a0a 0%, #000000 50%);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: border-top-color 0.25s, transform 0.25s;
+    }
+    .pcat-video-card:hover {
+      border-top-color: rgba(255,255,255,0.55);
+      transform: translateY(-5px);
+    }
+    .pcat-video-thumb {
+      aspect-ratio: 16/9;
+      position: relative;
+      overflow: hidden;
+      background: #080808;
+      background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 24px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .pcat-video-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .pcat-video-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.45);
+      opacity: 0;
+      transition: opacity 0.22s;
+    }
+    .pcat-video-card:hover .pcat-video-play { opacity: 1; }
+    .pcat-video-play svg { filter: drop-shadow(0 2px 12px rgba(0,0,0,0.7)); }
+    .pcat-video-name {
+      padding: 0.85rem 1.25rem;
+      font-size: var(--fs-ui);
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.02em;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: color 0.22s;
+    }
+    .pcat-video-card:hover .pcat-video-name { color: rgba(255,255,255,0.85); }
+
+    /* ── FUNNEL LIGHTBOX ── */
+    #funnel-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    #funnel-lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #funnel-lightbox-inner {
+      width: min(96vw, 1440px);
+      height: 92vh;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      position: relative;
+      background: #000;
+    }
+    #funnel-lightbox iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    #funnel-lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 10;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      color: rgba(255,255,255,0.7);
+      font-size: var(--fs-ui);
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: 0.06em;
+      padding: 0.4rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s, background 0.2s;
+    }
+    #funnel-lightbox-close:hover { color: var(--white); background: rgba(0,0,0,0.9); }
+    #funnel-lightbox-fs {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 10;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      padding: 0.5rem 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, background 0.2s;
+    }
+    #funnel-lightbox-fs:hover { color: var(--white); background: rgba(0,0,0,0.9); }
 
     /* ── SPLASH ── */
     #splash {
@@ -1249,31 +1918,44 @@
           Every engagement starts with a diagnosis, not a proposal.
         </p>
       </div>
-      <div class="steps">
-        <div class="step fade-up">
-          <div class="step-num">01</div>
-          <div class="step-content">
+      <div class="proc-switcher fade-up">
+        <div class="proc-tabs">
+          <button class="proc-tab active" data-step="0">
+            <span class="proc-tab-num">01</span>
+            <span class="proc-tab-label">Diagnosis</span>
+          </button>
+          <button class="proc-tab" data-step="1">
+            <span class="proc-tab-num">02</span>
+            <span class="proc-tab-label">System Design</span>
+          </button>
+          <button class="proc-tab" data-step="2">
+            <span class="proc-tab-num">03</span>
+            <span class="proc-tab-label">Execution</span>
+          </button>
+          <button class="proc-tab" data-step="3">
+            <span class="proc-tab-num">04</span>
+            <span class="proc-tab-label">Growth</span>
+          </button>
+          <div class="proc-tab-indicator"></div>
+        </div>
+        <div class="proc-panels">
+          <div class="proc-panel active" data-step="0">
+            <div class="proc-panel-tag">Diagnosis</div>
             <h3>Discovery</h3>
             <p>We audit your current operations and map your entire workflow. We identify the highest-leverage points where automation creates the biggest impact.</p>
           </div>
-        </div>
-        <div class="step fade-up delay-1">
-          <div class="step-num">02</div>
-          <div class="step-content">
+          <div class="proc-panel" data-step="1">
+            <div class="proc-panel-tag">System Design</div>
             <h3>Architecture</h3>
             <p>We design your technical ecosystem — every tool, workflow, integration, and data flow. You see exactly what we're building before we touch a single line of code.</p>
           </div>
-        </div>
-        <div class="step fade-up delay-2">
-          <div class="step-num">03</div>
-          <div class="step-content">
+          <div class="proc-panel" data-step="2">
+            <div class="proc-panel-tag">Execution</div>
             <h3>Build</h3>
             <p>We execute with precision. Each component is built, tested, and verified before moving forward — no rushed deployments, no broken handoffs.</p>
           </div>
-        </div>
-        <div class="step fade-up delay-3">
-          <div class="step-num">04</div>
-          <div class="step-content">
+          <div class="proc-panel" data-step="3">
+            <div class="proc-panel-tag">Growth</div>
             <h3>Launch & Scale</h3>
             <p>We deploy, monitor, and continuously optimize. Your systems are built to compound — the longer they run, the more efficient your operation becomes.</p>
           </div>
@@ -1346,36 +2028,327 @@
         <h2 id="hl-portfolio" class="section-headline" style="margin-bottom:0;">What we've built.</h2>
         <p class="fade-up delay-2" style="color:var(--muted); font-size:0.8rem; max-width:260px; text-align:right; line-height:1.5;">Case studies and outcomes added as projects complete.</p>
       </div>
-      <div class="portfolio-grid fade-up delay-2">
-        <div class="portfolio-card">
-          <div class="portfolio-thumb">🤖</div>
-          <div class="portfolio-meta">
-            <div class="portfolio-type">Agentic Chatbot</div>
-            <h3>Agentic AI Personal Assistant</h3>
-          </div>
+      <!-- PORTFOLIO TABS + STAGE -->
+      <div class="funnel-strips fade-up delay-2">
+        <div class="portfolio-tabs">
+          <button class="ptab active" data-cat="funnels">Website Funnels</button>
+          <button class="ptab" data-cat="dashboard">Dashboards</button>
+          <button class="ptab" data-cat="ai">AI Assistant</button>
+          <button class="ptab" data-cat="sites">Site Builds</button>
+          <button class="ptab" data-cat="automation">Automation</button>
         </div>
-        <div class="portfolio-card">
-          <div class="portfolio-thumb">📊</div>
-          <div class="portfolio-meta">
-            <div class="portfolio-type">Dashboard</div>
-            <h3>Business Intelligence Dashboard</h3>
+        <div class="portfolio-stage">
+
+          <!-- Funnels panel -->
+          <div class="pcat-panel" data-cat="funnels">
+            <div class="funnel-strip-wrap">
+              <div class="funnel-strip-track">
+                <div class="funnel-card" data-funnel="Funnels/Bodoir-funnel (1).html">
+                  <div class="funnel-card-preview"><img src="Funnels/thumb-bodoir.png" alt="Boudoir Funnel" /></div>
+                  <div class="funnel-card-name">Boudoir</div>
+                </div>
+                <div class="funnel-card" data-funnel="Funnels/Hira construction fun.html">
+                  <div class="funnel-card-preview"><img src="Funnels/thumb-hiraya.png" alt="Hiraya Construction Funnel" /></div>
+                  <div class="funnel-card-name">Hiraya Construction</div>
+                </div>
+                <div class="funnel-card" data-funnel="Funnels/Limitless Fun.html">
+                  <div class="funnel-card-preview"><img src="Funnels/thumb-limitless.png" alt="Limitless Funnel" /></div>
+                  <div class="funnel-card-name">Limitless</div>
+                </div>
+                <div class="funnel-card" data-funnel="Funnels/Bodoir-funnel (1).html">
+                  <div class="funnel-card-preview"><img src="Funnels/thumb-bodoir.png" alt="Boudoir Funnel" /></div>
+                  <div class="funnel-card-name">Boudoir</div>
+                </div>
+                <div class="funnel-card" data-funnel="Funnels/Hira construction fun.html">
+                  <div class="funnel-card-preview"><img src="Funnels/thumb-hiraya.png" alt="Hiraya Construction Funnel" /></div>
+                  <div class="funnel-card-name">Hiraya Construction</div>
+                </div>
+                <div class="funnel-card" data-funnel="Funnels/Limitless Fun.html">
+                  <div class="funnel-card-preview"><img src="Funnels/thumb-limitless.png" alt="Limitless Funnel" /></div>
+                  <div class="funnel-card-name">Limitless</div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="portfolio-card">
-          <div class="portfolio-thumb">🌐</div>
-          <div class="portfolio-meta">
-            <div class="portfolio-type">Website Design</div>
-            <h3>Sample Site Builds</h3>
+
+          <!-- Dashboards panel -->
+          <div class="pcat-panel pcat-hidden" data-cat="dashboard">
+            <div class="funnel-strip-wrap">
+              <div class="funnel-strip-track">
+                <div class="pcat-strip-card pcat-db-card" data-funnel="DB/Bodoir DB.html">
+                  <div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-bodoir-db.png" alt="Bodoir Dashboard" /></div>
+                  <div class="funnel-card-name">Bodoir <span class="pcat-db-tag">Live</span></div>
+                </div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="DB/Hiraya DB.html">
+                  <div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-hiraya-db.png" alt="Hiraya Construction Dashboard" /></div>
+                  <div class="funnel-card-name">Hiraya Construction <span class="pcat-db-tag">Live</span></div>
+                </div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="DB/Limitless DB.html">
+                  <div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-limitless-db.png" alt="Limitless Autoshop Dashboard" /></div>
+                  <div class="funnel-card-name">Limitless Autoshop <span class="pcat-db-tag">Live</span></div>
+                </div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="DB/Bodoir DB.html">
+                  <div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-bodoir-db.png" alt="Bodoir Dashboard" /></div>
+                  <div class="funnel-card-name">Bodoir <span class="pcat-db-tag">Live</span></div>
+                </div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="DB/Hiraya DB.html">
+                  <div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-hiraya-db.png" alt="Hiraya Construction Dashboard" /></div>
+                  <div class="funnel-card-name">Hiraya Construction <span class="pcat-db-tag">Live</span></div>
+                </div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="DB/Limitless DB.html">
+                  <div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-limitless-db.png" alt="Limitless Autoshop Dashboard" /></div>
+                  <div class="funnel-card-name">Limitless Autoshop <span class="pcat-db-tag">Live</span></div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="portfolio-card">
-          <div class="portfolio-thumb">⚙️</div>
-          <div class="portfolio-meta">
-            <div class="portfolio-type">Automation</div>
-            <h3>End-to-End Workflow Builds</h3>
+
+          <!-- AI Assistant panel -->
+          <div class="pcat-panel pcat-hidden" data-cat="ai">
+            <div class="funnel-strip-wrap">
+              <div class="funnel-strip-track">
+                <div class="pcat-strip-card pcat-video-card" data-video="">
+                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
+                  <div class="funnel-card-name">Sales Chatbot</div>
+                </div>
+                <div class="pcat-strip-card pcat-video-card" data-video="">
+                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
+                  <div class="funnel-card-name">FAQ Bot</div>
+                </div>
+                <div class="pcat-strip-card pcat-video-card" data-video="">
+                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
+                  <div class="funnel-card-name">Onboarding Assistant</div>
+                </div>
+                <div class="pcat-strip-card pcat-video-card" data-video="">
+                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
+                  <div class="funnel-card-name">Sales Chatbot</div>
+                </div>
+                <div class="pcat-strip-card pcat-video-card" data-video="">
+                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
+                  <div class="funnel-card-name">FAQ Bot</div>
+                </div>
+                <div class="pcat-strip-card pcat-video-card" data-video="">
+                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
+                  <div class="funnel-card-name">Onboarding Assistant</div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- Site Builds panel -->
+          <div class="pcat-panel pcat-hidden" data-cat="sites">
+            <div class="funnel-strip-wrap">
+              <div class="funnel-strip-track">
+                <div class="pcat-strip-card">
+                  <div class="funnel-card-preview pcat-ph-inner"></div>
+                  <div class="funnel-card-name">Site Build 1</div>
+                </div>
+                <div class="pcat-strip-card">
+                  <div class="funnel-card-preview pcat-ph-inner"></div>
+                  <div class="funnel-card-name">Site Build 2</div>
+                </div>
+                <div class="pcat-strip-card">
+                  <div class="funnel-card-preview pcat-ph-inner"></div>
+                  <div class="funnel-card-name">Site Build 3</div>
+                </div>
+                <div class="pcat-strip-card">
+                  <div class="funnel-card-preview pcat-ph-inner"></div>
+                  <div class="funnel-card-name">Site Build 1</div>
+                </div>
+                <div class="pcat-strip-card">
+                  <div class="funnel-card-preview pcat-ph-inner"></div>
+                  <div class="funnel-card-name">Site Build 2</div>
+                </div>
+                <div class="pcat-strip-card">
+                  <div class="funnel-card-preview pcat-ph-inner"></div>
+                  <div class="funnel-card-name">Site Build 3</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Automation panel -->
+          <div class="pcat-panel pcat-hidden" data-cat="automation">
+            <div class="funnel-strip-wrap">
+              <div class="funnel-strip-track">
+
+                <!-- Card 1: Lead Intelligence Pipeline -->
+                <div class="pcat-strip-card" data-panel="auto-1">
+                  <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+                    <rect width="480" height="3" fill="#2dd4bf" opacity="0.85"/>
+                    <text x="20" y="22" fill="rgba(45,212,191,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · SALES</text>
+                    <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(45,212,191,0.1)" stroke-width="0.5"/>
+                    <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text>
+                    <text x="180" y="52" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+                    <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCORE</text>
+                    <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">ACTION</text>
+                    <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+                    <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⬡</text>
+                    <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Form Lead</text>
+                    <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">New submission</text>
+                    <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="126,86 134,90 126,94" fill="rgba(45,212,191,0.45)"/>
+                    <rect x="135" y="58" width="90" height="64" rx="8" fill="#031110" stroke="rgba(45,212,191,0.4)" stroke-width="1.2"/>
+                    <rect x="135" y="58" width="90" height="2" rx="1" fill="#2dd4bf"/>
+                    <circle cx="180" cy="83" r="13" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.5)" stroke-width="1"/>
+                    <text x="180" y="87" text-anchor="middle" fill="#2dd4bf" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+                    <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Enrich + Qualify</text>
+                    <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Intent · Budget · ICP</text>
+                    <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="246,86 254,90 246,94" fill="rgba(45,212,191,0.45)"/>
+                    <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+                    <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">◆</text>
+                    <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Lead Score</text>
+                    <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Hot / Warm / Cold</text>
+                    <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="366,86 374,90 366,94" fill="rgba(45,212,191,0.45)"/>
+                    <rect x="375" y="58" width="90" height="64" rx="8" fill="#06100a" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+                    <rect x="375" y="58" width="90" height="2" rx="1" fill="#22c55e" opacity="0.7"/>
+                    <text x="420" y="93" text-anchor="middle" fill="rgba(34,197,94,0.6)" font-size="18">✓</text>
+                    <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">CRM + Email</text>
+                    <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Auto-assigned + sent</text>
+                    <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+                    <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/>
+                    <text x="81" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">3× FASTER RESPONSE</text>
+                    <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/>
+                    <text x="224" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">ZERO MANUAL ENTRY</text>
+                    <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/>
+                    <text x="367" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">4.5 HRS/WEEK SAVED</text>
+                    <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Lead Intelligence Pipeline</text>
+                    <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Enrich, score, and route every inbound lead automatically. Zero manual work until it's hot.</text>
+                    <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.18)" stroke-width="0.5"/>
+                    <text x="407" y="257" text-anchor="middle" fill="rgba(45,212,191,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+                  </svg></div>
+                  <div class="funnel-card-name">Lead Intelligence Pipeline</div>
+                </div>
+
+                <!-- Card 2: AI Support Deflection -->
+                <div class="pcat-strip-card" data-panel="auto-2">
+                  <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+                    <rect width="480" height="3" fill="#818cf8" opacity="0.85"/>
+                    <text x="20" y="22" fill="rgba(129,140,248,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · SUPPORT</text>
+                    <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(129,140,248,0.1)" stroke-width="0.5"/>
+                    <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text>
+                    <text x="180" y="52" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+                    <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">ROUTE</text>
+                    <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">RESOLVE</text>
+                    <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+                    <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">✉</text>
+                    <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Support Ticket</text>
+                    <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Email / Chat / Form</text>
+                    <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="126,86 134,90 126,94" fill="rgba(129,140,248,0.45)"/>
+                    <rect x="135" y="58" width="90" height="64" rx="8" fill="#09090f" stroke="rgba(129,140,248,0.4)" stroke-width="1.2"/>
+                    <rect x="135" y="58" width="90" height="2" rx="1" fill="#818cf8"/>
+                    <circle cx="180" cy="83" r="13" fill="rgba(129,140,248,0.07)" stroke="rgba(129,140,248,0.5)" stroke-width="1"/>
+                    <text x="180" y="87" text-anchor="middle" fill="#818cf8" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+                    <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Classify + Analyze</text>
+                    <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Intent · Urgency · Tone</text>
+                    <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="246,86 254,90 246,94" fill="rgba(129,140,248,0.45)"/>
+                    <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+                    <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⇅</text>
+                    <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Smart Route</text>
+                    <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Simple / Complex</text>
+                    <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="366,86 374,90 366,94" fill="rgba(129,140,248,0.45)"/>
+                    <rect x="375" y="58" width="90" height="64" rx="8" fill="#060d10" stroke="rgba(129,140,248,0.3)" stroke-width="1"/>
+                    <rect x="375" y="58" width="90" height="2" rx="1" fill="#818cf8" opacity="0.7"/>
+                    <text x="420" y="93" text-anchor="middle" fill="rgba(129,140,248,0.6)" font-size="18">⚡</text>
+                    <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Auto-Resolve</text>
+                    <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Reply or escalate</text>
+                    <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+                    <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/>
+                    <text x="81" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">72% DEFLECTION RATE</text>
+                    <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/>
+                    <text x="224" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">&lt;90s RESPONSE TIME</text>
+                    <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/>
+                    <text x="367" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">RUNS 24 / 7 / 365</text>
+                    <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">AI Support Deflection</text>
+                    <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Resolve simple tickets instantly. Escalate complex ones with full context. No agent burnout.</text>
+                    <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(129,140,248,0.07)" stroke="rgba(129,140,248,0.18)" stroke-width="0.5"/>
+                    <text x="407" y="257" text-anchor="middle" fill="rgba(129,140,248,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+                  </svg></div>
+                  <div class="funnel-card-name">AI Support Deflection</div>
+                </div>
+
+                <!-- Card 3: Revenue Intelligence Digest -->
+                <div class="pcat-strip-card" data-panel="auto-3">
+                  <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+                    <rect width="480" height="3" fill="#f472b6" opacity="0.85"/>
+                    <text x="20" y="22" fill="rgba(244,114,182,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · REPORTING</text>
+                    <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(244,114,182,0.1)" stroke-width="0.5"/>
+                    <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCHEDULE</text>
+                    <text x="180" y="52" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+                    <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">GENERATE</text>
+                    <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">DELIVER</text>
+                    <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+                    <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⏱</text>
+                    <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Data Pull</text>
+                    <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">CRM · Ads · Sheets</text>
+                    <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="126,86 134,90 126,94" fill="rgba(244,114,182,0.45)"/>
+                    <rect x="135" y="58" width="90" height="64" rx="8" fill="#120a10" stroke="rgba(244,114,182,0.4)" stroke-width="1.2"/>
+                    <rect x="135" y="58" width="90" height="2" rx="1" fill="#f472b6"/>
+                    <circle cx="180" cy="83" r="13" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.5)" stroke-width="1"/>
+                    <text x="180" y="87" text-anchor="middle" fill="#f472b6" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+                    <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Analyze Trends</text>
+                    <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Revenue · CAC · Churn</text>
+                    <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="246,86 254,90 246,94" fill="rgba(244,114,182,0.45)"/>
+                    <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+                    <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">▦</text>
+                    <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Build Report</text>
+                    <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Insights + Actions</text>
+                    <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="366,86 374,90 366,94" fill="rgba(244,114,182,0.45)"/>
+                    <rect x="375" y="58" width="90" height="64" rx="8" fill="#0c0810" stroke="rgba(244,114,182,0.3)" stroke-width="1"/>
+                    <rect x="375" y="58" width="90" height="2" rx="1" fill="#f472b6" opacity="0.7"/>
+                    <text x="420" y="93" text-anchor="middle" fill="rgba(244,114,182,0.6)" font-size="18">↗</text>
+                    <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Slack + Email</text>
+                    <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Every Monday 8AM</text>
+                    <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+                    <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/>
+                    <text x="81" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">FULLY AUTOMATED</text>
+                    <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/>
+                    <text x="224" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">ALL DATA SOURCES</text>
+                    <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/>
+                    <text x="367" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">3 HRS SAVED/WEEK</text>
+                    <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Revenue Intelligence Digest</text>
+                    <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Pull all your data, analyze trends autonomously, and deliver a sharp weekly digest automatically.</text>
+                    <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.18)" stroke-width="0.5"/>
+                    <text x="407" y="257" text-anchor="middle" fill="rgba(244,114,182,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+                  </svg></div>
+                  <div class="funnel-card-name">Revenue Intelligence Digest</div>
+                </div>
+
+                <!-- Duplicates for seamless loop -->
+                <div class="pcat-strip-card" data-panel="auto-1">
+                  <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808"><rect width="480" height="3" fill="#2dd4bf" opacity="0.85"/><text x="20" y="22" fill="rgba(45,212,191,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · SALES</text><line x1="20" y1="30" x2="460" y2="30" stroke="rgba(45,212,191,0.1)" stroke-width="0.5"/><text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text><text x="180" y="52" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text><text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCORE</text><text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">ACTION</text><rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⬡</text><text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Form Lead</text><text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">New submission</text><line x1="106" y1="90" x2="128" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="126,86 134,90 126,94" fill="rgba(45,212,191,0.45)"/><rect x="135" y="58" width="90" height="64" rx="8" fill="#031110" stroke="rgba(45,212,191,0.4)" stroke-width="1.2"/><rect x="135" y="58" width="90" height="2" rx="1" fill="#2dd4bf"/><circle cx="180" cy="83" r="13" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.5)" stroke-width="1"/><text x="180" y="87" text-anchor="middle" fill="#2dd4bf" font-size="7.5" font-family="monospace" font-weight="700">AI</text><text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Enrich + Qualify</text><text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Intent · Budget · ICP</text><line x1="226" y1="90" x2="248" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="246,86 254,90 246,94" fill="rgba(45,212,191,0.45)"/><rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">◆</text><text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Lead Score</text><text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Hot / Warm / Cold</text><line x1="346" y1="90" x2="368" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="366,86 374,90 366,94" fill="rgba(45,212,191,0.45)"/><rect x="375" y="58" width="90" height="64" rx="8" fill="#06100a" stroke="rgba(34,197,94,0.3)" stroke-width="1"/><rect x="375" y="58" width="90" height="2" rx="1" fill="#22c55e" opacity="0.7"/><text x="420" y="93" text-anchor="middle" fill="rgba(34,197,94,0.6)" font-size="18">✓</text><text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">CRM + Email</text><text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Auto-assigned + sent</text><line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/><rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/><text x="81" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">3× FASTER RESPONSE</text><rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/><text x="224" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">ZERO MANUAL ENTRY</text><rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/><text x="367" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">4.5 HRS/WEEK SAVED</text><text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Lead Intelligence Pipeline</text><text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Enrich, score, and route every inbound lead automatically. Zero manual work until it's hot.</text><rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.18)" stroke-width="0.5"/><text x="407" y="257" text-anchor="middle" fill="rgba(45,212,191,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text></svg></div>
+                  <div class="funnel-card-name">Lead Intelligence Pipeline</div>
+                </div>
+                <div class="pcat-strip-card" data-panel="auto-2">
+                  <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808"><rect width="480" height="3" fill="#818cf8" opacity="0.85"/><text x="20" y="22" fill="rgba(129,140,248,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · SUPPORT</text><line x1="20" y1="30" x2="460" y2="30" stroke="rgba(129,140,248,0.1)" stroke-width="0.5"/><text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text><text x="180" y="52" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text><text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">ROUTE</text><text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">RESOLVE</text><rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">✉</text><text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Support Ticket</text><text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Email / Chat / Form</text><line x1="106" y1="90" x2="128" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="126,86 134,90 126,94" fill="rgba(129,140,248,0.45)"/><rect x="135" y="58" width="90" height="64" rx="8" fill="#09090f" stroke="rgba(129,140,248,0.4)" stroke-width="1.2"/><rect x="135" y="58" width="90" height="2" rx="1" fill="#818cf8"/><circle cx="180" cy="83" r="13" fill="rgba(129,140,248,0.07)" stroke="rgba(129,140,248,0.5)" stroke-width="1"/><text x="180" y="87" text-anchor="middle" fill="#818cf8" font-size="7.5" font-family="monospace" font-weight="700">AI</text><text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Classify + Analyze</text><text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Intent · Urgency · Tone</text><line x1="226" y1="90" x2="248" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="246,86 254,90 246,94" fill="rgba(129,140,248,0.45)"/><rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⇅</text><text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Smart Route</text><text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Simple / Complex</text><line x1="346" y1="90" x2="368" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="366,86 374,90 366,94" fill="rgba(129,140,248,0.45)"/><rect x="375" y="58" width="90" height="64" rx="8" fill="#060d10" stroke="rgba(129,140,248,0.3)" stroke-width="1"/><rect x="375" y="58" width="90" height="2" rx="1" fill="#818cf8" opacity="0.7"/><text x="420" y="93" text-anchor="middle" fill="rgba(129,140,248,0.6)" font-size="18">⚡</text><text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Auto-Resolve</text><text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Reply or escalate</text><line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/><rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/><text x="81" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">72% DEFLECTION RATE</text><rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/><text x="224" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">&lt;90s RESPONSE TIME</text><rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/><text x="367" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">RUNS 24 / 7 / 365</text><text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">AI Support Deflection</text><text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Resolve simple tickets instantly. Escalate complex ones with full context. No agent burnout.</text><rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(129,140,248,0.07)" stroke="rgba(129,140,248,0.18)" stroke-width="0.5"/><text x="407" y="257" text-anchor="middle" fill="rgba(129,140,248,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text></svg></div>
+                  <div class="funnel-card-name">AI Support Deflection</div>
+                </div>
+                <div class="pcat-strip-card" data-panel="auto-3">
+                  <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808"><rect width="480" height="3" fill="#f472b6" opacity="0.85"/><text x="20" y="22" fill="rgba(244,114,182,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · REPORTING</text><line x1="20" y1="30" x2="460" y2="30" stroke="rgba(244,114,182,0.1)" stroke-width="0.5"/><text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCHEDULE</text><text x="180" y="52" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text><text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">GENERATE</text><text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">DELIVER</text><rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⏱</text><text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Data Pull</text><text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">CRM · Ads · Sheets</text><line x1="106" y1="90" x2="128" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="126,86 134,90 126,94" fill="rgba(244,114,182,0.45)"/><rect x="135" y="58" width="90" height="64" rx="8" fill="#120a10" stroke="rgba(244,114,182,0.4)" stroke-width="1.2"/><rect x="135" y="58" width="90" height="2" rx="1" fill="#f472b6"/><circle cx="180" cy="83" r="13" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.5)" stroke-width="1"/><text x="180" y="87" text-anchor="middle" fill="#f472b6" font-size="7.5" font-family="monospace" font-weight="700">AI</text><text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Analyze Trends</text><text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Revenue · CAC · Churn</text><line x1="226" y1="90" x2="248" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="246,86 254,90 246,94" fill="rgba(244,114,182,0.45)"/><rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">▦</text><text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Build Report</text><text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Insights + Actions</text><line x1="346" y1="90" x2="368" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="366,86 374,90 366,94" fill="rgba(244,114,182,0.45)"/><rect x="375" y="58" width="90" height="64" rx="8" fill="#0c0810" stroke="rgba(244,114,182,0.3)" stroke-width="1"/><rect x="375" y="58" width="90" height="2" rx="1" fill="#f472b6" opacity="0.7"/><text x="420" y="93" text-anchor="middle" fill="rgba(244,114,182,0.6)" font-size="18">↗</text><text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Slack + Email</text><text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Every Monday 8AM</text><line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/><rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/><text x="81" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">FULLY AUTOMATED</text><rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/><text x="224" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">ALL DATA SOURCES</text><rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/><text x="367" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">3 HRS SAVED/WEEK</text><text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Revenue Intelligence Digest</text><text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Pull all your data, analyze trends autonomously, and deliver a sharp weekly digest automatically.</text><rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.18)" stroke-width="0.5"/><text x="407" y="257" text-anchor="middle" fill="rgba(244,114,182,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text></svg></div>
+                  <div class="funnel-card-name">Revenue Intelligence Digest</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
+
     </div>
   </section>
 
@@ -1558,6 +2531,7 @@
   (function () {
     if (typeof gsap === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
+    gsap.ticker.lagSmoothing(0);
 
     /* Split text into word-mask spans */
     function splitWords(el) {
@@ -1689,6 +2663,414 @@
       });
     }
 
+  })();
+  </script>
+
+  <!-- FUNNEL LIGHTBOX -->
+  <div id="funnel-lightbox">
+    <div id="funnel-lightbox-inner">
+      <button id="funnel-lightbox-fs" title="Fullscreen">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 6V1h5M10 1h5v5M15 10v5h-5M6 15H1v-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button id="funnel-lightbox-close">✕ Close</button>
+      <iframe id="funnel-lightbox-iframe" src="" title="Funnel Preview"></iframe>
+      <video id="funnel-lightbox-video" src="" controls playsinline style="width:100%;height:100%;display:none;background:#000;object-fit:contain;"></video>
+      <div id="funnel-lightbox-panel"></div>
+    </div>
+  </div>
+
+  <script>
+  /* ── FUNNEL STRIP LIGHTBOX ── */
+  (function () {
+    const lightbox = document.getElementById('funnel-lightbox');
+    const lbIframe = document.getElementById('funnel-lightbox-iframe');
+    const lbVideo  = document.getElementById('funnel-lightbox-video');
+    const lbClose  = document.getElementById('funnel-lightbox-close');
+    const lbFs     = document.getElementById('funnel-lightbox-fs');
+    const lbInner  = document.getElementById('funnel-lightbox-inner');
+    const iconExpand   = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 6V1h5M10 1h5v5M15 10v5h-5M6 15H1v-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const iconCompress = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 1v5H1M10 1v5h5M15 10h-5v5M6 15v-5H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    lbFs.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        lbInner.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      lbFs.innerHTML = document.fullscreenElement ? iconCompress : iconExpand;
+    });
+
+    const lbPanel  = document.getElementById('funnel-lightbox-panel');
+
+    const panelData = {
+      'auto-1': {
+        color: '#2dd4bf',
+        client: 'GrowthTech Inc. · B2B SaaS · Manila',
+        title: 'Lead Intelligence Pipeline',
+        problem: 'Sales team manually qualifying 200+ leads per week with no ICP scoring and no enrichment. Reps were spending 30% of their time on opportunities that would never close. Fast-moving deals slipped while the team was buried in junk.',
+        solution: 'Agentic AI enriches every inbound lead with company size, industry, buying signals, and ICP fit score — then auto-creates a CRM deal, assigns the right rep, and drafts a personalized first-touch email ready to send. The rep\'s first action is review, not research.',
+        stats: [
+          { val: '3×', label: 'faster lead response time' },
+          { val: '0', label: 'manual data entry per lead' },
+          { val: '4.5hrs', label: 'saved per rep per week' },
+          { val: '68%', label: 'increase in qualified pipeline' }
+        ],
+        quote: '"We used to spend the first hour of every Monday qualifying leads from the weekend. Now that list is already scored, enriched, and in the CRM before we even open our laptops."',
+        cite: '— Head of Sales, GrowthTech Inc.'
+      },
+      'auto-2': {
+        color: '#818cf8',
+        client: 'NovaBrand Co. · E-commerce · Cebu',
+        title: 'AI Support Deflection',
+        problem: '500+ support tickets per day. 4-hour average response time. Agents burning out copy-pasting the same 10 answers all day while complex issues piled up. Customer satisfaction was dropping and headcount costs were climbing.',
+        solution: 'Agentic AI classifies every incoming ticket by intent, urgency, and sentiment. Simple tickets — shipping status, returns, FAQs — get accurate, on-brand responses instantly. Complex tickets are escalated with a full context summary so the agent can reply in under 60 seconds without reading the thread.',
+        stats: [
+          { val: '72%', label: 'ticket deflection rate' },
+          { val: '<90s', label: 'average response time' },
+          { val: '24/7', label: 'coverage, no overtime' },
+          { val: '$18k', label: 'saved monthly on support costs' }
+        ],
+        quote: '"Our agents used to spend all day copy-pasting the same 10 answers. Now they only see the tickets that actually need a human — and they have full context before they even open the thread."',
+        cite: '— Customer Operations Lead, NovaBrand Co.'
+      },
+      'auto-3': {
+        color: '#f472b6',
+        client: 'Hiraya Construction Supply · Distribution · 3 Branches',
+        title: 'Revenue Intelligence Digest',
+        problem: 'One operations manager. Three branches. Every Monday morning started the same way: two hours pulling numbers from separate spreadsheets, chasing reps for updates, manually checking inventory. Stockouts went unnoticed. Slow leads went cold. Decisions were always a week late.',
+        solution: 'Agentic AI pulls live data from their CRM, inventory system, and ad platforms every Monday at 8AM. It identifies anomalies, flags deals at risk, and surfaces low-stock alerts — then generates a formatted digest delivered directly to Slack. No spreadsheets. No chasing. Just decisions.',
+        stats: [
+          { val: '12hrs', label: 'saved per week on reporting' },
+          { val: '0', label: 'stockouts since system launched' },
+          { val: '3×', label: 'faster anomaly detection' },
+          { val: '6wks', label: 'from kickoff to full deployment' }
+        ],
+        quote: '"Before this, I was pulling data from three spreadsheets every Monday morning just to see last week\'s numbers. Now I open Slack and it\'s already there — with the problems flagged and ready to act on."',
+        cite: '— Operations Manager, Hiraya Construction Supply'
+      }
+    };
+
+    function renderPanel(data, svgEl) {
+      const svgStr = svgEl ? svgEl.cloneNode(true).outerHTML : '';
+      const statsHTML = data.stats.map(s => `
+        <div class="cs-metric" style="border-top-color:${data.color}44">
+          <div class="cs-metric-val">${s.val}</div>
+          <div class="cs-metric-label">${s.label}</div>
+        </div>`).join('');
+      return `<div class="ap-layout">
+        <div class="ap-diagram">${svgStr}</div>
+        <div class="ap-detail">
+          <div class="cs-tag" style="color:${data.color};background:${data.color}12;border-color:${data.color}30">${data.client}</div>
+          <h2 class="cs-headline">${data.title}</h2>
+          <div class="cs-block"><div class="cs-block-label">The Problem</div><p>${data.problem}</p></div>
+          <div class="cs-block"><div class="cs-block-label">What We Built</div><p>${data.solution}</p></div>
+          <div class="cs-metrics">${statsHTML}</div>
+          <div class="cs-quote" style="border-color:${data.color}44"><p>${data.quote}</p><cite>${data.cite}</cite></div>
+        </div>
+      </div>`;
+    }
+
+    function openLightbox(src, type, cardEl) {
+      lbIframe.style.display = 'none';
+      lbVideo.style.display = 'none';
+      lbPanel.style.display = 'none';
+      if (type === 'video') {
+        lbVideo.style.display = 'block';
+        lbVideo.src = src;
+        lbVideo.play();
+      } else if (type === 'panel') {
+        const data = panelData[src];
+        const svgEl = cardEl ? cardEl.querySelector('svg') : null;
+        lbPanel.innerHTML = renderPanel(data, svgEl);
+        lbPanel.style.display = 'block';
+      } else {
+        lbIframe.style.display = 'block';
+        lbIframe.src = src;
+      }
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => { lbIframe.src = ''; lbVideo.pause(); lbVideo.src = ''; lbPanel.innerHTML = ''; }, 300);
+    }
+
+    document.querySelectorAll('.funnel-card').forEach(card => {
+      card.addEventListener('click', () => openLightbox(card.dataset.funnel, 'iframe'));
+    });
+
+    document.querySelectorAll('.pcat-db-card').forEach(card => {
+      card.addEventListener('click', () => openLightbox(card.dataset.funnel, 'iframe'));
+    });
+
+    document.querySelectorAll('.pcat-strip-card[data-panel]').forEach(card => {
+      card.addEventListener('click', () => openLightbox(card.dataset.panel, 'panel', card));
+    });
+
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  })();
+
+  /* ── PORTFOLIO TAB SWITCH ── */
+  (function () {
+    const tabs = document.querySelectorAll('.ptab');
+    let activePanel = document.querySelector('.pcat-panel:not(.pcat-hidden)');
+    let busy = false;
+
+    function animateOut(panel, onDone) {
+      const wrap = panel.querySelector('.funnel-strip-wrap');
+      if (wrap) {
+        const track = panel.querySelector('.funnel-strip-track');
+        if (track) track.style.animationPlayState = 'paused';
+        gsap.to(wrap, { scale: 0.92, rotateZ: 1.5, opacity: 0, duration: 0.22, ease: 'power2.in', onComplete: onDone });
+      } else {
+        const cards = [...panel.querySelectorAll('.pcat-placeholder')];
+        gsap.to(cards, {
+          scale: 0.88, rotateZ: (i) => (i - 1) * 4, opacity: 0,
+          duration: 0.28, ease: 'power2.in',
+          stagger: { each: 0.05, from: 'center' },
+          onComplete: onDone
+        });
+      }
+    }
+
+    function animateIn(panel) {
+      panel.classList.remove('pcat-hidden');
+      const wrap = panel.querySelector('.funnel-strip-wrap');
+      if (wrap) {
+        gsap.set(wrap, { scale: 0.92, rotateZ: 1.5, opacity: 0 });
+        gsap.to(wrap, {
+          scale: 1, rotateZ: 0, opacity: 1, duration: 0.38, ease: 'power2.out',
+          onComplete() {
+            gsap.set(wrap, { clearProps: 'all' });
+            const track = panel.querySelector('.funnel-strip-track');
+            if (track) track.style.animationPlayState = 'running';
+            activePanel = panel; busy = false;
+          }
+        });
+      } else {
+        const cards = [...panel.querySelectorAll('.pcat-placeholder')];
+        gsap.set(cards, { scale: 0.88, rotateZ: (i) => (i - 1) * 4, opacity: 0 });
+        gsap.to(cards, {
+          scale: 1, rotateZ: 0, opacity: 1,
+          duration: 0.38, ease: 'power2.out',
+          stagger: { each: 0.06, from: 'center' },
+          onComplete() {
+            gsap.set(cards, { clearProps: 'all' });
+            activePanel = panel; busy = false;
+          }
+        });
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        if (busy) return;
+        const newPanel = document.querySelector(`.pcat-panel[data-cat="${tab.dataset.cat}"]`);
+        if (newPanel === activePanel) return;
+        busy = true;
+        tabs.forEach(t => t.classList.toggle('active', t === tab));
+        animateOut(activePanel, () => {
+          activePanel.classList.add('pcat-hidden');
+          gsap.set(activePanel, { clearProps: 'all' });
+          animateIn(newPanel);
+        });
+      });
+    });
+  })();
+
+  /* ── FUNNEL CARD 3D TILT + MAGNETIC ── */
+  (function () {
+    const wrap    = document.querySelector('.funnel-strip-wrap');
+    const cards   = document.querySelectorAll('.funnel-card');
+    const tilts   = new Map();
+    const hovered = new Set();
+    const magX    = new Map();
+    const magY    = new Map();
+    const magTX   = new Map();
+    const magTY   = new Map();
+
+    cards.forEach(card => {
+      tilts.set(card, 0);
+      magX.set(card, 0);  magY.set(card, 0);
+      magTX.set(card, 0); magTY.set(card, 0);
+
+      card.addEventListener('mouseenter', () => hovered.add(card));
+      card.addEventListener('mouseleave', () => {
+        hovered.delete(card);
+        magTX.set(card, 0);
+        magTY.set(card, 0);
+      });
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width  / 2)) / (r.width  / 2);
+        const dy = (e.clientY - (r.top  + r.height / 2)) / (r.height / 2);
+        magTX.set(card, dx * 7);
+        magTY.set(card, dy * 5);
+      });
+    });
+
+    function tick() {
+      const wr = wrap.getBoundingClientRect();
+      if (wr.width === 0) { requestAnimationFrame(tick); return; }
+      const wc = wr.left + wr.width / 2;
+
+      cards.forEach(card => {
+        const cr   = card.getBoundingClientRect();
+        const cc   = cr.left + cr.width / 2;
+        const norm = (cc - wc) / (wr.width / 2);
+        const tiltTarget = -norm * 15;
+        const tilt = tilts.get(card) + (tiltTarget - tilts.get(card)) * 0.1;
+        tilts.set(card, tilt);
+
+        const mx = magX.get(card) + (magTX.get(card) - magX.get(card)) * 0.12;
+        const my = magY.get(card) + (magTY.get(card) - magY.get(card)) * 0.12;
+        magX.set(card, mx); magY.set(card, my);
+
+        const isHov = hovered.has(card);
+        card.style.transform = `perspective(800px) translateX(${mx}px) translateY(${isHov ? -8 + my : my}px) scale(${isHov ? 1.015 : 1}) rotateY(${tilt}deg)`;
+      });
+
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  })();
+
+  /* ── PROCESS STEP SWITCHER ── */
+  (function () {
+    const tabs = document.querySelectorAll('.proc-tab');
+    const panels = document.querySelectorAll('.proc-panel');
+    const indicator = document.querySelector('.proc-tab-indicator');
+    if (!tabs.length) return;
+
+    let current = 0;
+    let paused = false;
+    let timer;
+
+    function updateIndicator(tab) {
+      const tabRect = tab.getBoundingClientRect();
+      const contRect = tab.closest('.proc-tabs').getBoundingClientRect();
+      indicator.style.left = (tabRect.left - contRect.left) + 'px';
+      indicator.style.width = tabRect.width + 'px';
+    }
+
+    function switchTo(i) {
+      current = i;
+      tabs.forEach((t, idx) => t.classList.toggle('active', idx === i));
+      panels.forEach((p, idx) => p.classList.toggle('active', idx === i));
+      updateIndicator(tabs[i]);
+    }
+
+    function advance() {
+      if (!paused) switchTo((current + 1) % tabs.length);
+    }
+
+    function startTimer() { timer = setInterval(advance, 3000); }
+    function stopTimer()  { clearInterval(timer); }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => switchTo(i));
+      tab.addEventListener('mouseenter', () => { paused = true; });
+      tab.addEventListener('mouseleave', () => { paused = false; });
+    });
+
+    requestAnimationFrame(() => updateIndicator(tabs[0]));
+    startTimer();
+  })();
+
+  /* ── PORTFOLIO INITIAL REVEAL ── */
+  (function () {
+    const el = document.querySelector('.funnel-strips');
+    if (!el) return;
+    const io = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      const panel = document.querySelector('.pcat-panel:not(.pcat-hidden)');
+      if (!panel) return;
+      const wrap = panel.querySelector('.funnel-strip-wrap');
+      if (!wrap) return;
+      const track = wrap.querySelector('.funnel-strip-track');
+      if (track) track.style.animationPlayState = 'paused';
+      gsap.set(wrap, { opacity: 0, scale: 0.92, rotateZ: 1.5 });
+      gsap.to(wrap, {
+        opacity: 1, scale: 1, rotateZ: 0,
+        duration: 0.6, ease: 'power2.out', delay: 0.25,
+        onComplete() {
+          gsap.set(wrap, { clearProps: 'all' });
+          if (track) track.style.animationPlayState = 'running';
+        }
+      });
+    }, { threshold: 0.2 });
+    io.observe(el);
+  })();
+
+  /* ── PCAT STRIP CARD 3D TILT (all non-funnel tabs) ── */
+  (function () {
+    const cards   = document.querySelectorAll('.pcat-strip-card');
+    const tilts   = new Map();
+    const hovered = new Set();
+    const magX    = new Map();
+    const magY    = new Map();
+    const magTX   = new Map();
+    const magTY   = new Map();
+    const wraps   = new Map();
+
+    cards.forEach(card => {
+      wraps.set(card, card.closest('.funnel-strip-wrap'));
+      tilts.set(card, 0);
+      magX.set(card, 0);  magY.set(card, 0);
+      magTX.set(card, 0); magTY.set(card, 0);
+
+      card.addEventListener('mouseenter', () => hovered.add(card));
+      card.addEventListener('mouseleave', () => {
+        hovered.delete(card);
+        magTX.set(card, 0);
+        magTY.set(card, 0);
+      });
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width  / 2)) / (r.width  / 2);
+        const dy = (e.clientY - (r.top  + r.height / 2)) / (r.height / 2);
+        magTX.set(card, dx * 7);
+        magTY.set(card, dy * 5);
+      });
+    });
+
+    function tick() {
+      cards.forEach(card => {
+        const wrap = wraps.get(card);
+        const wr   = wrap ? wrap.getBoundingClientRect() : { width: 0 };
+        if (wr.width === 0) { card.style.transform = ''; return; }
+
+        const wc  = wr.left + wr.width / 2;
+        const cr  = card.getBoundingClientRect();
+        const cc  = cr.left + cr.width / 2;
+        const norm = (cc - wc) / (wr.width / 2);
+        const tiltTarget = -norm * 15;
+        const tilt = tilts.get(card) + (tiltTarget - tilts.get(card)) * 0.1;
+        tilts.set(card, tilt);
+
+        const mx = magX.get(card) + (magTX.get(card) - magX.get(card)) * 0.12;
+        const my = magY.get(card) + (magTY.get(card) - magY.get(card)) * 0.12;
+        magX.set(card, mx); magY.set(card, my);
+
+        const isHov = hovered.has(card);
+        card.style.transform = `perspective(800px) translateX(${mx}px) translateY(${isHov ? -8 + my : my}px) scale(${isHov ? 1.015 : 1}) rotateY(${tilt}deg)`;
+      });
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
   })();
   </script>
 
