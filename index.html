@@ -458,10 +458,13 @@
       gap: 4rem;
       animation: marquee 28s linear infinite;
       width: max-content;
+      will-change: transform;
+      backface-visibility: hidden;
+      transform: translate3d(0, 0, 0);
     }
     @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(-50%, 0, 0); }
     }
     .marquee-item {
       font-size: var(--fs-label);
@@ -1129,8 +1132,7 @@
     .split-char { will-change: transform, opacity; }
     .glitch-letter { will-change: transform, filter; }
     .fluid-accent,
-    .process-fluid,
-    .marquee-track { will-change: transform; }
+    .process-fluid { will-change: transform; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
