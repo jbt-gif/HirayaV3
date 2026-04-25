@@ -1,0 +1,3264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bodoir — E-Commerce Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Manrope:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — LUXURY FASHION PALETTE
+   ============================================================ */
+:root {
+  --bg-base:        #F3EFEA;
+  --bg-sidebar:     #FFFFFF;
+  --bg-card:        #FFFFFF;
+  --bg-card-alt:    #F9F6F2;
+  --bg-hover:       #FEF9F0;
+  --bg-input:       #F9F7F4;
+
+  --gold:           #FBBF24;
+  --gold-dim:       #F59E0B;
+  --gold-border:    rgba(251,191,36,0.18);
+  --gold-border-md: rgba(251,191,36,0.35);
+  --gold-glow:      rgba(251,191,36,0.07);
+  --gold-grad:      linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+
+  --ivory:          #0F172A;
+  --ivory-dim:      #374151;
+  --text-primary:   #0F172A;
+  --text-secondary: #6B7280;
+  --text-muted:     #9CA3AF;
+
+  --border-subtle:  rgba(0,0,0,0.07);
+  --border-mid:     rgba(251,191,36,0.30);
+
+  --font-sans:      'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-serif:     'Manrope', 'DM Sans', sans-serif;
+
+  --radius-sm:      10px;
+  --radius-md:      12px;
+  --radius-lg:      16px;
+
+  --primary:        #FBBF24;
+
+  --yellow:             #FBBF24;
+  --yellow-soft:        #FFFBEB;
+  --shadow-card:        0 2px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-card-hover:  0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(251,191,36,0.12);
+  --shadow-yellow-glow: 0 0 24px rgba(251,191,36,0.20);
+  --shadow-panel:       0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* { box-sizing: border-box; }
+
+#loginScreen { position: fixed; inset: 0; background: #F3EFEA; display: flex; align-items: center; justify-content: center; z-index: 50; }
+#appShell { display: none; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+#sidebar {
+  width: 220px;
+  min-height: 100vh;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-subtle);
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s, background 0.2s;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin: 1px 0;
+}
+.nav-item:hover { background: rgba(251,191,36,0.08); color: var(--ivory); }
+.nav-item.active { background: rgba(251,191,36,0.12); color: var(--gold-dim); font-weight: 600; }
+.nav-badge { background: rgba(251,191,36,0.15); color: var(--gold-dim); font-size: 10px; padding: 1px 6px; border-radius: 999px; margin-left: auto; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+header, header#appHeader {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid rgba(0,0,0,0.07) !important;
+  box-shadow: var(--shadow-panel) !important;
+}
+#pageTitle {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--ivory);
+  font-size: 13px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+#mainContent { background: var(--bg-base) !important; }
+
+/* ============================================================
+   KPI CARDS
+   ============================================================ */
+.kpi-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid var(--border-subtle);
+  border-top: 2px solid var(--gold-border-md);
+  box-shadow: var(--shadow-card);
+  transition: border-top-color 0.2s, box-shadow 0.25s, transform 0.2s;
+}
+.kpi-card:hover { border-top-color: var(--gold); box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+.kpi-card .text-2xl, .kpi-card .text-xl {
+  font-family: var(--font-serif) !important;
+  font-weight: 700 !important;
+  color: var(--ivory) !important;
+  font-size: 28px !important;
+  letter-spacing: -0.02em;
+}
+.kpi-card h3 {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted) !important;
+}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+.badge { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-family: var(--font-sans); }
+.badge-pending    { background: rgba(251,191,36,0.12); color: #D97706;  border: 1px solid rgba(251,191,36,0.25); }
+.badge-processing { background: rgba(96,165,250,0.10);  color: #7BB3E8;  border: 1px solid rgba(96,165,250,0.15); }
+.badge-shipped    { background: rgba(96,165,250,0.10);  color: #60A5FA;  border: 1px solid rgba(96,165,250,0.15); }
+.badge-delivered  { background: rgba(52,211,153,0.10);  color: #5BBFA0;  border: 1px solid rgba(52,211,153,0.12); }
+.badge-cancelled  { background: rgba(248,113,113,0.10); color: #E08080;  border: 1px solid rgba(248,113,113,0.12); }
+.badge-refunded   { background: rgba(236,72,153,0.10);  color: #D479A2;  border: 1px solid rgba(236,72,153,0.12); }
+.badge-active     { background: rgba(52,211,153,0.10);  color: #5BBFA0;  border: 1px solid rgba(52,211,153,0.12); }
+.badge-inactive   { background: rgba(136,136,128,0.12); color: #666660;  border: 1px solid rgba(136,136,128,0.15); }
+.badge-scheduled  { background: rgba(96,165,250,0.10);  color: #7BB3E8;  border: 1px solid rgba(96,165,250,0.12); }
+.badge-draft      { background: rgba(136,136,128,0.12); color: #6B6B7A;  border: 1px solid rgba(136,136,128,0.15); }
+.badge-vip        { background: rgba(251,191,36,0.15); color: #D97706;  border: 1px solid rgba(251,191,36,0.30); }
+.badge-regular    { background: rgba(96,165,250,0.10);  color: #7BB3E8;  border: 1px solid rgba(96,165,250,0.12); }
+.badge-new        { background: rgba(52,211,153,0.10);  color: #5BBFA0;  border: 1px solid rgba(52,211,153,0.12); }
+.badge-atrisk     { background: rgba(248,113,113,0.10); color: #E08080;  border: 1px solid rgba(248,113,113,0.12); }
+
+/* ============================================================
+   STOCK
+   ============================================================ */
+.stock-ok  { color: #5BBFA0; font-weight: 600; }
+.stock-low { color: #D97706; font-weight: 600; }
+.stock-out { color: #E08080; font-weight: 600; }
+
+/* ============================================================
+   DATA TABLES
+   ============================================================ */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th { padding: 10px 14px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); background: var(--bg-card); border-bottom: 1px solid var(--border-subtle); font-family: var(--font-sans); }
+.data-table td { padding: 13px 14px; font-size: 13px; border-bottom: 1px solid var(--border-subtle); color: var(--ivory-dim); font-family: var(--font-sans); }
+.data-table tr:nth-child(even) td { background: rgba(251,191,36,0.02); }
+.data-table tr:hover td { background: var(--gold-glow); color: var(--ivory); }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary { background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%); color: #0F172A; padding: 8px 20px; border-radius: var(--radius-md); font-size: 12px; font-weight: 700; cursor: pointer; border: none; transition: box-shadow 0.2s, transform 0.15s; font-family: var(--font-sans); letter-spacing: 0.05em; text-transform: uppercase; box-shadow: 0 4px 14px rgba(245,158,11,0.30); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(245,158,11,0.45); }
+
+.btn-secondary { background: transparent; color: var(--text-secondary); padding: 8px 18px; border-radius: var(--radius-md); font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-mid); transition: all 0.2s; font-family: var(--font-sans); letter-spacing: 0.04em; }
+.btn-secondary:hover { background: var(--gold-glow); color: var(--gold-dim); border-color: var(--gold-border-md); }
+
+.btn-danger { background: transparent; color: #E08080; padding: 8px 18px; border-radius: var(--radius-md); font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid rgba(248,113,113,0.2); font-family: var(--font-sans); }
+
+.btn-icon { padding: 6px 8px; border-radius: var(--radius-md); cursor: pointer; border: none; background: transparent; color: var(--text-secondary); transition: all 0.2s; }
+.btn-icon:hover { background: rgba(251,191,36,0.10); color: var(--gold-dim); }
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.40); z-index: 40; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
+.modal-box { background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 32px; width: 90%; max-width: 560px; max-height: 90vh; overflow-y: auto; position: relative; z-index: 50; box-shadow: 0 24px 64px rgba(0,0,0,0.12); }
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+.form-label { display: block; font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-sans); }
+.form-input { width: 100%; padding: 9px 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 13px; color: var(--ivory); transition: border-color 0.2s; background: var(--bg-input); font-family: var(--font-sans); }
+.form-input:focus { outline: none; border-color: var(--gold-dim); box-shadow: 0 0 0 2px var(--gold-glow); }
+.form-input::placeholder { color: var(--text-muted); }
+.form-select { width: 100%; padding: 9px 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 13px; color: var(--ivory); background: var(--bg-input); cursor: pointer; font-family: var(--font-sans); }
+.form-select option { background: var(--bg-card-alt); }
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tab-btn { padding: 7px 16px; border-radius: var(--radius-md); font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid transparent; background: transparent; color: var(--text-secondary); transition: all 0.2s; font-family: var(--font-sans); letter-spacing: 0.04em; }
+.tab-btn:hover { color: var(--ivory); background: rgba(0,0,0,0.04); }
+.tab-btn.active { background: rgba(251,191,36,0.12); color: var(--gold-dim); border-color: var(--gold-border-md); }
+
+/* ============================================================
+   CHAT MESSAGES
+   ============================================================ */
+.chat-msg-user { background: linear-gradient(135deg, #FBBF24, #D97706); color: #1A1A2E; border-radius: 18px 18px 4px 18px; padding: 10px 16px; max-width: 75%; font-size: 13px; align-self: flex-end; font-weight: 500; }
+.chat-msg-assistant { background: var(--bg-card-alt); color: var(--ivory-dim); border-radius: 18px 18px 18px 4px; padding: 10px 16px; max-width: 75%; font-size: 13px; align-self: flex-start; border: 1px solid var(--border-subtle); }
+
+/* ============================================================
+   KANBAN
+   ============================================================ */
+.kanban-col { flex: 1; min-width: 180px; background: var(--bg-card); border-radius: var(--radius-lg); padding: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card); }
+.kanban-card { background: var(--bg-card-alt); border-radius: var(--radius-md); padding: 14px; margin-bottom: 8px; border: 1px solid var(--border-subtle); font-size: 12px; transition: border-color 0.2s, box-shadow 0.2s; }
+.kanban-card:hover { border-color: var(--gold-border-md); box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+
+/* ============================================================
+   PRODUCT CARDS
+   ============================================================ */
+.product-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 22px; border: 1px solid var(--border-subtle); border-top: 2px solid var(--gold-border-md); transition: border-top-color 0.2s, transform 0.2s, box-shadow 0.25s; box-shadow: var(--shadow-card); }
+.product-card:hover { border-top-color: var(--gold); transform: translateY(-3px); box-shadow: var(--shadow-card-hover); }
+.product-icon { width: 52px; height: 52px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; background: rgba(251,191,36,0.10); border: 1px solid var(--gold-border-md); color: var(--gold-dim); }
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+#loadingOverlay { position: fixed; inset: 0; background: rgba(243,239,234,0.85); z-index: 100; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.spinner { width: 44px; height: 44px; border: 3px solid rgba(251,191,36,0.20); border-top-color: var(--gold-dim); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   PAGE SECTIONS
+   ============================================================ */
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+/* ============================================================
+   TAILWIND OVERRIDES
+   ============================================================ */
+.bg-white, .bg-slate-50, .bg-slate-100, .bg-gray-50, .bg-gray-100 { background: #FFFFFF !important; }
+.bg-slate-800, .bg-slate-900 { background: var(--bg-card-alt) !important; }
+.text-slate-800, .text-gray-800, .text-slate-900, .text-gray-900 { color: var(--text-primary) !important; }
+.text-slate-700, .text-gray-700 { color: var(--ivory-dim) !important; }
+.text-slate-600, .text-gray-600, .text-slate-500, .text-gray-500 { color: var(--text-secondary) !important; }
+.text-slate-400, .text-gray-400 { color: var(--text-muted) !important; }
+.border-gray-200, .border-gray-100, .border-slate-200, .border-slate-100 { border-color: rgba(0,0,0,0.08) !important; }
+.border-slate-700, .border-slate-600 { border-color: rgba(0,0,0,0.08) !important; }
+.text-violet-600, .text-violet-500, .text-violet-700, .text-purple-600 { color: var(--gold) !important; }
+.bg-violet-600, .bg-violet-500 { background: var(--yellow-soft) !important; color: var(--gold-dim) !important; }
+.bg-violet-50, .bg-violet-100 { background: var(--yellow-soft) !important; }
+.border-violet-600, .border-violet-500 { border-color: var(--gold-border-md) !important; }
+.bg-purple-100, .bg-purple-50 { background: var(--yellow-soft) !important; }
+.text-purple-500, .text-purple-700 { color: var(--gold-dim) !important; }
+.hover\:bg-violet-50:hover { background: var(--yellow-soft) !important; }
+.bg-emerald-100 { background: rgba(52,211,153,0.10) !important; }
+.text-emerald-600, .text-emerald-700 { color: #059669 !important; }
+.bg-blue-100 { background: rgba(96,165,250,0.10) !important; }
+.text-blue-600, .text-blue-700 { color: #2563EB !important; }
+.bg-amber-100, .bg-amber-50 { background: rgba(251,191,36,0.10) !important; }
+.text-amber-600, .text-amber-500, .text-amber-700 { color: var(--gold-dim) !important; }
+.border-amber-200 { border-color: rgba(251,191,36,0.28) !important; }
+.bg-red-50 { background: rgba(239,68,68,0.06) !important; }
+.border-red-200 { border-color: rgba(239,68,68,0.20) !important; }
+.text-red-700, .text-red-600, .text-red-500 { color: #DC2626 !important; }
+.bg-red-500 { background: #EF4444 !important; }
+.shadow-sm { box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important; }
+.shadow, .shadow-lg, .shadow-2xl { box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important; }
+.text-white { color: #FFFFFF !important; }
+
+/* Headings — serif treatment */
+h1.text-2xl, h1.text-3xl, .text-3xl.font-bold { font-family: 'Poppins', var(--font-serif) !important; font-weight: 600 !important; letter-spacing: -0.01em; }
+
+/* Stats mini-card borders */
+.flex-wrap > .bg-white, .gap-3 > .bg-white { border: 1px solid var(--border-subtle) !important; }
+
+/* ============================================================
+   DARK MODE — dark navy + yellow accent
+   ============================================================ */
+body.dm { background: #0F0F1A; color: #E8E4E0; }
+body.dm #mainContent { background: #0F0F1A !important; }
+body.dm #sidebar { background: #13131F !important; border-color: rgba(251,191,36,0.12) !important; }
+body.dm header { background: #13131F !important; border-color: rgba(251,191,36,0.12) !important; }
+body.dm .kpi-card, body.dm .modal-box, body.dm .kanban-card, body.dm .kanban-col { background: #1A1A2E !important; border-color: rgba(251,191,36,0.12) !important; }
+body.dm .data-table th { background: #1A1A2E; color: #9999AA; border-color: rgba(251,191,36,0.10); }
+body.dm .data-table td { border-color: rgba(251,191,36,0.08); color: #C8C4BC; }
+body.dm .data-table tr:hover td { background: rgba(251,191,36,0.05); }
+body.dm .form-input, body.dm .form-select { background: #1A1A2E; border-color: rgba(251,191,36,0.18); color: #E8E4E0; }
+body.dm .bg-white { background: #1A1A2E !important; }
+body.dm .bg-gray-50, body.dm .bg-slate-50 { background: #1A1A2E !important; }
+body.dm .text-gray-700, body.dm .text-gray-600, body.dm .text-gray-500 { color: #9999AA !important; }
+body.dm .border-gray-200, body.dm .border-gray-100 { border-color: rgba(251,191,36,0.10) !important; }
+body.dm .btn-secondary { background: transparent; color: #9999AA; border: 1px solid rgba(251,191,36,0.22); }
+
+/* ============================================================
+   ANIMATIONS & GLOW ENHANCEMENTS
+   ============================================================ */
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-section.active { animation: fadeSlideIn 0.32s cubic-bezier(0.25,0.46,0.45,0.94) both; }
+
+@keyframes kpiPop {
+  0%   { transform: scale(0.94); opacity: 0.5; }
+  70%  { transform: scale(1.03); }
+  100% { transform: scale(1.00); opacity: 1; }
+}
+.kpi-pop { animation: kpiPop 0.45s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+@keyframes toastIn {
+  from { transform: translateX(110%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+#toast:not(.hidden) { animation: toastIn 0.28s ease-out both; }
+
+.kpi-card .text-2xl, .kpi-card .text-3xl {
+  text-shadow: none;
+}
+
+.form-input:focus, .form-select:focus {
+  box-shadow: 0 0 0 3px rgba(251,191,36,0.18) !important;
+  border-color: var(--yellow) !important;
+}
+
+.modal-box {
+  box-shadow: 0 24px 64px rgba(0,0,0,0.12), 0 4px 20px rgba(0,0,0,0.06) !important;
+}
+
+/* nav active state handled via background highlight on pill */
+
+/* product-card and kanban-card hover handled in component rules */
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+#sidebar.collapsed { transform: translateX(-220px); }
+@media (max-width: 768px) {
+  #sidebar { position: fixed; top: 0; left: 0; z-index: 30; transform: translateX(-220px); }
+  #sidebar.open { transform: translateX(0); }
+}
+</style>
+</head>
+<body class="bg-slate-100 flex" id="appBody">
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" style="position:fixed;inset:0;background:#F3EFEA;display:flex;z-index:50;">
+  <!-- Left editorial panel -->
+  <div class="hidden lg:flex flex-col justify-between flex-1 p-16" style="border-right:1px solid rgba(251,191,36,0.15);">
+    <div>
+      <div style="font-family:'Poppins','Arial Black',Arial,sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#D97706;">Bodoir</div>
+    </div>
+    <div>
+      <div style="font-family:'Poppins','Arial Black',Arial,sans-serif;font-size:56px;font-weight:600;line-height:1.05;color:#1A1A2E;letter-spacing:-0.02em;">
+        Commerce,<br><em style="color:#FBBF24;font-style:italic;">elevated.</em>
+      </div>
+      <div style="margin-top:28px;font-size:13px;color:#6B6B7A;letter-spacing:0.04em;max-width:340px;line-height:1.8;font-family:'Inter',Arial,sans-serif;">
+        Your premium e-commerce intelligence platform. Every number, every order, every customer — beautifully presented.
+      </div>
+      <div style="margin-top:40px;display:flex;gap:40px;">
+        <div>
+          <div style="font-family:'Poppins','Arial Black',Arial,sans-serif;font-size:28px;font-weight:600;color:#1A1A2E;">∞</div>
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9999AA;margin-top:2px;font-family:'Inter',Arial,sans-serif;">Real-time Data</div>
+        </div>
+        <div>
+          <div style="font-family:'Poppins','Arial Black',Arial,sans-serif;font-size:28px;font-weight:600;color:#D97706;">AI</div>
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9999AA;margin-top:2px;font-family:'Inter',Arial,sans-serif;">Powered Insights</div>
+        </div>
+        <div>
+          <div style="font-family:'Poppins','Arial Black',Arial,sans-serif;font-size:28px;font-weight:600;color:#1A1A2E;">7+</div>
+          <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#9999AA;margin-top:2px;font-family:'Inter',Arial,sans-serif;">Modules</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:#9999AA;letter-spacing:0.06em;font-family:'Inter',Arial,sans-serif;">© 2026 Bodoir. All rights reserved.</div>
+  </div>
+  <!-- Right login form -->
+  <div class="flex flex-col items-center justify-center w-full p-8" style="background:#FFFFFF;max-width:420px;min-width:320px;border-left:1px solid rgba(0,0,0,0.08);">
+    <div style="width:100%;max-width:300px;">
+      <div style="margin-bottom:36px;">
+        <div style="font-family:'Poppins','Arial Black',Arial,sans-serif;font-size:32px;font-weight:600;color:#1A1A2E;letter-spacing:-0.01em;line-height:1.1;">Welcome back</div>
+        <div style="font-size:12px;color:#6B6B7A;letter-spacing:0.06em;margin-top:8px;font-family:'Inter',Arial,sans-serif;text-transform:uppercase;">Sign in to continue</div>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Username</label>
+        <input id="loginUser" type="text" class="form-input" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div class="mb-6">
+        <label class="form-label">Password</label>
+        <div class="relative">
+          <input id="loginPass" type="password" class="form-input pr-10" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+          <button onclick="toggleLoginPass()" class="absolute right-3 top-1/2 -translate-y-1/2" style="background:none;border:none;cursor:pointer;color:#9999AA;transition:color 0.2s;" onmouseover="this.style.color='#FBBF24'" onmouseout="this.style.color='#9999AA'">
+            <i id="loginPassIcon" class="fas fa-eye text-sm"></i>
+          </button>
+        </div>
+      </div>
+      <div id="loginError" class="hidden mb-4 p-3 rounded text-sm" style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);color:#E08080;font-family:Calibri,Arial,sans-serif;"></div>
+      <button onclick="doLogin()" class="btn-primary w-full py-3">
+        Sign In &nbsp;<i class="fas fa-arrow-right text-xs"></i>
+      </button>
+      <div style="text-align:center;font-size:11px;color:#9999AA;margin-top:20px;letter-spacing:0.05em;font-family:'Inter',Arial,sans-serif;">Default: admin / admin123</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div id="loadingOverlay">
+  <div class="spinner"></div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="hidden fixed bottom-4 right-4 z-50 px-4 py-3 rounded-lg text-white text-sm font-medium shadow-lg transition-all"></div>
+
+<!-- APP SHELL (hidden until login) -->
+<div id="appShell" class="hidden flex w-full min-h-screen">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="flex-shrink-0 flex flex-col">
+    <!-- Logo -->
+    <div class="px-5 py-5" style="border-bottom:1px solid rgba(0,0,0,0.08);">
+      <div id="sidebarBrandName" style="font-family:'Poppins','Arial Black',Arial,sans-serif;font-size:20px;font-weight:600;color:#1A1A2E;letter-spacing:0.01em;line-height:1.1;">Bodoir</div>
+      <div style="font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:#D97706;margin-top:3px;font-family:'Inter',Arial,sans-serif;">E-Commerce</div>
+    </div>
+    <!-- Nav -->
+    <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+      <div class="nav-item active" id="nav-overview" onclick="showPage('overview')">
+        <i class="fas fa-th-large w-4 text-center"></i><span>Overview</span>
+      </div>
+      <div class="nav-item" id="nav-orders" onclick="showPage('orders')">
+        <i class="fas fa-shopping-bag w-4 text-center"></i><span>Orders</span>
+        <span class="nav-badge" id="navBadgeOrders">0</span>
+      </div>
+      <div class="nav-item" id="nav-products" onclick="showPage('products')">
+        <i class="fas fa-box w-4 text-center"></i><span>Products</span>
+      </div>
+      <div class="nav-item" id="nav-customers" onclick="showPage('customers')">
+        <i class="fas fa-users w-4 text-center"></i><span>Customers</span>
+      </div>
+      <div class="nav-item" id="nav-inventory" onclick="showPage('inventory')">
+        <i class="fas fa-warehouse w-4 text-center"></i><span>Inventory</span>
+        <span class="nav-badge" id="navBadgeInventory">0</span>
+      </div>
+      <div class="nav-item" id="nav-marketing" onclick="showPage('marketing')">
+        <i class="fas fa-bullhorn w-4 text-center"></i><span>Marketing</span>
+      </div>
+      <div class="nav-item" id="nav-analytics" onclick="showPage('analytics')">
+        <i class="fas fa-chart-line w-4 text-center"></i><span>Analytics</span>
+      </div>
+      <div class="nav-item" id="nav-settings" onclick="showPage('settings')">
+        <i class="fas fa-gear w-4 text-center"></i><span>Settings</span>
+      </div>
+    </nav>
+    <!-- User -->
+    <div class="px-3 py-4" style="border-top:1px solid rgba(0,0,0,0.08);">
+      <div class="flex items-center gap-3 px-2 mb-3">
+        <div id="sidebarAvatar" class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.28);color:#D97706;font-family:'Inter',Arial,sans-serif;">A</div>
+        <div class="flex-1 min-w-0">
+          <div id="sidebarName" class="text-sm font-semibold truncate" style="color:#0F172A;">Admin User</div>
+          <div id="sidebarRole" class="text-slate-400 text-xs capitalize">admin</div>
+        </div>
+      </div>
+      <button onclick="doLogout()" class="nav-item w-full hover:bg-red-500/20 hover:text-red-400 text-sm">
+        <i class="fas fa-sign-out-alt w-4 text-center"></i><span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <div id="mainContent" class="flex-1 flex flex-col min-w-0 bg-slate-100">
+
+    <!-- TOP BAR -->
+    <header id="appHeader" class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-4 sticky top-0 z-20">
+      <button class="md:hidden btn-icon text-lg" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h2 id="pageTitle" class="font-bold text-slate-800 text-lg flex-1">Overview</h2>
+      <div class="flex items-center gap-3">
+        <button id="darkModeBtn" onclick="toggleDarkMode()" class="btn-icon text-slate-500 text-lg" title="Toggle dark mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <div class="relative">
+          <button class="btn-icon text-slate-500 text-lg relative" onclick="showPage('orders')">
+            <i class="fas fa-bell"></i>
+            <span id="topBarBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold" style="font-size:9px">0</span>
+          </button>
+        </div>
+        <div class="text-sm font-semibold text-slate-700" id="topBarUser">Admin User</div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTAINER -->
+    <main class="flex-1 p-8 overflow-auto">
+
+      <!-- PAGE: OVERVIEW -->
+      <div id="page-overview" class="page-section">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-800" id="ovWelcome">Welcome back!</h1>
+            <p class="text-slate-500 text-sm" id="ovDate"></p>
+          </div>
+        </div>
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+          <div class="kpi-card">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-slate-500 text-sm font-medium">Total Revenue</span>
+              <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center"><i class="fas fa-dollar-sign text-emerald-600"></i></div>
+            </div>
+            <div class="text-2xl font-bold text-slate-800" id="ovRevenue">$0</div>
+            <div class="text-xs text-emerald-600 mt-1"><i class="fas fa-arrow-up"></i> All time</div>
+          </div>
+          <div class="kpi-card">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-slate-500 text-sm font-medium">Orders This Month</span>
+              <div class="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center"><i class="fas fa-shopping-bag text-blue-600"></i></div>
+            </div>
+            <div class="text-2xl font-bold text-slate-800" id="ovOrders">0</div>
+            <div class="text-xs text-blue-600 mt-1"><i class="fas fa-arrow-up"></i> March 2026</div>
+          </div>
+          <div class="kpi-card">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-slate-500 text-sm font-medium">Total Customers</span>
+              <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center"><i class="fas fa-users text-amber-600"></i></div>
+            </div>
+            <div class="text-2xl font-bold text-slate-800" id="ovCustomers">0</div>
+            <div class="text-xs text-amber-600 mt-1"><i class="fas fa-arrow-up"></i> Registered</div>
+          </div>
+          <div class="kpi-card">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-slate-500 text-sm font-medium">Avg Order Value</span>
+              <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center"><i class="fas fa-chart-bar text-amber-600"></i></div>
+            </div>
+            <div class="text-2xl font-bold text-slate-800" id="ovAov">$0</div>
+            <div class="text-xs text-amber-600 mt-1"><i class="fas fa-arrow-up"></i> Per order</div>
+          </div>
+        </div>
+        <!-- Low Stock Alert -->
+        <div id="ovLowStockBanner" class="hidden mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between">
+          <div class="flex items-center gap-3 text-amber-700">
+            <i class="fas fa-triangle-exclamation text-amber-500 text-lg"></i>
+            <span class="font-medium text-sm" id="ovLowStockMsg"></span>
+          </div>
+          <button onclick="showPage('inventory')" class="text-xs font-semibold text-amber-700 underline">View Inventory</button>
+        </div>
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div class="lg:col-span-2 kpi-card">
+            <h3 class="font-bold text-slate-700 mb-4">Revenue — Last 6 Months</h3>
+            <div style="height:220px"><canvas id="ovRevenueChart"></canvas></div>
+          </div>
+          <div class="kpi-card">
+            <h3 class="font-bold text-slate-700 mb-4">Orders by Status</h3>
+            <div style="height:220px"><canvas id="ovStatusChart"></canvas></div>
+          </div>
+        </div>
+        <!-- Mini Tables -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="kpi-card">
+            <h3 class="font-bold text-slate-700 mb-4">Recent Orders</h3>
+            <div class="overflow-x-auto">
+              <table class="data-table">
+                <thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody id="ovRecentOrders"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <h3 class="font-bold text-slate-700 mb-4">Top Products</h3>
+            <div class="overflow-x-auto">
+              <table class="data-table">
+                <thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th></tr></thead>
+                <tbody id="ovTopProducts"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: ORDERS -->
+      <div id="page-orders" class="page-section">
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold text-slate-800">Orders</h1>
+          <button onclick="openNewOrderModal()" class="btn-primary"><i class="fas fa-plus mr-2"></i>New Order</button>
+        </div>
+        <!-- Stats Bar -->
+        <div class="flex flex-wrap gap-3 mb-6">
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Total: <span id="ordStatTotal" class="text-amber-600">0</span></div>
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Pending: <span id="ordStatPending" class="text-amber-500">0</span></div>
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Processing: <span id="ordStatProcessing" class="text-blue-500">0</span></div>
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Today: <span id="ordStatToday" class="text-emerald-500">0</span></div>
+        </div>
+        <!-- Filters + View Toggle -->
+        <div class="bg-white rounded-xl p-4 shadow-sm mb-4 flex flex-wrap gap-3 items-center">
+          <select id="ordStatusFilter" class="form-select w-40" onchange="renderOrders()">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="refunded">Refunded</option>
+          </select>
+          <input id="ordSearch" type="text" class="form-input w-52" placeholder="Search orders..." oninput="renderOrders()">
+          <select id="ordDateFilter" class="form-select w-40" onchange="renderOrders()">
+            <option value="all">All Time</option>
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+          </select>
+          <div class="ml-auto flex gap-2">
+            <button id="ordTableBtn" onclick="setOrderView('table')" class="tab-btn active">
+              <i class="fas fa-table mr-1"></i>Table
+            </button>
+            <button id="ordKanbanBtn" onclick="setOrderView('kanban')" class="tab-btn">
+              <i class="fas fa-columns mr-1"></i>Kanban
+            </button>
+          </div>
+        </div>
+        <!-- Table View -->
+        <div id="ordersTableView" class="bg-white rounded-xl shadow-sm overflow-x-auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Payment</th><th>Date</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody"></tbody>
+          </table>
+        </div>
+        <!-- Kanban View -->
+        <div id="ordersKanbanView" class="hidden flex gap-4 overflow-x-auto pb-4">
+          <div class="kanban-col min-w-52">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-amber-700 text-sm">Pending</span>
+              <span id="kb-pending-count" class="badge badge-pending">0</span>
+            </div>
+            <div id="kb-pending"></div>
+          </div>
+          <div class="kanban-col min-w-52">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-blue-700 text-sm">Processing</span>
+              <span id="kb-processing-count" class="badge badge-processing">0</span>
+            </div>
+            <div id="kb-processing"></div>
+          </div>
+          <div class="kanban-col min-w-52">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-amber-700 text-sm">Shipped</span>
+              <span id="kb-shipped-count" class="badge badge-shipped">0</span>
+            </div>
+            <div id="kb-shipped"></div>
+          </div>
+          <div class="kanban-col min-w-52">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-emerald-700 text-sm">Delivered</span>
+              <span id="kb-delivered-count" class="badge badge-delivered">0</span>
+            </div>
+            <div id="kb-delivered"></div>
+          </div>
+          <div class="kanban-col min-w-52">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-bold text-red-700 text-sm">Cancelled</span>
+              <span id="kb-cancelled-count" class="badge badge-cancelled">0</span>
+            </div>
+            <div id="kb-cancelled"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: PRODUCTS -->
+      <div id="page-products" class="page-section">
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold text-slate-800">Products</h1>
+          <button onclick="openProductModal()" class="btn-primary"><i class="fas fa-plus mr-2"></i>Add Product</button>
+        </div>
+        <!-- Stats -->
+        <div class="flex flex-wrap gap-3 mb-6">
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Total: <span id="prodStatTotal" class="text-amber-600">0</span></div>
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Active: <span id="prodStatActive" class="text-emerald-500">0</span></div>
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Low Stock: <span id="prodStatLow" class="text-amber-500">0</span></div>
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Out of Stock: <span id="prodStatOut" class="text-red-500">0</span></div>
+        </div>
+        <!-- Filters -->
+        <div class="bg-white rounded-xl p-4 shadow-sm mb-4 flex flex-wrap gap-3 items-center">
+          <select id="prodCategoryFilter" class="form-select w-44" onchange="renderProducts()">
+            <option value="">All Categories</option>
+          </select>
+          <select id="prodStatusFilter" class="form-select w-40" onchange="renderProducts()">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <input id="prodSearch" type="text" class="form-input w-52" placeholder="Search products..." oninput="renderProducts()">
+          <div class="ml-auto flex gap-2">
+            <button id="prodGridBtn" onclick="setProdView('grid')" class="tab-btn active"><i class="fas fa-grip mr-1"></i>Grid</button>
+            <button id="prodTableBtn" onclick="setProdView('table')" class="tab-btn"><i class="fas fa-table mr-1"></i>Table</button>
+          </div>
+        </div>
+        <!-- Grid View -->
+        <div id="productsGridView" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+        <!-- Table View -->
+        <div id="productsTableView" class="hidden bg-white rounded-xl shadow-sm overflow-x-auto">
+          <table class="data-table">
+            <thead><tr><th>Name</th><th>SKU</th><th>Category</th><th>Price</th><th>Cost</th><th>Margin</th><th>Stock</th><th>Reorder</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="productsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: CUSTOMERS -->
+      <div id="page-customers" class="page-section">
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold text-slate-800">Customers</h1>
+          <button onclick="openCustomerModal()" class="btn-primary"><i class="fas fa-plus mr-2"></i>Add Customer</button>
+        </div>
+        <!-- Stats -->
+        <div class="flex flex-wrap gap-3 mb-6">
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Total: <span id="custStatTotal" class="text-amber-600">0</span></div>
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">VIP: <span id="custStatVip" class="text-amber-500">0</span></div>
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">Regular: <span id="custStatRegular" class="text-blue-500">0</span></div>
+          <div class="bg-white rounded-xl px-4 py-3 shadow-sm text-sm font-semibold text-slate-700">New: <span id="custStatNew" class="text-emerald-500">0</span></div>
+        </div>
+        <!-- Filters -->
+        <div class="bg-white rounded-xl p-4 shadow-sm mb-4 flex flex-wrap gap-3 items-center">
+          <div class="flex gap-2 flex-wrap">
+            <button onclick="setCustFilter('all')" id="cf-all" class="tab-btn active">All</button>
+            <button onclick="setCustFilter('VIP')" id="cf-VIP" class="tab-btn">VIP</button>
+            <button onclick="setCustFilter('Regular')" id="cf-Regular" class="tab-btn">Regular</button>
+            <button onclick="setCustFilter('New')" id="cf-New" class="tab-btn">New</button>
+            <button onclick="setCustFilter('At Risk')" id="cf-At Risk" class="tab-btn">At Risk</button>
+          </div>
+          <input id="custSearch" type="text" class="form-input w-52 ml-auto" placeholder="Search customers..." oninput="renderCustomers()">
+        </div>
+        <!-- Table -->
+        <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Orders</th><th>Total Spent</th><th>Last Order</th><th>Tier</th><th>Actions</th></tr></thead>
+            <tbody id="customersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: INVENTORY -->
+      <div id="page-inventory" class="page-section">
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold text-slate-800">Inventory</h1>
+          <button onclick="openStockAdjustModal()" class="btn-primary"><i class="fas fa-sliders mr-2"></i>Adjust Stock</button>
+        </div>
+        <!-- Low Stock Alert -->
+        <div id="invLowStockBanner" class="hidden mb-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center justify-between">
+          <div class="flex items-center gap-3 text-red-700">
+            <i class="fas fa-triangle-exclamation text-red-500 text-lg"></i>
+            <span class="font-medium text-sm" id="invLowStockMsg"></span>
+          </div>
+          <button onclick="document.getElementById('invLowStockBanner').classList.add('hidden')" class="text-red-500 hover:text-red-700 text-sm">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <!-- Filters -->
+        <div class="bg-white rounded-xl p-4 shadow-sm mb-4 flex flex-wrap gap-3 items-center">
+          <select id="invCategoryFilter" class="form-select w-44" onchange="renderInventory()">
+            <option value="">All Categories</option>
+          </select>
+          <select id="invStatusFilter" class="form-select w-44" onchange="renderInventory()">
+            <option value="">All Status</option>
+            <option value="in">In Stock</option>
+            <option value="low">Low Stock</option>
+            <option value="out">Out of Stock</option>
+          </select>
+          <input id="invSearch" type="text" class="form-input w-52" placeholder="Search inventory..." oninput="renderInventory()">
+        </div>
+        <!-- Table -->
+        <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+          <table class="data-table">
+            <thead><tr><th>SKU</th><th>Product</th><th>Category</th><th>Stock</th><th>Reorder</th><th>Unit Cost</th><th>Supplier</th><th>Last Restocked</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="inventoryTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: MARKETING -->
+      <div id="page-marketing" class="page-section">
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold text-slate-800">Marketing</h1>
+          <button id="mktCreateBtn" onclick="openMarketingModal()" class="btn-primary"><i class="fas fa-plus mr-2"></i>Create</button>
+        </div>
+        <!-- Sub-tabs -->
+        <div class="flex gap-2 mb-6">
+          <button onclick="setMktTab('campaigns')" id="mktTabCampaigns" class="tab-btn active">
+            <i class="fas fa-bullhorn mr-2"></i>Campaigns
+          </button>
+          <button onclick="setMktTab('discounts')" id="mktTabDiscounts" class="tab-btn">
+            <i class="fas fa-tag mr-2"></i>Discount Codes
+          </button>
+        </div>
+        <!-- Campaigns Tab -->
+        <div id="mktCampaignsTab">
+          <div id="mktCampaignsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+        <!-- Discounts Tab -->
+        <div id="mktDiscountsTab" class="hidden">
+          <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+            <table class="data-table">
+              <thead><tr><th>Code</th><th>Name</th><th>Type</th><th>Value</th><th>Usage</th><th>Expiry</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="discountsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: ANALYTICS -->
+      <div id="page-analytics" class="page-section">
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold text-slate-800">Analytics</h1>
+          <div class="flex gap-2">
+            <button onclick="setAnalyticsPeriod(7)" id="anBtn7" class="tab-btn active">7D</button>
+            <button onclick="setAnalyticsPeriod(30)" id="anBtn30" class="tab-btn">30D</button>
+            <button onclick="setAnalyticsPeriod(90)" id="anBtn90" class="tab-btn">90D</button>
+            <button onclick="setAnalyticsPeriod(365)" id="anBtn365" class="tab-btn">1Y</button>
+          </div>
+        </div>
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="kpi-card">
+            <div class="text-slate-500 text-sm font-medium mb-2">Revenue</div>
+            <div class="text-2xl font-bold text-slate-800" id="anRevenue">$0</div>
+            <div class="text-xs text-emerald-600 mt-1" id="anRevenuePct"></div>
+          </div>
+          <div class="kpi-card">
+            <div class="text-slate-500 text-sm font-medium mb-2">Orders</div>
+            <div class="text-2xl font-bold text-slate-800" id="anOrdersCount">0</div>
+            <div class="text-xs text-blue-600 mt-1" id="anOrdersPct"></div>
+          </div>
+          <div class="kpi-card">
+            <div class="text-slate-500 text-sm font-medium mb-2">New Customers</div>
+            <div class="text-2xl font-bold text-slate-800" id="anNewCust">0</div>
+            <div class="text-xs text-amber-600 mt-1" id="anNewCustPct"></div>
+          </div>
+          <div class="kpi-card">
+            <div class="text-slate-500 text-sm font-medium mb-2">Avg Order Value</div>
+            <div class="text-2xl font-bold text-slate-800" id="anAov">$0</div>
+            <div class="text-xs text-amber-600 mt-1" id="anAovPct"></div>
+          </div>
+        </div>
+        <!-- Revenue Chart Full Width -->
+        <div class="kpi-card mb-6">
+          <h3 class="font-bold text-slate-700 mb-4">Revenue Trend</h3>
+          <div style="height:250px"><canvas id="anRevenueChart"></canvas></div>
+        </div>
+        <!-- 2x2 Charts -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="kpi-card">
+            <h3 class="font-bold text-slate-700 mb-3">Orders by Status</h3>
+            <div style="height:200px"><canvas id="anStatusChart"></canvas></div>
+          </div>
+          <div class="kpi-card">
+            <h3 class="font-bold text-slate-700 mb-3">Top 5 Products (Units)</h3>
+            <div style="height:200px"><canvas id="anTopChart"></canvas></div>
+          </div>
+          <div class="kpi-card">
+            <h3 class="font-bold text-slate-700 mb-3">Customer Acquisition</h3>
+            <div style="height:200px"><canvas id="anAcqChart"></canvas></div>
+          </div>
+          <div class="kpi-card">
+            <h3 class="font-bold text-slate-700 mb-3">AOV Trend</h3>
+            <div style="height:200px"><canvas id="anAovChart"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- PAGE: SETTINGS -->
+      <div id="page-settings" class="page-section">
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold text-slate-800">Settings</h1>
+        </div>
+        <!-- Tabs -->
+        <div class="flex gap-2 mb-6 flex-wrap">
+          <button onclick="setSettingsTab('accounts')" id="stab-accounts" class="tab-btn active">Accounts</button>
+          <button onclick="setSettingsTab('whitelabel')" id="stab-whitelabel" class="tab-btn">White Label</button>
+          <button onclick="setSettingsTab('apiconfig')" id="stab-apiconfig" class="tab-btn">API Config</button>
+          <button onclick="setSettingsTab('loginhistory')" id="stab-loginhistory" class="tab-btn">Login History</button>
+          <button onclick="setSettingsTab('activitylog')" id="stab-activitylog" class="tab-btn">Activity Log</button>
+        </div>
+        <!-- Accounts Tab -->
+        <div id="stab-accounts-content">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold text-slate-700">Sub-Accounts</h2>
+            <button onclick="openAccountModal()" class="btn-primary"><i class="fas fa-plus mr-2"></i>Add Account</button>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+            <table class="data-table">
+              <thead><tr><th>Username</th><th>Name</th><th>Role</th><th>Last Login</th><th>Actions</th></tr></thead>
+              <tbody id="accountsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- White Label Tab -->
+        <div id="stab-whitelabel-content" class="hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="kpi-card">
+              <h2 class="font-bold text-slate-700 mb-4">Brand Settings</h2>
+              <div class="mb-4">
+                <label class="form-label">Brand Name</label>
+                <input id="wlBrandName" type="text" class="form-input" placeholder="Bodoir">
+              </div>
+              <div class="mb-4">
+                <label class="form-label">Primary Color</label>
+                <div class="flex gap-3 items-center">
+                  <input id="wlPrimaryColor" type="color" value="#FBBF24" class="w-12 h-10 rounded cursor-pointer border border-gray-200">
+                  <input id="wlPrimaryHex" type="text" class="form-input flex-1" value="#FBBF24" oninput="document.getElementById('wlPrimaryColor').value=this.value">
+                </div>
+              </div>
+              <div class="mb-6">
+                <label class="form-label">Sidebar Color</label>
+                <div class="flex gap-3 items-center">
+                  <input id="wlSidebarColor" type="color" value="#FFFFFF" class="w-12 h-10 rounded cursor-pointer border border-gray-200">
+                  <input id="wlSidebarHex" type="text" class="form-input flex-1" value="#FFFFFF" oninput="document.getElementById('wlSidebarColor').value=this.value">
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <button onclick="saveWhiteLabel()" class="btn-primary">Save Changes</button>
+                <button onclick="resetWhiteLabel()" class="btn-secondary">Reset to Default</button>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <h2 class="font-bold text-slate-700 mb-4">Preview</h2>
+              <div id="wlPreview" class="rounded-xl overflow-hidden border border-gray-200">
+                <div id="wlPreviewSidebar" class="p-4" style="background:#FFFFFF;border:1px solid rgba(0,0,0,0.08)">
+                  <div class="flex items-center gap-2 mb-3">
+                    <div id="wlPreviewIcon" class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);">
+                      <i class="fas fa-shopping-bag text-sm" style="color:#D97706;"></i>
+                    </div>
+                    <span id="wlPreviewName" style="color:#1A1A2E;font-weight:bold;font-size:14px;font-family:'Arial Black',Arial,sans-serif;">Bodoir</span>
+                  </div>
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2 px-2 py-1.5" style="background:rgba(251,191,36,0.08);border-left:2px solid #FBBF24;">
+                      <i class="fas fa-th-large text-slate-700 text-xs"></i>
+                      <span class="text-slate-700 text-xs">Overview</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-2 py-1.5 rounded-lg">
+                      <i class="fas fa-shopping-bag text-slate-400 text-xs"></i>
+                      <span class="text-slate-400 text-xs">Orders</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- API Config Tab -->
+        <div id="stab-apiconfig-content" class="hidden">
+          <div class="kpi-card max-w-xl">
+            <h2 class="font-bold text-slate-700 mb-4">Anthropic API Configuration</h2>
+            <div class="mb-4">
+              <label class="form-label">Anthropic API Key</label>
+              <div class="relative">
+                <input id="apiKeyInput" type="password" class="form-input pr-10" placeholder="sk-ant-...">
+                <button onclick="toggleApiKeyVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                  <i id="apiKeyIcon" class="fas fa-eye text-sm"></i>
+                </button>
+              </div>
+              <p class="text-xs text-slate-400 mt-2"><i class="fas fa-lock mr-1"></i>Your API key is stored locally in your browser only</p>
+            </div>
+            <div class="flex gap-3">
+              <button onclick="saveApiKey()" class="btn-primary">Save Key</button>
+              <button onclick="testApiConnection()" class="btn-secondary">Test Connection</button>
+            </div>
+            <div id="apiTestResult" class="hidden mt-3 p-3 rounded-lg text-sm"></div>
+          </div>
+        </div>
+        <!-- Login History Tab -->
+        <div id="stab-loginhistory-content" class="hidden">
+          <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+            <table class="data-table">
+              <thead><tr><th>Username</th><th>Timestamp</th><th>Status</th></tr></thead>
+              <tbody id="loginHistoryBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Activity Log Tab -->
+        <div id="stab-activitylog-content" class="hidden">
+          <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+            <table class="data-table">
+              <thead><tr><th>User</th><th>Action</th><th>Target</th><th>Timestamp</th></tr></thead>
+              <tbody id="activityLogBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODALS -->
+<!-- ORDER DETAIL MODAL -->
+<div id="orderDetailModal" class="modal-backdrop hidden">
+  <div class="modal-box w-full max-w-2xl">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold text-slate-800" id="odModalTitle">Order Details</h2>
+      <button onclick="closeModal('orderDetailModal')" class="btn-icon text-lg"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mb-4 p-4 bg-slate-50 rounded-xl">
+      <div><span class="form-label">Order ID</span><div id="od-id" class="font-bold text-amber-600"></div></div>
+      <div><span class="form-label">Date</span><div id="od-date"></div></div>
+      <div><span class="form-label">Customer</span><div id="od-customer" class="font-semibold"></div></div>
+      <div><span class="form-label">Email</span><div id="od-email" class="text-sm text-slate-500"></div></div>
+      <div><span class="form-label">Payment</span><div id="od-payment"></div></div>
+      <div><span class="form-label">Shipping Address</span><div id="od-shipping" class="text-sm"></div></div>
+    </div>
+    <h3 class="font-bold text-slate-700 mb-2">Line Items</h3>
+    <div class="overflow-x-auto mb-4">
+      <table class="data-table">
+        <thead><tr><th>Product</th><th>SKU</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+        <tbody id="od-items"></tbody>
+      </table>
+    </div>
+    <div class="flex justify-end mb-4">
+      <div class="text-right">
+        <span class="form-label">Order Total</span>
+        <div id="od-total" class="text-xl font-bold text-amber-600"></div>
+      </div>
+    </div>
+    <div id="od-notes-section" class="mb-4 hidden">
+      <span class="form-label">Notes</span>
+      <div id="od-notes" class="text-sm text-slate-600 bg-amber-50 p-3 rounded-lg border border-amber-100"></div>
+    </div>
+    <div class="flex gap-3 items-center pt-4 border-t border-gray-100">
+      <label class="form-label mb-0 flex-shrink-0">Update Status:</label>
+      <select id="od-status-select" class="form-select flex-1">
+        <option value="pending">Pending</option>
+        <option value="processing">Processing</option>
+        <option value="shipped">Shipped</option>
+        <option value="delivered">Delivered</option>
+        <option value="cancelled">Cancelled</option>
+        <option value="refunded">Refunded</option>
+      </select>
+      <button onclick="saveOrderStatus()" class="btn-primary">Save</button>
+      <button onclick="closeModal('orderDetailModal')" class="btn-secondary">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div id="productModal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="productModalTitle" class="text-lg font-bold text-slate-800">Add Product</h2>
+      <button onclick="closeModal('productModal')" class="btn-icon text-lg"><i class="fas fa-times"></i></button>
+    </div>
+    <input type="hidden" id="prodModalId">
+    <div class="grid grid-cols-2 gap-4">
+      <div class="col-span-2">
+        <label class="form-label">Product Name *</label>
+        <input id="prodModalName" type="text" class="form-input" placeholder="e.g. Classic White Tee">
+      </div>
+      <div>
+        <label class="form-label">SKU *</label>
+        <input id="prodModalSku" type="text" class="form-input" placeholder="e.g. CWT-001">
+      </div>
+      <div>
+        <label class="form-label">Category *</label>
+        <input id="prodModalCategory" type="text" class="form-input" placeholder="e.g. Tops">
+      </div>
+      <div>
+        <label class="form-label">Price ($) *</label>
+        <input id="prodModalPrice" type="number" class="form-input" placeholder="0.00" min="0">
+      </div>
+      <div>
+        <label class="form-label">Cost Price ($) *</label>
+        <input id="prodModalCost" type="number" class="form-input" placeholder="0.00" min="0">
+      </div>
+      <div>
+        <label class="form-label">Stock Qty *</label>
+        <input id="prodModalStock" type="number" class="form-input" placeholder="0" min="0">
+      </div>
+      <div>
+        <label class="form-label">Reorder Level *</label>
+        <input id="prodModalReorder" type="number" class="form-input" placeholder="0" min="0">
+      </div>
+      <div class="col-span-2">
+        <label class="form-label">Description</label>
+        <textarea id="prodModalDesc" rows="2" class="form-input resize-none" placeholder="Product description..."></textarea>
+      </div>
+      <div>
+        <label class="form-label">Status</label>
+        <select id="prodModalStatus" class="form-select">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-6">
+      <button onclick="closeModal('productModal')" class="btn-secondary">Cancel</button>
+      <button onclick="saveProduct()" class="btn-primary">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOMER PROFILE MODAL -->
+<div id="customerProfileModal" class="modal-backdrop hidden">
+  <div class="modal-box w-full max-w-2xl">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold text-slate-800">Customer Profile</h2>
+      <button onclick="closeModal('customerProfileModal')" class="btn-icon text-lg"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Left: Info -->
+      <div class="flex flex-col items-center text-center">
+        <div id="cpAvatar" class="w-20 h-20 rounded-full flex items-center justify-center font-bold text-2xl mb-3" style="background:rgba(251,191,36,0.12);border:2px solid rgba(251,191,36,0.30);color:#D97706;font-family:'Poppins','Arial Black',Arial,sans-serif;">A</div>
+        <div id="cpName" class="text-lg font-bold text-slate-800"></div>
+        <div id="cpTier" class="mt-1 mb-3"></div>
+        <div class="text-sm text-slate-500 mb-1"><i class="fas fa-envelope mr-2"></i><span id="cpEmail"></span></div>
+        <div class="text-sm text-slate-500 mb-1"><i class="fas fa-phone mr-2"></i><span id="cpMobile"></span></div>
+        <div class="text-sm text-slate-500 text-left mt-2"><i class="fas fa-map-marker-alt mr-2"></i><span id="cpAddress"></span></div>
+      </div>
+      <!-- Right: Stats + Orders -->
+      <div class="md:col-span-2">
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="bg-slate-50 rounded-xl p-3 text-center">
+            <div class="text-xl font-bold text-slate-800" id="cpTotalOrders">0</div>
+            <div class="text-xs text-slate-500">Total Orders</div>
+          </div>
+          <div class="bg-slate-50 rounded-xl p-3 text-center">
+            <div class="text-xl font-bold text-slate-800" id="cpTotalSpent">$0</div>
+            <div class="text-xs text-slate-500">Total Spent</div>
+          </div>
+          <div class="bg-slate-50 rounded-xl p-3 text-center">
+            <div class="text-xl font-bold text-slate-800" id="cpAvgOrder">$0</div>
+            <div class="text-xs text-slate-500">Avg Order Value</div>
+          </div>
+          <div class="bg-slate-50 rounded-xl p-3 text-center">
+            <div class="text-sm font-semibold text-slate-800" id="cpLastOrder">—</div>
+            <div class="text-xs text-slate-500">Last Order</div>
+          </div>
+        </div>
+        <h3 class="font-bold text-slate-700 mb-2 text-sm">Order History</h3>
+        <div class="overflow-x-auto mb-3">
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="cpOrderHistory"></tbody>
+          </table>
+        </div>
+        <div id="cpNotes" class="hidden">
+          <h3 class="font-bold text-slate-700 mb-1 text-sm">Notes</h3>
+          <p id="cpNotesText" class="text-sm text-slate-600 bg-amber-50 p-3 rounded-lg border border-amber-100"></p>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end mt-4">
+      <button onclick="closeModal('customerProfileModal')" class="btn-secondary">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOMER ADD/EDIT MODAL -->
+<div id="customerModal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="customerModalTitle" class="text-lg font-bold text-slate-800">Add Customer</h2>
+      <button onclick="closeModal('customerModal')" class="btn-icon text-lg"><i class="fas fa-times"></i></button>
+    </div>
+    <input type="hidden" id="custModalId">
+    <div class="grid grid-cols-2 gap-4">
+      <div class="col-span-2">
+        <label class="form-label">Full Name *</label>
+        <input id="custModalName" type="text" class="form-input" placeholder="e.g. Emily Carter">
+      </div>
+      <div class="col-span-2">
+        <label class="form-label">Email *</label>
+        <input id="custModalEmail" type="email" class="form-input" placeholder="email@example.com">
+      </div>
+      <div>
+        <label class="form-label">Mobile</label>
+        <input id="custModalMobile" type="text" class="form-input" placeholder="09XX XXX XXXX">
+      </div>
+      <div>
+        <label class="form-label">Tier</label>
+        <select id="custModalTier" class="form-select">
+          <option value="New">New</option>
+          <option value="Regular">Regular</option>
+          <option value="VIP">VIP</option>
+          <option value="At Risk">At Risk</option>
+        </select>
+      </div>
+      <div class="col-span-2">
+        <label class="form-label">Address</label>
+        <input id="custModalAddress" type="text" class="form-input" placeholder="Street, City">
+      </div>
+      <div class="col-span-2">
+        <label class="form-label">Notes</label>
+        <textarea id="custModalNotes" rows="2" class="form-input resize-none" placeholder="Any notes about this customer..."></textarea>
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-6">
+      <button onclick="closeModal('customerModal')" class="btn-secondary">Cancel</button>
+      <button onclick="saveCustomer()" class="btn-primary">Save Customer</button>
+    </div>
+  </div>
+</div>
+
+<!-- STOCK ADJUST MODAL -->
+<div id="stockAdjustModal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold text-slate-800">Adjust Stock</h2>
+      <button onclick="closeModal('stockAdjustModal')" class="btn-icon text-lg"><i class="fas fa-times"></i></button>
+    </div>
+    <input type="hidden" id="adjSku">
+    <div class="bg-slate-50 rounded-xl p-4 mb-4">
+      <div class="font-bold text-slate-800" id="adjProductName">Product Name</div>
+      <div class="text-sm text-slate-500 mt-1">Current Stock: <span id="adjCurrentStock" class="font-bold text-amber-600">0</span></div>
+    </div>
+    <div class="mb-4">
+      <label class="form-label">Adjustment Type</label>
+      <div class="flex gap-3">
+        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="adjType" value="add" checked> <span class="text-sm font-medium">Add</span></label>
+        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="adjType" value="subtract"> <span class="text-sm font-medium">Subtract</span></label>
+        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="adjType" value="set"> <span class="text-sm font-medium">Set to</span></label>
+      </div>
+    </div>
+    <div class="mb-4">
+      <label class="form-label">Amount</label>
+      <input id="adjAmount" type="number" class="form-input" placeholder="Enter quantity" min="0">
+    </div>
+    <div class="mb-4">
+      <label class="form-label">Reason</label>
+      <input id="adjReason" type="text" class="form-input" placeholder="e.g. Received new shipment, damaged goods...">
+    </div>
+    <div class="flex justify-end gap-3">
+      <button onclick="closeModal('stockAdjustModal')" class="btn-secondary">Cancel</button>
+      <button onclick="saveStockAdjustment()" class="btn-primary">Save Adjustment</button>
+    </div>
+  </div>
+</div>
+
+<!-- CAMPAIGN MODAL -->
+<div id="campaignModal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="campaignModalTitle" class="text-lg font-bold text-slate-800">New Campaign</h2>
+      <button onclick="closeModal('campaignModal')" class="btn-icon text-lg"><i class="fas fa-times"></i></button>
+    </div>
+    <input type="hidden" id="campModalId">
+    <div class="grid grid-cols-2 gap-4">
+      <div class="col-span-2">
+        <label class="form-label">Campaign Name *</label>
+        <input id="campModalName" type="text" class="form-input" placeholder="e.g. Summer Sale 2026">
+      </div>
+      <div>
+        <label class="form-label">Type</label>
+        <select id="campModalType" class="form-select">
+          <option value="awareness">Awareness</option>
+          <option value="promotion">Promotion</option>
+          <option value="email">Email</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Status</label>
+        <select id="campModalStatus" class="form-select">
+          <option value="draft">Draft</option>
+          <option value="scheduled">Scheduled</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Budget ($)</label>
+        <input id="campModalBudget" type="number" class="form-input" placeholder="0" min="0">
+      </div>
+      <div>
+        <label class="form-label">Spent ($)</label>
+        <input id="campModalSpent" type="number" class="form-input" placeholder="0" min="0">
+      </div>
+      <div>
+        <label class="form-label">Start Date</label>
+        <input id="campModalStart" type="date" class="form-input">
+      </div>
+      <div>
+        <label class="form-label">End Date</label>
+        <input id="campModalEnd" type="date" class="form-input">
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-6">
+      <button onclick="closeModal('campaignModal')" class="btn-secondary">Cancel</button>
+      <button onclick="saveCampaign()" class="btn-primary">Save Campaign</button>
+    </div>
+  </div>
+</div>
+
+<!-- DISCOUNT MODAL -->
+<div id="discountModal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="discountModalTitle" class="text-lg font-bold text-slate-800">Create Discount Code</h2>
+      <button onclick="closeModal('discountModal')" class="btn-icon text-lg"><i class="fas fa-times"></i></button>
+    </div>
+    <input type="hidden" id="discModalId">
+    <div class="grid grid-cols-2 gap-4">
+      <div class="col-span-2">
+        <label class="form-label">Name *</label>
+        <input id="discModalName" type="text" class="form-input" placeholder="e.g. Welcome Discount">
+      </div>
+      <div>
+        <label class="form-label">Code *</label>
+        <div class="flex gap-2">
+          <input id="discModalCode" type="text" class="form-input" placeholder="e.g. WELCOME10">
+          <button onclick="generateDiscountCode()" class="btn-secondary px-3 whitespace-nowrap text-xs">Auto</button>
+        </div>
+      </div>
+      <div>
+        <label class="form-label">Type</label>
+        <select id="discModalType" class="form-select">
+          <option value="percent">Percentage (%)</option>
+          <option value="fixed">Fixed Amount ($)</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Value</label>
+        <input id="discModalValue" type="number" class="form-input" placeholder="0" min="0">
+      </div>
+      <div>
+        <label class="form-label">Usage Limit (0 = unlimited)</label>
+        <input id="discModalLimit" type="number" class="form-input" placeholder="0" min="0">
+      </div>
+      <div>
+        <label class="form-label">Start Date</label>
+        <input id="discModalStart" type="date" class="form-input">
+      </div>
+      <div>
+        <label class="form-label">End Date</label>
+        <input id="discModalEnd" type="date" class="form-input">
+      </div>
+      <div>
+        <label class="form-label">Status</label>
+        <select id="discModalStatus" class="form-select">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="draft">Draft</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-6">
+      <button onclick="closeModal('discountModal')" class="btn-secondary">Cancel</button>
+      <button onclick="saveDiscount()" class="btn-primary">Save Discount</button>
+    </div>
+  </div>
+</div>
+
+<!-- ACCOUNT MODAL -->
+<div id="accountModal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-4">
+      <h2 id="accountModalTitle" class="text-lg font-bold text-slate-800">Add Account</h2>
+      <button onclick="closeModal('accountModal')" class="btn-icon text-lg"><i class="fas fa-times"></i></button>
+    </div>
+    <input type="hidden" id="accModalId">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="form-label">Username *</label>
+        <input id="accModalUsername" type="text" class="form-input" placeholder="username">
+      </div>
+      <div>
+        <label class="form-label">Password *</label>
+        <input id="accModalPassword" type="password" class="form-input" placeholder="password">
+      </div>
+      <div class="col-span-2">
+        <label class="form-label">Full Name *</label>
+        <input id="accModalName" type="text" class="form-input" placeholder="e.g. Store Manager">
+      </div>
+      <div>
+        <label class="form-label">Role</label>
+        <select id="accModalRole" class="form-select">
+          <option value="staff">Staff</option>
+          <option value="manager">Manager</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 mt-6">
+      <button onclick="closeModal('accountModal')" class="btn-secondary">Cancel</button>
+      <button onclick="saveAccount()" class="btn-primary">Save Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE SIDEBAR OVERLAY -->
+<div id="sidebarOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden" onclick="closeSidebar()"></div>
+
+<script>
+// ============================================================
+// CONSTANTS & CONFIG
+// ============================================================
+const KEYS = {
+  accounts: 'bodoir_accounts',
+  whitelabel: 'bodoir_whitelabel',
+  loginHistory: 'bodoir_login_history',
+  activityLog: 'bodoir_activity_log',
+  orders: 'bodoir_orders',
+  products: 'bodoir_products',
+  customers: 'bodoir_customers',
+  inventory: 'bodoir_inventory',
+  marketing: 'bodoir_marketing',
+  darkMode: 'bodoir_dark',
+  anthropicKey: 'bodoir_anthropic_key'
+};
+
+const CONFIG = { webhookUrl: 'https://n8n.srv1326251.hstgr.cloud/webhook/bodoir-dashboard' };
+
+// ROLE ACCESS
+const ROLE_ACCESS = {
+  admin: ['overview','orders','products','customers','inventory','marketing','analytics','settings'],
+  manager: ['overview','orders','products','customers','inventory','analytics'],
+  staff: ['overview','orders','products']
+};
+
+// SEED DATA
+const DEFAULT_ACCOUNTS = [
+  {id:'ACC-001',username:'admin',password:'admin123',name:'Admin User',role:'admin',lastLogin:new Date().toISOString()},
+  {id:'ACC-002',username:'manager',password:'manager123',name:'Store Manager',role:'manager',lastLogin:''},
+  {id:'ACC-003',username:'staff',password:'staff123',name:'Sales Staff',role:'staff',lastLogin:''}
+];
+
+const DEFAULT_ORDERS = [
+  {id:'ORD-001',customer:'Emily Carter',email:'emily.carter@email.com',items:[{name:'Denim Jacket',sku:'DJ-001',qty:1,price:89.99}],subtotal:89.99,total:89.99,status:'delivered',payment:'PayPal',shipping:'142 Maple Ave, Austin TX 78701',date:'2026-03-01',notes:''},
+  {id:'ORD-002',customer:'James Mitchell',email:'james.mitchell@email.com',items:[{name:'Running Shoes',sku:'RS-001',qty:2,price:119.99},{name:'Denim Jacket',sku:'DJ-001',qty:1,price:89.99}],subtotal:329.97,total:329.97,status:'shipped',payment:'Credit Card',shipping:'89 Oak Street, Denver CO 80202',date:'2026-03-05',notes:''},
+  {id:'ORD-003',customer:'Sofia Nguyen',email:'sofia.nguyen@email.com',items:[{name:'Classic White Tee',sku:'CWT-001',qty:3,price:24.99}],subtotal:74.97,total:74.97,status:'processing',payment:'PayPal',shipping:'317 Pine Rd, Seattle WA 98101',date:'2026-03-10',notes:'Please include gift wrap'},
+  {id:'ORD-004',customer:'Marcus Webb',email:'marcus.webb@email.com',items:[{name:'Leather Wallet',sku:'LW-001',qty:2,price:34.99}],subtotal:69.98,total:69.98,status:'delivered',payment:'Apple Pay',shipping:'55 Birch Blvd, Nashville TN 37201',date:'2026-03-12',notes:''},
+  {id:'ORD-005',customer:'Priya Patel',email:'priya.patel@email.com',items:[{name:'Canvas Tote Bag',sku:'CTB-001',qty:2,price:29.99}],subtotal:59.98,total:59.98,status:'pending',payment:'Credit Card',shipping:'201 Cedar Lane, Atlanta GA 30301',date:'2026-03-15',notes:''},
+  {id:'ORD-006',customer:'Emily Carter',email:'emily.carter@email.com',items:[{name:'Canvas Tote Bag',sku:'CTB-001',qty:3,price:29.99}],subtotal:89.97,total:89.97,status:'delivered',payment:'PayPal',shipping:'142 Maple Ave, Austin TX 78701',date:'2026-03-18',notes:''},
+  {id:'ORD-007',customer:'James Mitchell',email:'james.mitchell@email.com',items:[{name:'Denim Jacket',sku:'DJ-001',qty:1,price:89.99},{name:'Classic White Tee',sku:'CWT-001',qty:1,price:24.99}],subtotal:114.98,total:114.98,status:'cancelled',payment:'Credit Card',shipping:'89 Oak Street, Denver CO 80202',date:'2026-03-19',notes:'Customer requested cancellation'},
+  {id:'ORD-008',customer:'Sofia Nguyen',email:'sofia.nguyen@email.com',items:[{name:'Running Shoes',sku:'RS-001',qty:1,price:119.99}],subtotal:119.99,total:119.99,status:'processing',payment:'Apple Pay',shipping:'317 Pine Rd, Seattle WA 98101',date:'2026-03-22',notes:''},
+  {id:'ORD-009',customer:'Marcus Webb',email:'marcus.webb@email.com',items:[{name:'Running Shoes',sku:'RS-001',qty:1,price:119.99}],subtotal:119.99,total:119.99,status:'shipped',payment:'Apple Pay',shipping:'55 Birch Blvd, Nashville TN 37201',date:'2026-03-25',notes:''},
+  {id:'ORD-010',customer:'Priya Patel',email:'priya.patel@email.com',items:[{name:'Leather Wallet',sku:'LW-001',qty:1,price:34.99}],subtotal:34.99,total:34.99,status:'pending',payment:'Credit Card',shipping:'201 Cedar Lane, Atlanta GA 30301',date:'2026-03-27',notes:''}
+];
+
+const DEFAULT_PRODUCTS = [
+  {id:'PROD-001',name:'Classic White Tee',sku:'CWT-001',category:'Tops',price:24.99,cost:8.00,stock:85,reorder:20,description:'100% cotton classic white t-shirt',status:'active'},
+  {id:'PROD-002',name:'Denim Jacket',sku:'DJ-001',category:'Outerwear',price:89.99,cost:32.00,stock:32,reorder:10,description:'Classic medium-wash denim jacket',status:'active'},
+  {id:'PROD-003',name:'Running Shoes',sku:'RS-001',category:'Footwear',price:119.99,cost:50.00,stock:28,reorder:15,description:'Lightweight breathable running shoes',status:'active'},
+  {id:'PROD-004',name:'Leather Wallet',sku:'LW-001',category:'Accessories',price:34.99,cost:12.00,stock:60,reorder:15,description:'Slim genuine leather bifold wallet',status:'active'},
+  {id:'PROD-005',name:'Canvas Tote Bag',sku:'CTB-001',category:'Bags',price:29.99,cost:10.00,stock:7,reorder:15,description:'Eco-friendly canvas shopping tote',status:'active'},
+  {id:'PROD-006',name:'Snapback Cap',sku:'SC-001',category:'Accessories',price:27.99,cost:8.00,stock:45,reorder:10,description:'Adjustable snapback baseball cap',status:'active'},
+  {id:'PROD-007',name:'Compression Socks',sku:'CS-001',category:'Socks',price:14.99,cost:4.00,stock:3,reorder:30,description:'Athletic compression socks, 3-pack',status:'active'},
+  {id:'PROD-008',name:'Sport Shorts',sku:'SS-001',category:'Bottoms',price:49.99,cost:16.00,stock:0,reorder:20,description:'Quick-dry performance sport shorts',status:'inactive'}
+];
+
+const DEFAULT_CUSTOMERS = [
+  {id:'CUST-001',name:'Emily Carter',email:'emily.carter@email.com',mobile:'(512) 555-0142',orders:2,spent:179.96,lastOrder:'2026-03-18',tier:'VIP',address:'142 Maple Ave, Austin TX 78701',notes:'Frequent buyer, prefers PayPal'},
+  {id:'CUST-002',name:'James Mitchell',email:'james.mitchell@email.com',mobile:'(720) 555-0089',orders:2,spent:444.95,lastOrder:'2026-03-19',tier:'VIP',address:'89 Oak Street, Denver CO 80202',notes:''},
+  {id:'CUST-003',name:'Sofia Nguyen',email:'sofia.nguyen@email.com',mobile:'(206) 555-0317',orders:2,spent:194.96,lastOrder:'2026-03-22',tier:'Regular',address:'317 Pine Rd, Seattle WA 98101',notes:''},
+  {id:'CUST-004',name:'Marcus Webb',email:'marcus.webb@email.com',mobile:'(615) 555-0055',orders:2,spent:189.97,lastOrder:'2026-03-25',tier:'Regular',address:'55 Birch Blvd, Nashville TN 37201',notes:'Premium customer'},
+  {id:'CUST-005',name:'Priya Patel',email:'priya.patel@email.com',mobile:'(404) 555-0201',orders:2,spent:94.97,lastOrder:'2026-03-27',tier:'New',address:'201 Cedar Lane, Atlanta GA 30301',notes:''}
+];
+
+const DEFAULT_INVENTORY = [
+  {sku:'CWT-001',product:'Classic White Tee',category:'Tops',stock:85,reorder:20,cost:8.00,supplier:'Fabric World USA',lastRestocked:'2026-03-01'},
+  {sku:'DJ-001',product:'Denim Jacket',category:'Outerwear',stock:32,reorder:10,cost:32.00,supplier:'DenimCo Chicago',lastRestocked:'2026-02-15'},
+  {sku:'RS-001',product:'Running Shoes',category:'Footwear',stock:28,reorder:15,cost:50.00,supplier:'SportGear USA',lastRestocked:'2026-02-20'},
+  {sku:'LW-001',product:'Leather Wallet',category:'Accessories',stock:60,reorder:15,cost:12.00,supplier:'LeatherCraft Co.',lastRestocked:'2026-03-05'},
+  {sku:'CTB-001',product:'Canvas Tote Bag',category:'Bags',stock:7,reorder:15,cost:10.00,supplier:'EcoGoods USA',lastRestocked:'2026-01-30'},
+  {sku:'SC-001',product:'Snapback Cap',category:'Accessories',stock:45,reorder:10,cost:8.00,supplier:'CapZone NYC',lastRestocked:'2026-02-28'},
+  {sku:'CS-001',product:'Compression Socks',category:'Socks',stock:3,reorder:30,cost:4.00,supplier:'Fabric World USA',lastRestocked:'2026-01-15'},
+  {sku:'SS-001',product:'Sport Shorts',category:'Bottoms',stock:0,reorder:20,cost:16.00,supplier:'SportGear USA',lastRestocked:'2025-12-01'}
+];
+
+const DEFAULT_MARKETING = [
+  {id:'CAMP-001',name:'Summer Sale 2026',type:'campaign',status:'active',discountType:'percent',discountValue:20,code:'',budget:5000,spent:2800,conversions:45,startDate:'2026-03-01',endDate:'2026-03-31',usageLimit:0,usageCount:0},
+  {id:'CAMP-002',name:'New Arrivals Launch',type:'campaign',status:'scheduled',discountType:'percent',discountValue:0,code:'',budget:3000,spent:0,conversions:0,startDate:'2026-04-01',endDate:'2026-04-15',usageLimit:0,usageCount:0},
+  {id:'DISC-001',name:'Welcome Discount',type:'discount',status:'active',discountType:'percent',discountValue:10,code:'WELCOME10',budget:0,spent:0,conversions:12,startDate:'2026-01-01',endDate:'2026-12-31',usageLimit:0,usageCount:12},
+  {id:'DISC-002',name:'Summer Flash Sale',type:'discount',status:'active',discountType:'percent',discountValue:20,code:'SUMMER20',budget:0,spent:0,conversions:33,startDate:'2026-03-01',endDate:'2026-03-31',usageLimit:100,usageCount:33},
+  {id:'DISC-003',name:'VIP Exclusive',type:'discount',status:'active',discountType:'percent',discountValue:30,code:'VIP30',budget:0,spent:0,conversions:8,startDate:'2026-01-01',endDate:'2026-12-31',usageLimit:50,usageCount:8}
+];
+
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+function peso(n) { return '$' + Number(n || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+function pesoK(n) { return n >= 1000 ? '$' + (n/1000).toFixed(1) + 'k' : peso(n); }
+function fmtDate(d) { if(!d) return '—'; return new Date(d).toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}); }
+function fmtDateTime(d) { if(!d) return '—'; return new Date(d).toLocaleString('en-US', {year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
+function uid(prefix) { return prefix + '-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2,5).toUpperCase(); }
+function initials(name) { return (name||'?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase(); }
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `fixed bottom-4 right-4 z-50 px-4 py-3 rounded-lg text-white text-sm font-medium shadow-lg transition-all ${type==='error'?'bg-red-500':type==='warning'?'bg-amber-500':'bg-emerald-500'}`;
+  t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), 3500);
+}
+
+function showLoading() { document.getElementById('loadingOverlay').style.display = 'flex'; }
+function hideLoading() { document.getElementById('loadingOverlay').style.display = 'none'; }
+
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+function logActivity(action, target = '') {
+  const user = JSON.parse(sessionStorage.getItem('bodoir_user') || '{}');
+  const logs = JSON.parse(localStorage.getItem(KEYS.activityLog) || '[]');
+  logs.unshift({ user: user.name || 'System', action, target, timestamp: new Date().toISOString() });
+  localStorage.setItem(KEYS.activityLog, JSON.stringify(logs.slice(0, 100)));
+}
+
+function logLogin(username, status) {
+  const logs = JSON.parse(localStorage.getItem(KEYS.loginHistory) || '[]');
+  logs.unshift({ username, timestamp: new Date().toISOString(), status });
+  localStorage.setItem(KEYS.loginHistory, JSON.stringify(logs.slice(0, 50)));
+}
+
+const chartInstances = {};
+function mkChart(id, type, labels, datasets, opts = {}) {
+  if (chartInstances[id]) { chartInstances[id].destroy(); }
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  chartInstances[id] = new Chart(ctx, {
+    type,
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: type !== 'bar' || opts.showLegend,
+          position: 'bottom',
+          labels: { color: '#6B7280', font: { family: 'DM Sans', size: 11 }, padding: 18 }
+        }
+      },
+      scales: (type === 'doughnut' || type === 'pie') ? {} : {
+        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { color: '#6B7280', font: { family: 'DM Sans', size: 11 } } },
+        x: { grid: { display: false }, ticks: { color: '#6B7280', font: { family: 'DM Sans', size: 11 } } }
+      },
+      indexAxis: opts.horizontal ? 'y' : 'x',
+      ...opts.chartOptions
+    }
+  });
+}
+
+function getStatusBadge(status) {
+  const map = {
+    pending: 'badge-pending', processing: 'badge-processing', shipped: 'badge-shipped',
+    delivered: 'badge-delivered', cancelled: 'badge-cancelled', refunded: 'badge-refunded',
+    active: 'badge-active', inactive: 'badge-inactive', scheduled: 'badge-scheduled',
+    draft: 'badge-draft', vip: 'badge-vip', regular: 'badge-regular', new: 'badge-new', 'at risk': 'badge-atrisk'
+  };
+  const cls = map[(status||'').toLowerCase()] || 'badge-inactive';
+  return `<span class="badge ${cls}">${status}</span>`;
+}
+
+function getTierBadge(tier) {
+  const map = { VIP: 'badge-vip', Regular: 'badge-regular', New: 'badge-new', 'At Risk': 'badge-atrisk' };
+  const cls = map[tier] || 'badge-regular';
+  return `<span class="badge ${cls}">${tier}</span>`;
+}
+
+function toggleLoginPass() {
+  const inp = document.getElementById('loginPass');
+  const icon = document.getElementById('loginPassIcon');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  icon.className = inp.type === 'password' ? 'fas fa-eye text-sm' : 'fas fa-eye-slash text-sm';
+}
+
+function toggleApiKeyVisibility() {
+  const inp = document.getElementById('apiKeyInput');
+  const icon = document.getElementById('apiKeyIcon');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  icon.className = inp.type === 'password' ? 'fas fa-eye text-sm' : 'fas fa-eye-slash text-sm';
+}
+
+function getLSData(key, def = []) {
+  try { return JSON.parse(localStorage.getItem(key)) || def; } catch { return def; }
+}
+function setLSData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+
+// ============================================================
+// BACKEND
+// ============================================================
+async function callBackend(module, action = '', data = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
+  try {
+    const res = await fetch(CONFIG.webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ module, action, data }),
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    clearTimeout(timer);
+    console.warn(`Backend call failed (${module}/${action}):`, e.message);
+    return null;
+  }
+}
+
+// ============================================================
+// AUTH
+// ============================================================
+function initSeedData() {
+  if (!localStorage.getItem(KEYS.accounts)) setLSData(KEYS.accounts, DEFAULT_ACCOUNTS);
+  if (!localStorage.getItem(KEYS.orders)) setLSData(KEYS.orders, DEFAULT_ORDERS);
+  if (!localStorage.getItem(KEYS.products)) setLSData(KEYS.products, DEFAULT_PRODUCTS);
+  if (!localStorage.getItem(KEYS.customers)) setLSData(KEYS.customers, DEFAULT_CUSTOMERS);
+  if (!localStorage.getItem(KEYS.inventory)) setLSData(KEYS.inventory, DEFAULT_INVENTORY);
+  if (!localStorage.getItem(KEYS.marketing)) setLSData(KEYS.marketing, DEFAULT_MARKETING);
+  if (localStorage.getItem(KEYS.darkMode) === null) localStorage.setItem(KEYS.darkMode, '0');
+  // Reset stored dark sidebar color to white
+  const _wl = JSON.parse(localStorage.getItem(KEYS.whitelabel) || '{}');
+  if (_wl.sidebarColor && /^#[012]/.test(_wl.sidebarColor)) {
+    _wl.sidebarColor = '#FFFFFF';
+    localStorage.setItem(KEYS.whitelabel, JSON.stringify(_wl));
+  }
+}
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const accounts = getLSData(KEYS.accounts);
+  const found = accounts.find(a => a.username === u && a.password === p);
+  if (!found) {
+    logLogin(u, 'failed');
+    const errEl = document.getElementById('loginError');
+    errEl.textContent = 'Invalid username or password.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+  document.getElementById('loginError').classList.add('hidden');
+  // Update last login
+  found.lastLogin = new Date().toISOString();
+  setLSData(KEYS.accounts, accounts);
+  // Store session
+  sessionStorage.setItem('bodoir_user', JSON.stringify(found));
+  logLogin(u, 'success');
+  logActivity('Login', u);
+  showDashboard(found);
+}
+
+function doLogout() {
+  const user = JSON.parse(sessionStorage.getItem('bodoir_user') || '{}');
+  logActivity('Logout', user.username || '');
+  sessionStorage.removeItem('bodoir_user');
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('floatAI').style.display = 'none';
+  document.getElementById('floatChatPanel').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+function showDashboard(user) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
+  document.getElementById('floatAI').style.display = 'block';
+  // Update sidebar user info
+  document.getElementById('sidebarAvatar').textContent = initials(user.name);
+  document.getElementById('sidebarName').textContent = user.name;
+  document.getElementById('sidebarRole').textContent = user.role;
+  document.getElementById('topBarUser').textContent = user.name;
+  // Apply role-based nav visibility
+  const allowed = ROLE_ACCESS[user.role] || [];
+  document.querySelectorAll('.nav-item[id^="nav-"]').forEach(el => {
+    const page = el.id.replace('nav-', '');
+    el.style.display = allowed.includes(page) ? '' : 'none';
+  });
+  // Apply whitelabel
+  applyWhiteLabel();
+  // Apply dark mode (default: light)
+  if (localStorage.getItem(KEYS.darkMode) === '1') {
+    document.body.classList.add('dm');
+    document.getElementById('darkModeBtn').innerHTML = '<i class="fas fa-sun"></i>';
+  } else {
+    document.body.classList.remove('dm');
+    document.getElementById('darkModeBtn').innerHTML = '<i class="fas fa-moon"></i>';
+  }
+  // Show overview
+  showPage('overview');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+let currentPage = 'overview';
+const PAGE_TITLES = {
+  overview: 'Overview', orders: 'Orders', products: 'Products', customers: 'Customers',
+  inventory: 'Inventory', marketing: 'Marketing', analytics: 'Analytics',
+  settings: 'Settings'
+};
+
+function showPage(page) {
+  const user = JSON.parse(sessionStorage.getItem('bodoir_user') || '{}');
+  const allowed = ROLE_ACCESS[user.role] || [];
+  if (!allowed.includes(page)) { showToast('Access denied for your role', 'error'); return; }
+
+  document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-item[id^="nav-"]').forEach(el => el.classList.remove('active'));
+
+  const pageEl = document.getElementById('page-' + page);
+  if (pageEl) pageEl.classList.add('active');
+  const navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+
+  document.getElementById('pageTitle').textContent = PAGE_TITLES[page] || page;
+  currentPage = page;
+
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.add('hidden');
+
+  // Init page
+  const inits = {
+    overview: initOverview,
+    orders: initOrders,
+    products: initProducts,
+    customers: initCustomers,
+    inventory: initInventory,
+    marketing: initMarketing,
+    analytics: initAnalytics,
+    settings: initSettings
+  };
+  if (inits[page]) inits[page]();
+}
+
+function toggleDarkMode() {
+  document.body.classList.toggle('dm');
+  const isDark = document.body.classList.contains('dm');
+  localStorage.setItem(KEYS.darkMode, isDark ? '1' : '0');
+  document.getElementById('darkModeBtn').innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+}
+
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  sb.classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('hidden');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.add('hidden');
+}
+
+function updateNavBadges() {
+  const orders = getLSData(KEYS.orders);
+  const pending = orders.filter(o => o.status === 'pending').length;
+  document.getElementById('navBadgeOrders').textContent = pending;
+  document.getElementById('navBadgeOrders').style.display = pending > 0 ? '' : 'none';
+  document.getElementById('topBarBadge').textContent = pending;
+  document.getElementById('topBarBadge').style.display = pending > 0 ? '' : 'none';
+
+  const inv = getLSData(KEYS.inventory);
+  const lowStock = inv.filter(i => i.stock <= i.reorder).length;
+  document.getElementById('navBadgeInventory').textContent = lowStock;
+  document.getElementById('navBadgeInventory').style.display = lowStock > 0 ? '' : 'none';
+}
+
+// ============================================================
+// OVERVIEW PAGE
+// ============================================================
+function initOverview() {
+  const user = JSON.parse(sessionStorage.getItem('bodoir_user') || '{}');
+  document.getElementById('ovWelcome').textContent = `Welcome back, ${user.name || 'User'}!`;
+  document.getElementById('ovDate').textContent = new Date().toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  const orders = getLSData(KEYS.orders);
+  const customers = getLSData(KEYS.customers);
+  const inv = getLSData(KEYS.inventory);
+
+  // KPIs
+  const totalRev = orders.filter(o => o.status !== 'cancelled' && o.status !== 'refunded').reduce((s,o) => s + (o.total||0), 0);
+  const now = new Date();
+  const thisMonth = orders.filter(o => {
+    const d = new Date(o.date);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  });
+  const validOrders = orders.filter(o => o.status !== 'cancelled' && o.status !== 'refunded');
+  const aov = validOrders.length ? totalRev / validOrders.length : 0;
+
+  document.getElementById('ovRevenue').textContent = pesoK(totalRev);
+  document.getElementById('ovOrders').textContent = thisMonth.length;
+  document.getElementById('ovCustomers').textContent = customers.length;
+  document.getElementById('ovAov').textContent = peso(aov);
+
+  // KPI pop animation
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.kpi-card .text-2xl, .kpi-card .text-3xl').forEach(el => {
+      el.classList.remove('kpi-pop');
+      requestAnimationFrame(() => el.classList.add('kpi-pop'));
+    });
+  });
+
+  // Low stock
+  const lowItems = inv.filter(i => i.stock <= i.reorder);
+  const banner = document.getElementById('ovLowStockBanner');
+  if (lowItems.length > 0) {
+    document.getElementById('ovLowStockMsg').textContent = `${lowItems.length} product${lowItems.length>1?'s':''} need restocking`;
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+  }
+
+  // Recent orders
+  const recentOrders = [...orders].sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,5);
+  document.getElementById('ovRecentOrders').innerHTML = recentOrders.map(o => `
+    <tr>
+      <td class="font-mono text-xs text-amber-600">${o.id}</td>
+      <td>${o.customer}</td>
+      <td class="font-semibold">${peso(o.total)}</td>
+      <td>${getStatusBadge(o.status)}</td>
+      <td class="text-slate-400">${fmtDate(o.date)}</td>
+    </tr>`).join('');
+
+  // Top products by price
+  const prods = getLSData(KEYS.products);
+  const topProds = [...prods].sort((a,b) => b.price - a.price).slice(0,5);
+  document.getElementById('ovTopProducts').innerHTML = topProds.map(p => {
+    let sc = p.stock <= 0 ? 'stock-out' : p.stock <= p.reorder ? 'stock-low' : 'stock-ok';
+    return `<tr>
+      <td class="font-medium">${p.name}</td>
+      <td><span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">${p.category}</span></td>
+      <td class="font-semibold">${peso(p.price)}</td>
+      <td class="${sc}">${p.stock}</td>
+    </tr>`;
+  }).join('');
+
+  // Revenue chart (last 6 months)
+  const months = [];
+  const revData = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push(d.toLocaleDateString('en-US', {month:'short', year:'2-digit'}));
+    const mRev = orders.filter(o => {
+      const od = new Date(o.date);
+      return od.getMonth() === d.getMonth() && od.getFullYear() === d.getFullYear() && o.status !== 'cancelled' && o.status !== 'refunded';
+    }).reduce((s,o) => s + (o.total||0), 0);
+    revData.push(mRev);
+  }
+  mkChart('ovRevenueChart', 'line', months, [{
+    label: 'Revenue', data: revData,
+    borderColor: '#F59E0B', backgroundColor: 'rgba(251,191,36,0.08)',
+    borderWidth: 2.5, fill: true, tension: 0.4, pointBackgroundColor: '#F59E0B', pointRadius: 3
+  }]);
+
+  // Status doughnut
+  const statusCounts = ['pending','processing','shipped','delivered','cancelled'].map(s => orders.filter(o=>o.status===s).length);
+  mkChart('ovStatusChart', 'doughnut',
+    ['Pending','Processing','Shipped','Delivered','Cancelled'],
+    [{ data: statusCounts, backgroundColor: ['#FBBF24','#7BB3E8','#60A5FA','#5BBFA0','#E08080'], borderWidth: 2, borderColor: '#FFFFFF' }],
+    { showLegend: true }
+  );
+}
+
+// ============================================================
+// ORDERS PAGE
+// ============================================================
+let currentOrderId = null;
+
+function initOrders() {
+  renderOrders();
+}
+
+function getFilteredOrders() {
+  let orders = getLSData(KEYS.orders);
+  const statusF = document.getElementById('ordStatusFilter').value;
+  const search = document.getElementById('ordSearch').value.toLowerCase();
+  const dateF = document.getElementById('ordDateFilter').value;
+  const now = new Date();
+
+  if (statusF) orders = orders.filter(o => o.status === statusF);
+  if (search) orders = orders.filter(o =>
+    o.id.toLowerCase().includes(search) || o.customer.toLowerCase().includes(search) ||
+    (o.email||'').toLowerCase().includes(search)
+  );
+  if (dateF === 'today') {
+    orders = orders.filter(o => new Date(o.date).toDateString() === now.toDateString());
+  } else if (dateF === 'week') {
+    const weekAgo = new Date(now); weekAgo.setDate(now.getDate() - 7);
+    orders = orders.filter(o => new Date(o.date) >= weekAgo);
+  } else if (dateF === 'month') {
+    orders = orders.filter(o => {
+      const d = new Date(o.date);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+  }
+  return orders.sort((a,b) => new Date(b.date)-new Date(a.date));
+}
+
+function renderOrders() {
+  const orders = getLSData(KEYS.orders);
+  const filtered = getFilteredOrders();
+  const now = new Date();
+
+  // Stats
+  document.getElementById('ordStatTotal').textContent = orders.length;
+  document.getElementById('ordStatPending').textContent = orders.filter(o=>o.status==='pending').length;
+  document.getElementById('ordStatProcessing').textContent = orders.filter(o=>o.status==='processing').length;
+  document.getElementById('ordStatToday').textContent = orders.filter(o=>new Date(o.date).toDateString()===now.toDateString()).length;
+
+  // Table
+  document.getElementById('ordersTableBody').innerHTML = filtered.map(o => {
+    const itemsSummary = o.items.map(i=>`${i.name} x${i.qty}`).join(', ');
+    return `<tr>
+      <td class="font-mono text-xs text-amber-600">${o.id}</td>
+      <td><div class="font-medium">${o.customer}</div><div class="text-xs text-slate-400">${o.email||''}</div></td>
+      <td><div class="font-semibold">${o.items.length} item${o.items.length!==1?'s':''}</div><div class="text-xs text-slate-400 max-w-32 truncate">${itemsSummary}</div></td>
+      <td class="font-bold">${peso(o.total)}</td>
+      <td>${getStatusBadge(o.status)}</td>
+      <td>${o.payment||'—'}</td>
+      <td class="text-slate-500 text-xs">${fmtDate(o.date)}</td>
+      <td>
+        <button onclick="viewOrder('${o.id}')" class="btn-icon text-blue-500" title="View"><i class="fas fa-eye"></i></button>
+        <button onclick="quickEditOrder('${o.id}')" class="btn-icon text-amber-500" title="Edit Status"><i class="fas fa-pencil"></i></button>
+        <button onclick="deleteOrder('${o.id}')" class="btn-icon text-red-400" title="Delete"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // Kanban
+  const statuses = ['pending','processing','shipped','delivered','cancelled'];
+  statuses.forEach(s => {
+    const col = document.getElementById('kb-' + s);
+    const countEl = document.getElementById('kb-' + s + '-count');
+    const sOrders = filtered.filter(o => o.status === s);
+    if (countEl) countEl.textContent = sOrders.length;
+    if (col) col.innerHTML = sOrders.map(o => `
+      <div class="kanban-card">
+        <div class="font-mono text-amber-600 font-bold mb-1">${o.id}</div>
+        <div class="font-medium text-slate-700">${o.customer}</div>
+        <div class="text-slate-400 mt-1">${fmtDate(o.date)}</div>
+        <div class="flex items-center justify-between mt-2">
+          <span class="font-bold text-slate-800">${peso(o.total)}</span>
+          <span class="text-slate-400">${o.items.length} item${o.items.length!==1?'s':''}</span>
+        </div>
+        <div class="mt-2">
+          <select onchange="moveOrder('${o.id}', this.value)" class="form-select text-xs py-1">
+            <option value="">Move to →</option>
+            ${statuses.filter(st=>st!==s).map(st=>`<option value="${st}">${st.charAt(0).toUpperCase()+st.slice(1)}</option>`).join('')}
+          </select>
+        </div>
+      </div>`).join('');
+  });
+
+  updateNavBadges();
+}
+
+function setOrderView(view) {
+  document.getElementById('ordersTableView').style.display = view === 'table' ? '' : 'none';
+  document.getElementById('ordersKanbanView').style.display = view === 'kanban' ? 'flex' : 'none';
+  document.getElementById('ordTableBtn').className = view === 'table' ? 'tab-btn active' : 'tab-btn';
+  document.getElementById('ordKanbanBtn').className = view === 'kanban' ? 'tab-btn active' : 'tab-btn';
+}
+
+function viewOrder(id) {
+  const orders = getLSData(KEYS.orders);
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  currentOrderId = id;
+  document.getElementById('od-id').textContent = o.id;
+  document.getElementById('od-date').textContent = fmtDate(o.date);
+  document.getElementById('od-customer').textContent = o.customer;
+  document.getElementById('od-email').textContent = o.email || '—';
+  document.getElementById('od-payment').textContent = o.payment || '—';
+  document.getElementById('od-shipping').textContent = o.shipping || '—';
+  document.getElementById('od-total').textContent = peso(o.total);
+  document.getElementById('od-status-select').value = o.status;
+  document.getElementById('od-items').innerHTML = o.items.map(i =>
+    `<tr><td>${i.name}</td><td class="font-mono text-xs">${i.sku||''}</td><td>${i.qty}</td><td>${peso(i.price)}</td><td class="font-bold">${peso(i.qty*i.price)}</td></tr>`
+  ).join('');
+  const notesEl = document.getElementById('od-notes-section');
+  if (o.notes) {
+    document.getElementById('od-notes').textContent = o.notes;
+    notesEl.classList.remove('hidden');
+  } else {
+    notesEl.classList.add('hidden');
+  }
+  openModal('orderDetailModal');
+}
+
+function quickEditOrder(id) { viewOrder(id); }
+
+function saveOrderStatus() {
+  if (!currentOrderId) return;
+  const orders = getLSData(KEYS.orders);
+  const idx = orders.findIndex(o => o.id === currentOrderId);
+  if (idx < 0) return;
+  const newStatus = document.getElementById('od-status-select').value;
+  orders[idx].status = newStatus;
+  setLSData(KEYS.orders, orders);
+  logActivity('Update Order Status', `${currentOrderId} → ${newStatus}`);
+  callBackend('orders', 'update', orders[idx]);
+  closeModal('orderDetailModal');
+  renderOrders();
+  showToast(`Order ${currentOrderId} updated to ${newStatus}`);
+}
+
+function deleteOrder(id) {
+  if (!confirm(`Delete order ${id}? This cannot be undone.`)) return;
+  const orders = getLSData(KEYS.orders).filter(o => o.id !== id);
+  setLSData(KEYS.orders, orders);
+  logActivity('Delete Order', id);
+  callBackend('orders', 'delete', { id });
+  renderOrders();
+  showToast('Order deleted');
+}
+
+function moveOrder(id, newStatus) {
+  if (!newStatus) return;
+  const orders = getLSData(KEYS.orders);
+  const idx = orders.findIndex(o => o.id === id);
+  if (idx < 0) return;
+  orders[idx].status = newStatus;
+  setLSData(KEYS.orders, orders);
+  logActivity('Move Order', `${id} → ${newStatus}`);
+  callBackend('orders', 'update', orders[idx]);
+  renderOrders();
+  showToast(`Order moved to ${newStatus}`);
+}
+
+function openNewOrderModal() {
+  // For now open a pre-filled order modal
+  showToast('Use individual product pages to create orders', 'warning');
+}
+
+// ============================================================
+// PRODUCTS PAGE
+// ============================================================
+const PROD_ICON_COLORS = ['bg-amber-100 text-amber-600','bg-blue-100 text-blue-600','bg-emerald-100 text-emerald-600','bg-amber-100 text-amber-600','bg-pink-100 text-pink-600','bg-cyan-100 text-cyan-600'];
+const PROD_ICONS = {'Tops':'fa-shirt','Outerwear':'fa-person-walking','Footwear':'fa-shoe-prints','Accessories':'fa-glasses','Bags':'fa-bag-shopping','Socks':'fa-socks','Bottoms':'fa-jeans'};
+
+function initProducts() {
+  // Populate category filter
+  const prods = getLSData(KEYS.products);
+  const cats = [...new Set(prods.map(p => p.category))];
+  const catSel = document.getElementById('prodCategoryFilter');
+  catSel.innerHTML = '<option value="">All Categories</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+  renderProducts();
+}
+
+function renderProducts() {
+  let prods = getLSData(KEYS.products);
+  const catF = document.getElementById('prodCategoryFilter').value;
+  const statF = document.getElementById('prodStatusFilter').value;
+  const search = document.getElementById('prodSearch').value.toLowerCase();
+
+  if (catF) prods = prods.filter(p => p.category === catF);
+  if (statF) prods = prods.filter(p => p.status === statF);
+  if (search) prods = prods.filter(p =>
+    p.name.toLowerCase().includes(search) || p.sku.toLowerCase().includes(search) || p.category.toLowerCase().includes(search)
+  );
+
+  const allProds = getLSData(KEYS.products);
+  document.getElementById('prodStatTotal').textContent = allProds.length;
+  document.getElementById('prodStatActive').textContent = allProds.filter(p=>p.status==='active').length;
+  document.getElementById('prodStatLow').textContent = allProds.filter(p=>p.stock>0&&p.stock<=p.reorder).length;
+  document.getElementById('prodStatOut').textContent = allProds.filter(p=>p.stock===0).length;
+
+  // Grid
+  document.getElementById('productsGridView').innerHTML = prods.map((p, idx) => {
+    const colorCls = PROD_ICON_COLORS[idx % PROD_ICON_COLORS.length];
+    const icon = PROD_ICONS[p.category] || 'fa-box';
+    let stockCls = p.stock <= 0 ? 'stock-out' : p.stock <= p.reorder ? 'stock-low' : 'stock-ok';
+    let stockLabel = p.stock <= 0 ? 'Out of Stock' : p.stock <= p.reorder ? 'Low Stock' : 'In Stock';
+    return `<div class="product-card">
+      <div class="product-icon ${colorCls}"><i class="fas ${icon}"></i></div>
+      <div class="font-bold text-slate-800 text-sm mb-1 truncate">${p.name}</div>
+      <div class="text-xs text-slate-400 mb-2 font-mono">${p.sku}</div>
+      <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">${p.category}</span>
+      <div class="mt-3 flex items-center justify-between">
+        <span class="font-bold text-amber-600">${peso(p.price)}</span>
+        <span class="text-xs ${stockCls}">${stockLabel} (${p.stock})</span>
+      </div>
+      <div class="mt-2 flex gap-1">
+        <button onclick="editProduct('${p.id}')" class="btn-icon flex-1 text-amber-500 text-xs hover:bg-amber-50"><i class="fas fa-pencil"></i></button>
+        <button onclick="deleteProduct('${p.id}')" class="btn-icon flex-1 text-red-400 text-xs hover:bg-red-50"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Table
+  document.getElementById('productsTableBody').innerHTML = prods.map(p => {
+    const margin = p.price > 0 ? Math.round((p.price - p.cost) / p.price * 100) : 0;
+    let stockCls = p.stock <= 0 ? 'stock-out' : p.stock <= p.reorder ? 'stock-low' : 'stock-ok';
+    return `<tr>
+      <td class="font-medium">${p.name}</td>
+      <td class="font-mono text-xs text-slate-400">${p.sku}</td>
+      <td><span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">${p.category}</span></td>
+      <td class="font-bold">${peso(p.price)}</td>
+      <td>${peso(p.cost)}</td>
+      <td class="${margin>=30?'text-emerald-600':'text-amber-500'} font-semibold">${margin}%</td>
+      <td class="${stockCls}">${p.stock}</td>
+      <td class="text-slate-400">${p.reorder}</td>
+      <td>${getStatusBadge(p.status)}</td>
+      <td>
+        <button onclick="editProduct('${p.id}')" class="btn-icon text-amber-500"><i class="fas fa-pencil"></i></button>
+        <button onclick="deleteProduct('${p.id}')" class="btn-icon text-red-400"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function setProdView(view) {
+  document.getElementById('productsGridView').style.display = view === 'grid' ? '' : 'none';
+  document.getElementById('productsTableView').style.display = view === 'table' ? '' : 'none';
+  document.getElementById('prodGridBtn').className = view === 'grid' ? 'tab-btn active' : 'tab-btn';
+  document.getElementById('prodTableBtn').className = view === 'table' ? 'tab-btn active' : 'tab-btn';
+}
+
+function openProductModal(prod = null) {
+  document.getElementById('productModalTitle').textContent = prod ? 'Edit Product' : 'Add Product';
+  document.getElementById('prodModalId').value = prod ? prod.id : '';
+  document.getElementById('prodModalName').value = prod ? prod.name : '';
+  document.getElementById('prodModalSku').value = prod ? prod.sku : '';
+  document.getElementById('prodModalCategory').value = prod ? prod.category : '';
+  document.getElementById('prodModalPrice').value = prod ? prod.price : '';
+  document.getElementById('prodModalCost').value = prod ? prod.cost : '';
+  document.getElementById('prodModalStock').value = prod ? prod.stock : '';
+  document.getElementById('prodModalReorder').value = prod ? prod.reorder : '';
+  document.getElementById('prodModalDesc').value = prod ? prod.description : '';
+  document.getElementById('prodModalStatus').value = prod ? prod.status : 'active';
+  openModal('productModal');
+}
+
+function editProduct(id) {
+  const p = getLSData(KEYS.products).find(x => x.id === id);
+  if (p) openProductModal(p);
+}
+
+function saveProduct() {
+  const id = document.getElementById('prodModalId').value;
+  const name = document.getElementById('prodModalName').value.trim();
+  const sku = document.getElementById('prodModalSku').value.trim();
+  const category = document.getElementById('prodModalCategory').value.trim();
+  const price = parseFloat(document.getElementById('prodModalPrice').value) || 0;
+  const cost = parseFloat(document.getElementById('prodModalCost').value) || 0;
+  const stock = parseInt(document.getElementById('prodModalStock').value) || 0;
+  const reorder = parseInt(document.getElementById('prodModalReorder').value) || 0;
+
+  if (!name || !sku || !category || price <= 0) { showToast('Please fill in all required fields', 'error'); return; }
+
+  const prods = getLSData(KEYS.products);
+  if (id) {
+    const idx = prods.findIndex(p => p.id === id);
+    if (idx >= 0) {
+      prods[idx] = { ...prods[idx], name, sku, category, price, cost, stock, reorder,
+        description: document.getElementById('prodModalDesc').value,
+        status: document.getElementById('prodModalStatus').value };
+      logActivity('Edit Product', name);
+      callBackend('products', 'update', prods[idx]);
+    }
+  } else {
+    const newProd = { id: uid('PROD'), name, sku, category, price, cost, stock, reorder,
+      description: document.getElementById('prodModalDesc').value,
+      status: document.getElementById('prodModalStatus').value };
+    prods.push(newProd);
+    logActivity('Add Product', name);
+    callBackend('products', 'create', newProd);
+  }
+  setLSData(KEYS.products, prods);
+  closeModal('productModal');
+  renderProducts();
+  showToast('Product saved successfully');
+}
+
+function deleteProduct(id) {
+  const p = getLSData(KEYS.products).find(x => x.id === id);
+  if (!confirm(`Delete product "${p?.name}"?`)) return;
+  const prods = getLSData(KEYS.products).filter(x => x.id !== id);
+  setLSData(KEYS.products, prods);
+  logActivity('Delete Product', p?.name || id);
+  callBackend('products', 'delete', { id });
+  renderProducts();
+  showToast('Product deleted');
+}
+
+// ============================================================
+// CUSTOMERS PAGE
+// ============================================================
+let custFilterActive = 'all';
+
+function initCustomers() { renderCustomers(); }
+
+function setCustFilter(f) {
+  custFilterActive = f;
+  document.querySelectorAll('[id^="cf-"]').forEach(el => el.className = 'tab-btn');
+  const btn = document.getElementById('cf-' + f);
+  if (btn) btn.className = 'tab-btn active';
+  renderCustomers();
+}
+
+function renderCustomers() {
+  let custs = getLSData(KEYS.customers);
+  const search = document.getElementById('custSearch').value.toLowerCase();
+
+  if (custFilterActive !== 'all') custs = custs.filter(c => c.tier === custFilterActive);
+  if (search) custs = custs.filter(c =>
+    c.name.toLowerCase().includes(search) || c.email.toLowerCase().includes(search) || (c.mobile||'').includes(search)
+  );
+
+  const all = getLSData(KEYS.customers);
+  document.getElementById('custStatTotal').textContent = all.length;
+  document.getElementById('custStatVip').textContent = all.filter(c=>c.tier==='VIP').length;
+  document.getElementById('custStatRegular').textContent = all.filter(c=>c.tier==='Regular').length;
+  document.getElementById('custStatNew').textContent = all.filter(c=>c.tier==='New').length;
+
+  document.getElementById('customersTableBody').innerHTML = custs.map(c => `<tr>
+    <td class="font-mono text-xs text-slate-400">${c.id}</td>
+    <td>
+      <div class="flex items-center gap-2">
+        <div style="width:28px;height:28px;border-radius:50%;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);display:flex;align-items:center;justify-content:center;color:#D97706;font-size:11px;font-weight:700;flex-shrink:0;">${initials(c.name)}</div>
+        <span class="font-medium">${c.name}</span>
+      </div>
+    </td>
+    <td class="text-slate-500">${c.email}</td>
+    <td>${c.mobile||'—'}</td>
+    <td class="text-center font-semibold">${c.orders||0}</td>
+    <td class="font-bold text-emerald-600">${peso(c.spent||0)}</td>
+    <td class="text-slate-400 text-xs">${fmtDate(c.lastOrder)}</td>
+    <td>${getTierBadge(c.tier)}</td>
+    <td>
+      <button onclick="viewCustomerProfile('${c.id}')" class="btn-icon text-blue-500" title="Profile"><i class="fas fa-user"></i></button>
+      <button onclick="editCustomer('${c.id}')" class="btn-icon text-amber-500" title="Edit"><i class="fas fa-pencil"></i></button>
+      <button onclick="deleteCustomer('${c.id}')" class="btn-icon text-red-400" title="Delete"><i class="fas fa-trash"></i></button>
+    </td>
+  </tr>`).join('');
+}
+
+function viewCustomerProfile(id) {
+  const c = getLSData(KEYS.customers).find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('cpAvatar').textContent = initials(c.name);
+  document.getElementById('cpName').textContent = c.name;
+  document.getElementById('cpTier').innerHTML = getTierBadge(c.tier);
+  document.getElementById('cpEmail').textContent = c.email;
+  document.getElementById('cpMobile').textContent = c.mobile || '—';
+  document.getElementById('cpAddress').textContent = c.address || '—';
+  document.getElementById('cpTotalOrders').textContent = c.orders || 0;
+  document.getElementById('cpTotalSpent').textContent = peso(c.spent || 0);
+  document.getElementById('cpAvgOrder').textContent = c.orders ? peso((c.spent||0)/c.orders) : '$0.00';
+  document.getElementById('cpLastOrder').textContent = fmtDate(c.lastOrder);
+
+  // Order history
+  const orders = getLSData(KEYS.orders).filter(o => o.customer === c.name).slice(0,5);
+  document.getElementById('cpOrderHistory').innerHTML = orders.length
+    ? orders.map(o => `<tr>
+        <td class="font-mono text-xs text-amber-600">${o.id}</td>
+        <td>${o.items.length} item${o.items.length!==1?'s':''}</td>
+        <td class="font-bold">${peso(o.total)}</td>
+        <td>${getStatusBadge(o.status)}</td>
+        <td class="text-xs text-slate-400">${fmtDate(o.date)}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="5" class="text-center text-slate-400 py-4">No orders yet</td></tr>';
+
+  const notesEl = document.getElementById('cpNotes');
+  if (c.notes) {
+    document.getElementById('cpNotesText').textContent = c.notes;
+    notesEl.classList.remove('hidden');
+  } else {
+    notesEl.classList.add('hidden');
+  }
+  openModal('customerProfileModal');
+}
+
+function openCustomerModal(cust = null) {
+  document.getElementById('customerModalTitle').textContent = cust ? 'Edit Customer' : 'Add Customer';
+  document.getElementById('custModalId').value = cust ? cust.id : '';
+  document.getElementById('custModalName').value = cust ? cust.name : '';
+  document.getElementById('custModalEmail').value = cust ? cust.email : '';
+  document.getElementById('custModalMobile').value = cust ? cust.mobile : '';
+  document.getElementById('custModalTier').value = cust ? cust.tier : 'New';
+  document.getElementById('custModalAddress').value = cust ? cust.address : '';
+  document.getElementById('custModalNotes').value = cust ? cust.notes : '';
+  openModal('customerModal');
+}
+
+function editCustomer(id) {
+  const c = getLSData(KEYS.customers).find(x => x.id === id);
+  if (c) openCustomerModal(c);
+}
+
+function saveCustomer() {
+  const id = document.getElementById('custModalId').value;
+  const name = document.getElementById('custModalName').value.trim();
+  const email = document.getElementById('custModalEmail').value.trim();
+  if (!name || !email) { showToast('Name and email are required', 'error'); return; }
+
+  const custs = getLSData(KEYS.customers);
+  if (id) {
+    const idx = custs.findIndex(c => c.id === id);
+    if (idx >= 0) {
+      custs[idx] = { ...custs[idx], name, email,
+        mobile: document.getElementById('custModalMobile').value,
+        tier: document.getElementById('custModalTier').value,
+        address: document.getElementById('custModalAddress').value,
+        notes: document.getElementById('custModalNotes').value };
+      logActivity('Edit Customer', name);
+      callBackend('customers', 'update', custs[idx]);
+    }
+  } else {
+    const newC = { id: uid('CUST'), name, email,
+      mobile: document.getElementById('custModalMobile').value,
+      tier: document.getElementById('custModalTier').value,
+      address: document.getElementById('custModalAddress').value,
+      notes: document.getElementById('custModalNotes').value,
+      orders: 0, spent: 0, lastOrder: '' };
+    custs.push(newC);
+    logActivity('Add Customer', name);
+    callBackend('customers', 'create', newC);
+  }
+  setLSData(KEYS.customers, custs);
+  closeModal('customerModal');
+  renderCustomers();
+  showToast('Customer saved');
+}
+
+function deleteCustomer(id) {
+  const c = getLSData(KEYS.customers).find(x => x.id === id);
+  if (!confirm(`Delete customer "${c?.name}"?`)) return;
+  setLSData(KEYS.customers, getLSData(KEYS.customers).filter(x => x.id !== id));
+  logActivity('Delete Customer', c?.name || id);
+  callBackend('customers', 'delete', { id });
+  renderCustomers();
+  showToast('Customer deleted');
+}
+
+// ============================================================
+// INVENTORY PAGE
+// ============================================================
+function initInventory() {
+  renderInventory();
+  callBackend('inventory').then(d => {
+    if (!d || !d.inventory) return;
+    setLSData(KEYS.inventory, d.inventory);
+    renderInventory();
+  });
+}
+
+function renderInventory() {
+  const inv = getLSData(KEYS.inventory);
+  const catFilter = document.getElementById('invCategoryFilter')?.value || '';
+  const statusFilter = document.getElementById('invStatusFilter')?.value || '';
+  const search = (document.getElementById('invSearch')?.value || '').toLowerCase();
+
+  // Populate category filter
+  const cats = [...new Set(inv.map(i => i.category))].sort();
+  const catSel = document.getElementById('invCategoryFilter');
+  if (catSel) {
+    const cur = catSel.value;
+    catSel.innerHTML = '<option value="">All Categories</option>' +
+      cats.map(c => `<option value="${c}" ${c === cur ? 'selected' : ''}>${c}</option>`).join('');
+  }
+
+  const lowItems = inv.filter(i => i.stock <= i.reorder);
+  const banner = document.getElementById('invLowStockBanner');
+  const msg = document.getElementById('invLowStockMsg');
+  if (banner && msg) {
+    if (lowItems.length > 0) {
+      banner.classList.remove('hidden');
+      msg.textContent = `${lowItems.length} product${lowItems.length > 1 ? 's' : ''} need restocking`;
+    } else {
+      banner.classList.add('hidden');
+    }
+  }
+
+  const filtered = inv.filter(i => {
+    const stockStatus = i.stock === 0 ? 'out' : i.stock <= i.reorder ? 'low' : 'in';
+    const matchCat = !catFilter || i.category === catFilter;
+    const matchStatus = !statusFilter || stockStatus === statusFilter;
+    const matchSearch = !search || i.product.toLowerCase().includes(search) || i.sku.toLowerCase().includes(search);
+    return matchCat && matchStatus && matchSearch;
+  });
+
+  const tbody = document.getElementById('inventoryTableBody');
+  if (!tbody) return;
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="10" class="text-center py-10 text-slate-400">No items found</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(i => {
+    const stockStatus = i.stock === 0 ? 'out' : i.stock <= i.reorder ? 'low' : 'in';
+    const stockClass = stockStatus === 'out' ? 'stock-out' : stockStatus === 'low' ? 'stock-low' : 'stock-ok';
+    const badge = stockStatus === 'out' ? '<span class="badge badge-cancelled">Out of Stock</span>' :
+                  stockStatus === 'low' ? '<span class="badge badge-pending">Low Stock</span>' :
+                  '<span class="badge badge-active">In Stock</span>';
+    return `<tr>
+      <td class="font-mono text-xs text-slate-500">${i.sku}</td>
+      <td class="font-semibold text-slate-700">${i.product}</td>
+      <td>${i.category}</td>
+      <td><span class="${stockClass}">${i.stock}</span></td>
+      <td class="text-slate-500">${i.reorder}</td>
+      <td>${peso(i.cost)}</td>
+      <td class="text-slate-500">${i.supplier}</td>
+      <td class="text-slate-500">${i.lastRestocked || '—'}</td>
+      <td>${badge}</td>
+      <td>
+        <button onclick="openStockAdjustModal('${i.sku}')" class="btn-icon text-amber-600" title="Adjust Stock">
+          <i class="fas fa-sliders"></i>
+        </button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function openStockAdjustModal(sku) {
+  const inv = getLSData(KEYS.inventory);
+  const item = sku ? inv.find(i => i.sku === sku) : null;
+  document.getElementById('adjSku').value = item ? item.sku : '';
+  document.getElementById('adjProductName').textContent = item ? item.product : 'Select Product';
+  document.getElementById('adjCurrentStock').textContent = item ? item.stock : 0;
+  document.getElementById('adjAmount').value = '';
+  document.getElementById('adjReason').value = '';
+  document.querySelector('input[name="adjType"][value="add"]').checked = true;
+  openModal('stockAdjustModal');
+}
+
+function saveStockAdjustment() {
+  const sku = document.getElementById('adjSku').value;
+  const type = document.querySelector('input[name="adjType"]:checked')?.value || 'add';
+  const amount = parseInt(document.getElementById('adjAmount').value) || 0;
+  const reason = document.getElementById('adjReason').value.trim();
+  if (!sku || amount <= 0) { showToast('Enter a valid amount', 'error'); return; }
+
+  const inv = getLSData(KEYS.inventory);
+  const idx = inv.findIndex(i => i.sku === sku);
+  if (idx === -1) { showToast('Item not found', 'error'); return; }
+
+  const oldStock = inv[idx].stock;
+  if (type === 'add') inv[idx].stock = oldStock + amount;
+  else if (type === 'subtract') inv[idx].stock = Math.max(0, oldStock - amount);
+  else inv[idx].stock = amount;
+  inv[idx].lastRestocked = new Date().toISOString().split('T')[0];
+
+  // Sync product stock too
+  const products = getLSData(KEYS.products);
+  const pi = products.findIndex(p => p.sku === sku);
+  if (pi !== -1) { products[pi].stock = inv[idx].stock; setLSData(KEYS.products, products); }
+
+  setLSData(KEYS.inventory, inv);
+  logActivity('Adjust Stock', `${sku} ${type} ${amount} (${reason})`);
+  callBackend('inventory', 'write_inventory', { sku, type, amount, reason, newStock: inv[idx].stock });
+  closeModal('stockAdjustModal');
+  renderInventory();
+  showToast('Stock updated');
+}
+
+// ============================================================
+// MARKETING PAGE
+// ============================================================
+function initMarketing() {
+  renderCampaigns();
+  renderDiscounts();
+  callBackend('marketing').then(d => {
+    if (!d) return;
+    const mkt = getLSData(KEYS.marketing);
+    if (d.campaigns?.length) {
+      const disc = mkt.filter(m => m.type === 'discount');
+      setLSData(KEYS.marketing, [...d.campaigns.map(c => ({...c, type:'campaign'})), ...disc]);
+    }
+    if (d.discounts?.length) {
+      const camp = getLSData(KEYS.marketing).filter(m => m.type === 'campaign');
+      setLSData(KEYS.marketing, [...camp, ...d.discounts.map(c => ({...c, type:'discount'}))]);
+    }
+    renderCampaigns();
+    renderDiscounts();
+  });
+}
+
+let _mktTab = 'campaigns';
+function setMktTab(tab) {
+  _mktTab = tab;
+  ['campaigns','discounts'].forEach(t => {
+    document.getElementById(`mktTab${t.charAt(0).toUpperCase()+t.slice(1)}`)?.classList.toggle('active', t === tab);
+    document.getElementById(`mkt${t.charAt(0).toUpperCase()+t.slice(1)}Tab`)?.classList.toggle('hidden', t !== tab);
+  });
+}
+
+function renderCampaigns() {
+  const camps = getLSData(KEYS.marketing).filter(m => m.type === 'campaign');
+  const grid = document.getElementById('mktCampaignsGrid');
+  if (!grid) return;
+  if (!camps.length) {
+    grid.innerHTML = '<div class="col-span-2 text-center py-12 text-slate-400">No campaigns yet. Create your first campaign!</div>';
+    return;
+  }
+  grid.innerHTML = camps.map(c => {
+    const pct = c.budget > 0 ? Math.min(100, (c.spent / c.budget * 100)).toFixed(0) : 0;
+    const barColor = pct >= 90 ? '#E08080' : pct >= 70 ? '#FBBF24' : '#5BBFA0';
+    return `<div class="kpi-card">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <div class="font-bold text-slate-700">${c.name}</div>
+          <div class="flex gap-2 mt-1">
+            <span class="badge badge-${c.type}">${c.type}</span>
+            <span class="badge badge-${c.status}">${c.status}</span>
+          </div>
+        </div>
+        <div class="flex gap-1">
+          <button onclick="openCampaignModal('${c.id}')" class="btn-icon"><i class="fas fa-pen"></i></button>
+          <button onclick="deleteCampaign('${c.id}')" class="btn-icon text-red-400"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3 mb-3 text-sm">
+        <div><span class="text-slate-500">Start:</span> <span class="font-medium">${c.startDate || '—'}</span></div>
+        <div><span class="text-slate-500">End:</span> <span class="font-medium">${c.endDate || '—'}</span></div>
+        <div><span class="text-slate-500">Conversions:</span> <span class="font-bold text-amber-600">${c.conversions}</span></div>
+        <div><span class="text-slate-500">Budget:</span> <span class="font-medium">${peso(c.budget)}</span></div>
+      </div>
+      ${c.budget > 0 ? `<div>
+        <div class="flex justify-between text-xs mb-1 text-slate-500">
+          <span>Budget used</span><span>${peso(c.spent)} / ${peso(c.budget)}</span>
+        </div>
+        <div class="w-full rounded-full h-1" style="background:rgba(251,191,36,0.10);">
+          <div class="h-1 rounded-full transition-all" style="background:${barColor};width:${pct}%"></div>
+        </div>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderDiscounts() {
+  const discs = getLSData(KEYS.marketing).filter(m => m.type === 'discount');
+  const tbody = document.getElementById('discountsTableBody');
+  if (!tbody) return;
+  if (!discs.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="text-center py-10 text-slate-400">No discount codes yet</td></tr>';
+    return;
+  }
+  tbody.innerHTML = discs.map(d => `<tr>
+    <td>
+      <span style="font-family:monospace;font-weight:700;color:#D97706;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);padding:2px 8px;border-radius:4px;font-size:12px;letter-spacing:0.06em;">${d.code}</span>
+      <button onclick="copyToClipboard('${d.code}')" class="btn-icon ml-1 text-xs" title="Copy"><i class="fas fa-copy"></i></button>
+    </td>
+    <td class="font-medium">${d.name}</td>
+    <td>${d.discountType === 'percent' ? 'Percent (%)' : 'Fixed ($)'}</td>
+    <td class="font-bold text-amber-600">${d.discountType === 'percent' ? d.discountValue + '%' : peso(d.discountValue)}</td>
+    <td>${d.usageCount}${d.usageLimit > 0 ? ' / ' + d.usageLimit : ''}</td>
+    <td class="text-slate-500">${d.endDate || '—'}</td>
+    <td><span class="badge badge-${d.status}">${d.status}</span></td>
+    <td>
+      <button onclick="openDiscountModal('${d.id}')" class="btn-icon"><i class="fas fa-pen"></i></button>
+      <button onclick="deleteDiscount('${d.id}')" class="btn-icon text-red-400"><i class="fas fa-trash"></i></button>
+    </td>
+  </tr>`).join('');
+}
+
+function openCampaignModal(id) {
+  const item = id ? getLSData(KEYS.marketing).find(m => m.id === id) : null;
+  document.getElementById('campaignModalTitle').textContent = id ? 'Edit Campaign' : 'New Campaign';
+  document.getElementById('campModalId').value = id || '';
+  document.getElementById('campModalName').value = item?.name || '';
+  document.getElementById('campModalType').value = item?.type === 'campaign' ? (item?.discountType || 'awareness') : 'awareness';
+  document.getElementById('campModalStatus').value = item?.status || 'draft';
+  document.getElementById('campModalBudget').value = item?.budget || '';
+  document.getElementById('campModalStart').value = item?.startDate || '';
+  document.getElementById('campModalEnd').value = item?.endDate || '';
+  openModal('campaignModal');
+}
+
+function saveCampaign() {
+  const id = document.getElementById('campModalId').value;
+  const name = document.getElementById('campModalName').value.trim();
+  if (!name) { showToast('Campaign name required', 'error'); return; }
+  const obj = {
+    id: id || 'CAMP-' + Date.now(),
+    name,
+    type: 'campaign',
+    status: document.getElementById('campModalStatus').value,
+    discountType: document.getElementById('campModalType').value,
+    discountValue: 0, code: '',
+    budget: parseFloat(document.getElementById('campModalBudget').value) || 0,
+    spent: 0, conversions: 0,
+    startDate: document.getElementById('campModalStart').value,
+    endDate: document.getElementById('campModalEnd').value,
+    usageLimit: 0, usageCount: 0
+  };
+  const mkt = getLSData(KEYS.marketing);
+  if (id) { const i = mkt.findIndex(m => m.id === id); if (i !== -1) { obj.spent = mkt[i].spent; obj.conversions = mkt[i].conversions; mkt[i] = obj; } }
+  else mkt.unshift(obj);
+  setLSData(KEYS.marketing, mkt);
+  logActivity(id ? 'Update Campaign' : 'Create Campaign', name);
+  callBackend('marketing', 'write_marketing', obj);
+  closeModal('campaignModal');
+  renderCampaigns();
+  showToast('Campaign saved');
+}
+
+function deleteCampaign(id) {
+  const c = getLSData(KEYS.marketing).find(m => m.id === id);
+  if (!confirm(`Delete campaign "${c?.name}"?`)) return;
+  setLSData(KEYS.marketing, getLSData(KEYS.marketing).filter(m => m.id !== id));
+  logActivity('Delete Campaign', c?.name || id);
+  renderCampaigns();
+  showToast('Campaign deleted');
+}
+
+function openDiscountModal(id) {
+  const item = id ? getLSData(KEYS.marketing).find(m => m.id === id) : null;
+  document.getElementById('discountModalTitle').textContent = id ? 'Edit Discount' : 'Create Discount Code';
+  document.getElementById('discModalId').value = id || '';
+  document.getElementById('discModalName').value = item?.name || '';
+  document.getElementById('discModalCode').value = item?.code || '';
+  document.getElementById('discModalType').value = item?.discountType || 'percent';
+  document.getElementById('discModalValue').value = item?.discountValue || '';
+  document.getElementById('discModalLimit').value = item?.usageLimit || '';
+  document.getElementById('discModalStart').value = item?.startDate || '';
+  document.getElementById('discModalEnd').value = item?.endDate || '';
+  document.getElementById('discModalStatus').value = item?.status || 'active';
+  openModal('discountModal');
+}
+
+function generateDiscountCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  document.getElementById('discModalCode').value = code;
+}
+
+function saveDiscount() {
+  const id = document.getElementById('discModalId').value;
+  const name = document.getElementById('discModalName').value.trim();
+  const code = document.getElementById('discModalCode').value.trim().toUpperCase();
+  if (!name || !code) { showToast('Name and code required', 'error'); return; }
+  const obj = {
+    id: id || 'DISC-' + Date.now(),
+    name, code, type: 'discount',
+    discountType: document.getElementById('discModalType').value,
+    discountValue: parseFloat(document.getElementById('discModalValue').value) || 0,
+    budget: 0, spent: 0, conversions: 0,
+    usageLimit: parseInt(document.getElementById('discModalLimit').value) || 0,
+    usageCount: 0,
+    startDate: document.getElementById('discModalStart').value,
+    endDate: document.getElementById('discModalEnd').value,
+    status: document.getElementById('discModalStatus').value
+  };
+  const mkt = getLSData(KEYS.marketing);
+  if (id) { const i = mkt.findIndex(m => m.id === id); if (i !== -1) { obj.usageCount = mkt[i].usageCount; mkt[i] = obj; } }
+  else mkt.push(obj);
+  setLSData(KEYS.marketing, mkt);
+  logActivity(id ? 'Update Discount' : 'Create Discount', code);
+  callBackend('marketing', 'write_marketing', obj);
+  closeModal('discountModal');
+  renderDiscounts();
+  showToast('Discount code saved');
+}
+
+function deleteDiscount(id) {
+  const d = getLSData(KEYS.marketing).find(m => m.id === id);
+  if (!confirm(`Delete discount code "${d?.code}"?`)) return;
+  setLSData(KEYS.marketing, getLSData(KEYS.marketing).filter(m => m.id !== id));
+  logActivity('Delete Discount', d?.code || id);
+  renderDiscounts();
+  showToast('Discount deleted');
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => showToast('Copied: ' + text));
+}
+
+// ============================================================
+// ANALYTICS PAGE
+// ============================================================
+let _analyticsPeriod = 30;
+
+function initAnalytics() {
+  renderAnalytics();
+  callBackend('analytics').then(d => {
+    if (!d) return;
+    _analyticsBackendData = d;
+    renderAnalytics();
+  });
+}
+
+let _analyticsBackendData = null;
+
+function setAnalyticsPeriod(days) {
+  _analyticsPeriod = days;
+  [7, 30, 90, 365].forEach(d => {
+    const btn = document.getElementById('anBtn' + (d === 365 ? '365' : d));
+    if (btn) btn.classList.toggle('active', d === days);
+  });
+  renderAnalytics();
+}
+
+function renderAnalytics() {
+  const allOrders = getLSData(KEYS.orders);
+  const allCustomers = getLSData(KEYS.customers);
+  const now = new Date();
+  const cutoff = new Date(now - _analyticsPeriod * 86400000);
+  const prev = new Date(now - _analyticsPeriod * 2 * 86400000);
+
+  const orders = allOrders.filter(o => new Date(o.date) >= cutoff);
+  const prevOrders = allOrders.filter(o => new Date(o.date) >= prev && new Date(o.date) < cutoff);
+
+  const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+  const prevRevenue = prevOrders.reduce((s, o) => s + (o.total || 0), 0);
+  const aov = orders.length ? revenue / orders.length : 0;
+  const prevAov = prevOrders.length ? prevRevenue / prevOrders.length : 0;
+  const newCusts = allCustomers.filter(c => new Date(c.lastOrder) >= cutoff).length;
+  const prevNewCusts = allCustomers.filter(c => new Date(c.lastOrder) >= prev && new Date(c.lastOrder) < cutoff).length;
+
+  function pctChange(curr, prev) {
+    if (!prev) return curr > 0 ? '+100%' : '0%';
+    const p = ((curr - prev) / prev * 100).toFixed(1);
+    return (p >= 0 ? '+' : '') + p + '%';
+  }
+
+  setText('anRevenue', pesoK(revenue));
+  setText('anOrdersCount', orders.length);
+  setText('anNewCust', newCusts);
+  setText('anAov', pesoK(aov));
+  setText('anRevenuePct', pctChange(revenue, prevRevenue) + ' vs prev period');
+  setText('anOrdersPct', pctChange(orders.length, prevOrders.length) + ' vs prev period');
+  setText('anNewCustPct', pctChange(newCusts, prevNewCusts) + ' vs prev period');
+  setText('anAovPct', pctChange(aov, prevAov) + ' vs prev period');
+
+  // KPI pop animation
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.kpi-card .text-2xl, .kpi-card .text-3xl').forEach(el => {
+      el.classList.remove('kpi-pop');
+      requestAnimationFrame(() => el.classList.add('kpi-pop'));
+    });
+  });
+
+  // Revenue trend — daily buckets
+  const buckets = {};
+  const labels = [];
+  for (let i = Math.min(_analyticsPeriod - 1, 29); i >= 0; i--) {
+    const d = new Date(now - i * 86400000);
+    const key = d.toISOString().split('T')[0];
+    labels.push(key.slice(5));
+    buckets[key] = 0;
+  }
+  orders.forEach(o => { const k = (o.date || '').split('T')[0]; if (buckets[k] !== undefined) buckets[k] += o.total || 0; });
+  const revValues = Object.values(buckets);
+
+  // Revenue trend chart
+  const useBackend = _analyticsBackendData?.revenueChart?.labels?.length && _analyticsPeriod >= 90;
+  const revLabels = useBackend ? _analyticsBackendData.revenueChart.labels : labels;
+  const revVals   = useBackend ? _analyticsBackendData.revenueChart.values : revValues;
+  mkChart('anRevenueChart', 'line', revLabels, [{
+    label: 'Revenue ($)', data: revVals,
+    borderColor: '#F59E0B', backgroundColor: 'rgba(251,191,36,0.08)',
+    borderWidth: 2.5, fill: true, tension: 0.4, pointBackgroundColor: '#F59E0B', pointRadius: 3
+  }]);
+
+  // Orders by status
+  const statusCounts = {};
+  orders.forEach(o => { statusCounts[o.status] = (statusCounts[o.status] || 0) + 1; });
+  const statusColors = { pending:'#FBBF24', processing:'#7BB3E8', shipped:'#60A5FA', delivered:'#5BBFA0', cancelled:'#E08080', refunded:'#D479A2' };
+  const sKeys = Object.keys(statusCounts);
+  mkChart('anStatusChart', 'doughnut', sKeys,
+    [{ data: sKeys.map(s => statusCounts[s]), backgroundColor: sKeys.map(s => statusColors[s] || '#9999AA'), borderWidth: 2, borderColor: '#FFFFFF' }],
+    { showLegend: true });
+
+  // Top products by units sold
+  const prodSales = {};
+  orders.forEach(o => (o.items || []).forEach(item => { prodSales[item.name] = (prodSales[item.name] || 0) + (item.qty || 1); }));
+  const top = Object.entries(prodSales).sort((a,b) => b[1]-a[1]).slice(0,5);
+  mkChart('anTopChart', 'bar',
+    top.map(([n]) => n.length > 14 ? n.slice(0,14)+'…' : n),
+    [{ label: 'Units Sold', data: top.map(([,v]) => v), backgroundColor: 'rgba(251,191,36,0.75)', borderColor: '#F59E0B', borderWidth: 1, borderRadius: 6 }],
+    { horizontal: true });
+
+  // Customer acquisition by month (last 6 months)
+  const acqLabels = [], acqValues = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = d.toISOString().slice(0, 7);
+    acqLabels.push(key.slice(5));
+    acqValues.push(allCustomers.filter(c => (c.lastOrder || '').startsWith(key)).length);
+  }
+  mkChart('anAcqChart', 'bar', acqLabels,
+    [{ label: 'New Customers', data: acqValues, backgroundColor: 'rgba(251,191,36,0.70)', borderColor: '#F59E0B', borderWidth: 1, borderRadius: 6 }]);
+
+  // AOV trend
+  const aovLabels = [], aovVals = [];
+  for (let i = Math.min(_analyticsPeriod - 1, 13); i >= 0; i--) {
+    const d = new Date(now - i * (86400000 * (_analyticsPeriod > 30 ? 7 : 1)));
+    const key = d.toISOString().split('T')[0];
+    aovLabels.push(key.slice(5));
+    const sl = orders.filter(o => o.date >= key);
+    aovVals.push(sl.length ? Math.round(sl.reduce((s,o)=>s+(o.total||0),0)/sl.length) : 0);
+  }
+  mkChart('anAovChart', 'line', aovLabels, [{
+    label: 'AOV ($)', data: aovVals,
+    borderColor: '#F59E0B', backgroundColor: 'rgba(251,191,36,0.08)',
+    borderWidth: 2, fill: true, tension: 0.4
+  }]);
+}
+
+// ============================================================
+// ASSISTANT PAGE
+// ============================================================
+let chatHistory = [];
+
+function buildDashboardContext() {
+  const orders = getLSData(KEYS.orders);
+  const products = getLSData(KEYS.products);
+  const customers = getLSData(KEYS.customers);
+  const inv = getLSData(KEYS.inventory);
+  const today = new Date().toISOString().split('T')[0];
+
+  const totalRev = orders.reduce((s, o) => s + (o.total || 0), 0);
+  const pending = orders.filter(o => o.status === 'pending').length;
+  const processing = orders.filter(o => o.status === 'processing').length;
+  const todayOrders = orders.filter(o => (o.date || '').startsWith(today));
+  const lowStock = inv.filter(i => i.stock <= i.reorder);
+  const topCusts = [...customers].sort((a,b) => b.spent - a.spent).slice(0, 3);
+
+  return `STORE SUMMARY (as of ${today}):
+- Total Orders: ${orders.length} | Pending: ${pending} | Processing: ${processing}
+- Orders Today: ${todayOrders.length} | Revenue Today: $${todayOrders.reduce((s,o)=>s+(o.total||0),0).toLocaleString()}
+- Total Revenue (all time): $${totalRev.toLocaleString()}
+- Total Products: ${products.length} | Total Customers: ${customers.length}
+- Low Stock Items: ${lowStock.length}${lowStock.length ? ' (' + lowStock.map(i=>i.product+' ('+i.stock+' left)').join(', ') + ')' : ''}
+
+TOP CUSTOMERS: ${topCusts.map(c => c.name + ' ($' + c.spent.toLocaleString() + ')').join(', ')}
+
+RECENT ORDERS (last 5): ${orders.slice(-5).reverse().map(o => `${o.id} - ${o.customer} - $${o.total} [${o.status}]`).join('; ')}
+
+TOP PRODUCTS BY STOCK: ${[...products].sort((a,b)=>b.stock-a.stock).slice(0,5).map(p=>p.name+' (stock: '+p.stock+')').join(', ')}`;
+}
+
+// ============================================================
+// FLOATING AI CHAT BUBBLE
+// ============================================================
+function toggleFloatChat() {
+  const panel = document.getElementById('floatChatPanel');
+  const icon = document.getElementById('floatAIIcon');
+  const isOpen = panel.style.display === 'flex';
+  panel.style.display = isOpen ? 'none' : 'flex';
+  panel.style.flexDirection = 'column';
+  icon.className = isOpen ? 'fas fa-robot' : 'fas fa-times';
+  if (!isOpen) setTimeout(() => document.getElementById('floatInput')?.focus(), 50);
+}
+
+function appendChatMsg(role, text) {
+  const container = document.getElementById('floatMessages');
+  const div = document.createElement('div');
+  div.className = role === 'user' ? 'chat-msg-user' : 'chat-msg-assistant';
+  div.style.display = 'block';
+  div.innerHTML = text.replace(/\n/g, '<br>');
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function showTypingIndicator() {
+  const container = document.getElementById('floatMessages');
+  const div = document.createElement('div');
+  div.id = 'typingIndicator';
+  div.className = 'chat-msg-assistant';
+  div.style.display = 'block';
+  div.innerHTML = '<i class="fas fa-ellipsis fa-beat" style="color:#9999AA;"></i>';
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  document.getElementById('typingIndicator')?.remove();
+}
+
+async function sendChatMessage() {
+  const input = document.getElementById('floatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  input.style.height = 'auto';
+  await _doChat(msg);
+}
+
+function sendSuggested(msg) {
+  if (document.getElementById('floatChatPanel').style.display !== 'flex') toggleFloatChat();
+  document.getElementById('floatInput').value = msg;
+  sendChatMessage();
+}
+
+async function _doChat(msg) {
+  appendChatMsg('user', msg);
+  chatHistory.push({ role: 'user', content: msg });
+
+  const key = localStorage.getItem(KEYS.anthropicKey);
+  if (!key) {
+    const reply = "I need an Anthropic API key to respond. Please go to **Settings > API Config** and add your key.";
+    appendChatMsg('assistant', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+    return;
+  }
+
+  showTypingIndicator();
+  try {
+    const context = buildDashboardContext();
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1024,
+        system: `You are a smart e-commerce business assistant for Bodoir. Be concise and practical.\n\n${context}`,
+        messages: chatHistory
+      })
+    });
+    removeTypingIndicator();
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      const errMsg = err?.error?.message || `API error (${res.status})`;
+      appendChatMsg('assistant', `Error: ${errMsg}`);
+      chatHistory.push({ role: 'assistant', content: errMsg });
+      return;
+    }
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'No response received.';
+    appendChatMsg('assistant', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch (e) {
+    removeTypingIndicator();
+    const errMsg = 'Network error: ' + e.message;
+    appendChatMsg('assistant', errMsg);
+    chatHistory.push({ role: 'assistant', content: errMsg });
+  }
+}
+
+// ============================================================
+// SETTINGS PAGE
+// ============================================================
+function initSettings() {
+  setSettingsTab('accounts');
+  loadWhiteLabelForm();
+  loadApiConfigForm();
+}
+
+function setSettingsTab(tab) {
+  ['accounts','whitelabel','apiconfig','loginhistory','activitylog'].forEach(t => {
+    document.getElementById(`stab-${t}`)?.classList.toggle('active', t === tab);
+    const el = document.getElementById(`stab-${t}-content`);
+    if (el) el.classList.toggle('hidden', t !== tab);
+  });
+  if (tab === 'accounts') renderAccounts();
+  if (tab === 'loginhistory') renderLoginHistory();
+  if (tab === 'activitylog') renderActivityLog();
+}
+
+function renderAccounts() {
+  const accounts = getLSData(KEYS.accounts);
+  const tbody = document.getElementById('accountsTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = accounts.map(a => `<tr>
+    <td class="font-mono text-sm font-bold text-slate-700">${a.username}</td>
+    <td>${a.name}</td>
+    <td><span class="badge badge-${a.role === 'admin' ? 'cancelled' : a.role === 'manager' ? 'processing' : 'active'}">${a.role}</span></td>
+    <td class="text-slate-500 text-sm">${a.lastLogin ? new Date(a.lastLogin).toLocaleString() : 'Never'}</td>
+    <td>
+      <button onclick="openAccountModal('${a.id}')" class="btn-icon"><i class="fas fa-pen"></i></button>
+      <button onclick="deleteAccount('${a.id}')" class="btn-icon text-red-400"><i class="fas fa-trash"></i></button>
+    </td>
+  </tr>`).join('');
+}
+
+function openAccountModal(id) {
+  const a = id ? getLSData(KEYS.accounts).find(x => x.id === id) : null;
+  document.getElementById('accountModalTitle').textContent = id ? 'Edit Account' : 'Add Account';
+  document.getElementById('accModalId').value = id || '';
+  document.getElementById('accModalUsername').value = a?.username || '';
+  document.getElementById('accModalPassword').value = '';
+  document.getElementById('accModalName').value = a?.name || '';
+  document.getElementById('accModalRole').value = a?.role || 'staff';
+  openModal('accountModal');
+}
+
+function saveAccount() {
+  const id = document.getElementById('accModalId').value;
+  const username = document.getElementById('accModalUsername').value.trim().toLowerCase();
+  const password = document.getElementById('accModalPassword').value;
+  const name = document.getElementById('accModalName').value.trim();
+  const role = document.getElementById('accModalRole').value;
+  if (!username || !name) { showToast('Username and name required', 'error'); return; }
+  const accounts = getLSData(KEYS.accounts);
+  if (!id && accounts.find(a => a.username === username)) { showToast('Username already exists', 'error'); return; }
+  if (id) {
+    const i = accounts.findIndex(a => a.id === id);
+    if (i !== -1) {
+      accounts[i].name = name;
+      accounts[i].role = role;
+      if (password) accounts[i].password = password;
+    }
+  } else {
+    if (!password) { showToast('Password required for new account', 'error'); return; }
+    accounts.push({ id: 'ACC-' + Date.now(), username, password, name, role, lastLogin: '' });
+  }
+  setLSData(KEYS.accounts, accounts);
+  logActivity(id ? 'Update Account' : 'Create Account', username);
+  closeModal('accountModal');
+  renderAccounts();
+  showToast('Account saved');
+}
+
+function deleteAccount(id) {
+  const accounts = getLSData(KEYS.accounts);
+  const a = accounts.find(x => x.id === id);
+  const cur = JSON.parse(sessionStorage.getItem('bodoir_user') || '{}');
+  if (a?.id === cur?.id) { showToast('Cannot delete your own account', 'error'); return; }
+  const admins = accounts.filter(x => x.role === 'admin');
+  if (admins.length === 1 && a?.role === 'admin') { showToast('Cannot delete the last admin', 'error'); return; }
+  if (!confirm(`Delete account "${a?.username}"?`)) return;
+  setLSData(KEYS.accounts, accounts.filter(x => x.id !== id));
+  logActivity('Delete Account', a?.username || id);
+  renderAccounts();
+  showToast('Account deleted');
+}
+
+function renderLoginHistory() {
+  const history = JSON.parse(localStorage.getItem(KEYS.loginHistory) || '[]');
+  const tbody = document.getElementById('loginHistoryBody');
+  if (!tbody) return;
+  if (!history.length) {
+    tbody.innerHTML = '<tr><td colspan="3" class="text-center py-8 text-slate-400">No login history</td></tr>';
+    return;
+  }
+  tbody.innerHTML = history.slice(0, 20).map(h => `<tr>
+    <td class="font-mono text-sm">${h.username}</td>
+    <td class="text-slate-500 text-sm">${new Date(h.timestamp).toLocaleString()}</td>
+    <td><span class="badge badge-${h.status === 'success' ? 'active' : 'cancelled'}">${h.status}</span></td>
+  </tr>`).join('');
+}
+
+function renderActivityLog() {
+  const logs = JSON.parse(localStorage.getItem(KEYS.activityLog) || '[]');
+  const tbody = document.getElementById('activityLogBody');
+  if (!tbody) return;
+  if (!logs.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-slate-400">No activity yet</td></tr>';
+    return;
+  }
+  tbody.innerHTML = logs.slice(0, 50).map(l => `<tr>
+    <td class="text-sm font-medium text-slate-700">${l.user}</td>
+    <td class="text-sm text-amber-700 font-medium">${l.action}</td>
+    <td class="text-sm text-slate-500">${l.target || '—'}</td>
+    <td class="text-sm text-slate-400">${new Date(l.timestamp).toLocaleString()}</td>
+  </tr>`).join('');
+}
+
+function loadWhiteLabelForm() {
+  const wl = JSON.parse(localStorage.getItem(KEYS.whitelabel) || '{}');
+  document.getElementById('wlBrandName').value = wl.brandName || 'Bodoir';
+  document.getElementById('wlPrimaryColor').value = wl.primaryColor || '#FBBF24';
+  document.getElementById('wlPrimaryHex').value = wl.primaryColor || '#FBBF24';
+  document.getElementById('wlSidebarColor').value = wl.sidebarColor || '#FFFFFF';
+  document.getElementById('wlSidebarHex').value = wl.sidebarColor || '#FFFFFF';
+}
+
+function saveWhiteLabel() {
+  const wl = {
+    brandName: document.getElementById('wlBrandName').value.trim() || 'Bodoir',
+    primaryColor: document.getElementById('wlPrimaryHex').value || '#FBBF24',
+    sidebarColor: document.getElementById('wlSidebarHex').value || '#FFFFFF'
+  };
+  localStorage.setItem(KEYS.whitelabel, JSON.stringify(wl));
+  applyWhiteLabel();
+  updateWlPreview(wl);
+  showToast('White label settings saved');
+}
+
+function resetWhiteLabel() {
+  localStorage.removeItem(KEYS.whitelabel);
+  loadWhiteLabelForm();
+  applyWhiteLabel();
+  showToast('Reset to default');
+}
+
+function applyWhiteLabel() {
+  const wl = JSON.parse(localStorage.getItem(KEYS.whitelabel) || '{}');
+  const name = wl.brandName || 'Bodoir';
+  const primary = wl.primaryColor || '#FBBF24';
+  const sidebar = wl.sidebarColor || '#FFFFFF';
+  document.title = name + ' — Dashboard';
+  const logoEl = document.getElementById('sidebarBrandName');
+  if (logoEl) logoEl.textContent = name;
+  const sidebarEl = document.getElementById('sidebar');
+  if (sidebarEl) sidebarEl.style.background = sidebar;
+  document.documentElement.style.setProperty('--primary', primary);
+  document.documentElement.style.setProperty('--gold', primary);
+  document.querySelectorAll('.nav-item.active, .tab-btn.active').forEach(el => {
+    el.style.color = primary;
+    el.style.borderLeftColor = primary;
+    el.style.background = 'rgba(251,191,36,0.08)';
+  });
+  document.querySelectorAll('.btn-primary').forEach(el => {
+    el.style.background = `linear-gradient(135deg, ${primary} 0%, ${primary}CC 100%)`;
+    el.style.color = '#1A1A2E';
+  });
+  updateWlPreview(wl);
+}
+
+function updateWlPreview(wl) {
+  const name = wl.brandName || 'Bodoir';
+  const primary = wl.primaryColor || '#FBBF24';
+  const sidebar = wl.sidebarColor || '#FFFFFF';
+  const prev = document.getElementById('wlPreviewSidebar');
+  if (prev) prev.style.background = sidebar;
+  const icon = document.getElementById('wlPreviewIcon');
+  if (icon) icon.style.background = primary;
+  const nameEl = document.getElementById('wlPreviewName');
+  if (nameEl) nameEl.textContent = name;
+}
+
+function loadApiConfigForm() {
+  const key = localStorage.getItem(KEYS.anthropicKey) || '';
+  const input = document.getElementById('apiKeyInput');
+  if (input) input.value = key ? '•'.repeat(Math.min(key.length, 32)) : '';
+  input._realValue = key;
+}
+
+function saveApiKey() {
+  const input = document.getElementById('apiKeyInput');
+  const val = input._realValue || input.value;
+  if (!val || val.startsWith('•')) { showToast('Enter a valid API key', 'error'); return; }
+  localStorage.setItem(KEYS.anthropicKey, val);
+  input._realValue = val;
+  input.value = '•'.repeat(Math.min(val.length, 32));
+  showToast('API key saved');
+}
+
+async function testApiConnection() {
+  const key = localStorage.getItem(KEYS.anthropicKey);
+  if (!key) { showToast('Save an API key first', 'error'); return; }
+  showToast('Testing connection...', 'warning');
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 10,
+        messages: [{ role: 'user', content: 'Say "OK".' }]
+      })
+    });
+    if (res.ok) { showToast('Connection successful!', 'success'); }
+    else { const e = await res.json().catch(() => ({})); showToast('Error: ' + (e?.error?.message || res.status), 'error'); }
+  } catch (e) {
+    showToast('Network error: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// APP INIT — bootstrap
+// ============================================================
+(function () {
+  initSeedData();
+
+  // White label color pickers sync
+  const wlPrimCol = document.getElementById('wlPrimaryColor');
+  if (wlPrimCol) wlPrimCol.addEventListener('input', e => { document.getElementById('wlPrimaryHex').value = e.target.value; });
+  const wlSidCol = document.getElementById('wlSidebarColor');
+  if (wlSidCol) wlSidCol.addEventListener('input', e => { document.getElementById('wlSidebarHex').value = e.target.value; });
+
+  // API key masking
+  const apiInput = document.getElementById('apiKeyInput');
+  if (apiInput) {
+    apiInput.addEventListener('focus', () => {
+      const k = localStorage.getItem(KEYS.anthropicKey) || '';
+      apiInput.value = k;
+      apiInput._realValue = k;
+    });
+    apiInput.addEventListener('input', () => { apiInput._realValue = apiInput.value; });
+    apiInput.addEventListener('blur', () => {
+      const v = apiInput._realValue || '';
+      if (v) apiInput.value = '•'.repeat(Math.min(v.length, 32));
+    });
+  }
+
+  // Auto-login if session exists
+  const saved = sessionStorage.getItem('bodoir_user');
+  if (saved) {
+    try {
+      const user = JSON.parse(saved);
+      const accounts = getLSData(KEYS.accounts);
+      const fresh = accounts.find(a => a.id === user.id);
+      if (fresh) { showDashboard(fresh); return; }
+    } catch (e) {}
+  }
+})();
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+
+<!-- FLOATING AI CHAT BUBBLE -->
+<div id="floatAI" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;">
+  <button onclick="toggleFloatChat()" title="AI Assistant" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#FBBF24,#D97706);border:none;cursor:pointer;box-shadow:0 4px 24px rgba(251,191,36,0.40);display:flex;align-items:center;justify-content:center;color:#1A1A2E;font-size:20px;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <i id="floatAIIcon" class="fas fa-robot"></i>
+  </button>
+</div>
+<div id="floatChatPanel" style="display:none;position:fixed;bottom:96px;right:24px;z-index:9998;width:360px;background:#FFFFFF;border-radius:16px;box-shadow:0 8px 48px rgba(0,0,0,0.12),0 0 0 1px rgba(0,0,0,0.06);flex-direction:column;overflow:hidden;max-height:520px;border:1px solid rgba(251,191,36,0.20);">
+  <div style="background:#FFFBEB;padding:14px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid rgba(251,191,36,0.15);">
+    <div style="width:34px;height:34px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.30);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="fas fa-robot" style="color:#D97706;font-size:15px;"></i>
+    </div>
+    <div style="flex:1;min-width:0;">
+      <div style="color:#1A1A2E;font-weight:700;font-size:14px;font-family:'Inter',Arial,sans-serif;">AI Assistant</div>
+      <div style="color:#9999AA;font-size:11px;font-family:'Inter',Arial,sans-serif;letter-spacing:0.04em;">Powered by Claude · claude-sonnet-4-6</div>
+    </div>
+    <button onclick="toggleFloatChat()" style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.20);cursor:pointer;color:#9999AA;width:28px;height:28px;border-radius:8px;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;" onmouseover="this.style.color='#D97706'" onmouseout="this.style.color='#9999AA'">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div id="floatMessages" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;min-height:0;max-height:320px;">
+    <div class="chat-msg-assistant" style="display:block;">Welcome. I'm your Bodoir AI Assistant. Ask me about orders, products, inventory, or customers.</div>
+  </div>
+  <div style="padding:8px 12px;background:#FFFBEB;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid rgba(251,191,36,0.12);flex-shrink:0;">
+    <button onclick="sendSuggested('Summarize today\'s sales')" style="background:transparent;color:#D97706;border:1px solid rgba(251,191,36,0.25);cursor:pointer;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:600;font-family:'Inter',Arial,sans-serif;letter-spacing:0.04em;transition:all 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.10)'" onmouseout="this.style.background='transparent'">Today's sales</button>
+    <button onclick="sendSuggested('Which products are low on stock?')" style="background:transparent;color:#D97706;border:1px solid rgba(251,191,36,0.25);cursor:pointer;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:600;font-family:'Inter',Arial,sans-serif;letter-spacing:0.04em;transition:all 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.10)'" onmouseout="this.style.background='transparent'">Low stock</button>
+    <button onclick="sendSuggested('Who are my top customers?')" style="background:transparent;color:#D97706;border:1px solid rgba(251,191,36,0.25);cursor:pointer;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:600;font-family:'Inter',Arial,sans-serif;letter-spacing:0.04em;transition:all 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.10)'" onmouseout="this.style.background='transparent'">Top customers</button>
+    <button onclick="sendSuggested('Are there any pending orders I should process?')" style="background:transparent;color:#D97706;border:1px solid rgba(251,191,36,0.25);cursor:pointer;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:600;font-family:'Inter',Arial,sans-serif;letter-spacing:0.04em;transition:all 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.10)'" onmouseout="this.style.background='transparent'">Pending orders</button>
+  </div>
+  <div style="padding:10px 12px;background:#FFFFFF;border-top:1px solid rgba(251,191,36,0.10);display:flex;gap:8px;align-items:flex-end;flex-shrink:0;">
+    <textarea id="floatInput" rows="1" style="flex:1;border:1px solid rgba(251,191,36,0.20);border-radius:8px;padding:8px 12px;font-size:13px;resize:none;outline:none;font-family:'Inter',Arial,sans-serif;min-height:36px;max-height:80px;overflow-y:auto;transition:border-color 0.2s;background:#F9F7F4;color:#1A1A2E;" placeholder="Ask anything..." onfocus="this.style.borderColor='#FBBF24'" onblur="this.style.borderColor='rgba(251,191,36,0.20)'" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+    <button onclick="sendChatMessage()" style="background:linear-gradient(135deg,#FBBF24,#D97706);border:none;cursor:pointer;color:#1A1A2E;width:36px;height:36px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+  <div style="text-align:center;font-size:11px;color:#9999AA;padding:6px 12px 10px;background:#FFFBEB;font-family:'Inter',Arial,sans-serif;letter-spacing:0.04em;">API key required — add in Settings › API Config</div>
+</div>
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('loginUser').value = 'admin';
+  document.getElementById('loginPass').value = 'admin123';
+  doLogin();
+});
+</script>
+</body>
+</html>

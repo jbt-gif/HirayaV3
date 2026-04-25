@@ -1,0 +1,2660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Limitless Autoshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ══════════════════════════════════════════
+   LIMITLESS AUTOSHOP — NEON CYBERPUNK DESIGN SYSTEM
+   ui-ux-pro-max | Cyberpunk UI Style
+   ══════════════════════════════════════════ */
+
+/* ── Design Tokens ── */
+:root{
+  --c-bg:#000000;
+  --c-surface:#0F0F0F;
+  --c-surface2:#161616;
+  --c-surface3:#1E1E1E;
+  --c-border:rgba(255,255,255,0.07);
+  --c-border-hover:rgba(255,255,255,0.16);
+  /* Tuxedo + Racing Red palette */
+  --c-cyan:#E31C23;       /* Racing Red — primary accent */
+  --c-magenta:#C0C0C0;    /* Chrome Silver */
+  --c-lime:#AAAAAA;       /* Muted silver */
+  --c-orange:#D4750A;     /* Amber / copper */
+  --c-orange2:#E8A020;    /* Warm amber */
+  --c-blue:#C41230;       /* Deep red */
+  --c-purple:#888888;     /* Muted gray */
+  --c-yellow:#E8E8E8;     /* Near-white */
+  --c-red:#E31C23;        /* Racing Red */
+  --c-text:#FFFFFF;
+  --c-muted:#777777;
+  --c-muted2:#2A2A2A;
+  /* All glows removed — tuxedo is clean */
+  --glow-cyan:0 0 0 rgba(0,0,0,0);
+  --glow-magenta:0 0 0 rgba(0,0,0,0);
+  --glow-lime:0 0 0 rgba(0,0,0,0);
+  --glow-orange:0 0 0 rgba(0,0,0,0);
+  --glow-blue:0 0 0 rgba(0,0,0,0);
+  --glow-purple:0 0 0 rgba(0,0,0,0);
+  --glow-yellow:0 0 0 rgba(0,0,0,0);
+  --glow-red:0 0 0 rgba(0,0,0,0);
+}
+
+/* ── Keyframe Animations ── */
+/* neonPulse and neonFlicker replaced with identity — tuxedo stays still */
+@keyframes neonPulse{ 0%,100%{opacity:1;filter:none;} }
+@keyframes neonFlicker{ 0%,100%{opacity:1;} }
+@keyframes scanline{
+  0%{transform:translateY(-100%);}
+  100%{transform:translateY(100vh);}
+}
+@keyframes float{
+  0%{transform:translateY(0);}
+  100%{transform:translateY(-8px);}
+}
+@keyframes glowPing{ 0%,100%{box-shadow:none;} }
+@keyframes gradientShift{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+@keyframes borderGlow{ 0%,100%{border-color:rgba(255,255,255,0.07);} }
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(18px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes slideIn{
+  from{opacity:0;transform:translateX(24px);}
+  to{opacity:1;transform:translateX(0);}
+}
+@keyframes stripeShift{
+  from{background-position:0 0;}
+  to{background-position:144px 0;}
+}
+@keyframes carFloat{
+  0%{transform:translateY(0) rotate(0deg);}
+  50%{transform:translateY(-10px) rotate(1deg);}
+  100%{transform:translateY(0) rotate(0deg);}
+}
+@keyframes hudSweep{
+  0%{left:-100%;}
+  100%{left:200%;}
+}
+@keyframes gridPulse{
+  0%,100%{opacity:.3;}
+  50%{opacity:.6;}
+}
+
+/* ── Reset & Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  height:100%;
+  font-family:'Space Grotesk',sans-serif;
+  background:#000000;
+  color:var(--c-text);
+  /* Cyberpunk grid dot overlay */
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,0.035) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+h1,h2,h3,.brand-font{font-family:'Exo 2',sans-serif;}
+
+/* ── Sidebar ── */
+#sidebar{
+  position:fixed;top:0;left:0;width:260px;height:100vh;
+  background:var(--c-surface);
+  display:flex;flex-direction:column;
+  z-index:100;overflow-y:auto;
+  border-right:1px solid rgba(255,255,255,0.07);
+  box-shadow:4px 0 40px rgba(0,0,0,0.9),inset -1px 0 0 rgba(255,255,255,0.03);
+}
+/* Ambient cyan bloom at top of sidebar */
+#sidebar::before{
+  content:'';position:absolute;top:-60px;left:-30px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.07),transparent 70%);
+  pointer-events:none;
+}
+#sidebarLogoWrap{
+  display:flex;align-items:center;gap:12px;padding:24px 20px 20px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  position:relative;
+}
+#sidebarLogoWrap::after{
+  content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--c-cyan),transparent);
+  animation:neonPulse 2s ease-in-out infinite alternate;
+}
+.sidebar-brand-text{}
+#sidebarBrandName{
+  font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;
+  color:var(--c-text);letter-spacing:1px;line-height:1.1;
+}
+#sidebarBrandSubtitle{
+  font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--c-cyan);
+}
+#sidebarNav{flex:1;padding:16px 12px;}
+.nav-section-label{
+  font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,0.15);padding:16px 8px 6px;
+}
+.nav-link{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;
+  color:var(--c-muted);font-size:13.5px;font-weight:500;cursor:pointer;
+  transition:all .2s ease;text-decoration:none;margin-bottom:2px;
+  border-left:3px solid transparent;
+  position:relative;overflow:hidden;
+}
+.nav-link:hover{
+  background:rgba(255,255,255,0.05);
+  color:var(--c-cyan);
+  border-left-color:rgba(255,255,255,0.25);
+}
+.nav-link.active{
+  background:linear-gradient(90deg,rgba(227,28,35,0.10),rgba(196,18,48,0.05));
+  color:var(--c-cyan);border-left-color:var(--c-cyan);font-weight:600;
+  box-shadow:inset 0 0 20px rgba(0,0,0,0.2);
+}
+/* HUD sweep on active nav */
+.nav-link.active::after{
+  content:'';position:absolute;top:0;bottom:0;width:60px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.09),transparent);
+  animation:hudSweep 3s linear infinite;
+}
+.nav-link i{width:16px;text-align:center;font-size:13px;}
+#sidebarUserFooter{
+  padding:14px 16px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:center;gap:10px;
+}
+.sidebar-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--c-cyan),var(--c-magenta));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;
+  box-shadow:0 0 10px rgba(255,255,255,0.09),0 0 0 2px rgba(255,255,255,0.06);
+  animation:glowPing 3s ease-in-out infinite;
+}
+#sidebarUserName{font-size:13px;font-weight:600;color:var(--c-text);}
+#sidebarUserRole{
+  font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;
+  color:var(--c-cyan);
+}
+
+/* ── Main Content ── */
+#mainContent{margin-left:260px;min-height:100vh;display:flex;flex-direction:column;background:transparent;}
+header{
+  background:rgba(0,0,0,0.92);
+  border-bottom:1px solid rgba(255,255,255,0.09);
+  padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(16px);
+  box-shadow:0 1px 0 rgba(255,255,255,0.06),0 4px 40px rgba(0,0,0,0.9);
+}
+/* Animated header bottom border */
+header::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--c-cyan),var(--c-magenta),var(--c-cyan),transparent);
+  background-size:200% 100%;
+  animation:gradientShift 4s linear infinite;
+}
+#pageTitle{
+  font-family:'Exo 2',sans-serif;font-size:20px;font-weight:700;color:var(--c-text);
+  letter-spacing:1px;
+}
+.header-right{display:flex;align-items:center;gap:12px;}
+#clockDisplay{
+  font-size:13px;font-weight:600;
+  font-family:'Orbitron',sans-serif;
+  color:var(--c-yellow);
+}
+.header-btn{
+  width:36px;height:36px;border-radius:8px;
+  border:1px solid rgba(255,255,255,0.09);
+  background:rgba(255,255,255,0.03);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--c-muted);font-size:14px;transition:all .25s;
+}
+.header-btn:hover{
+  background:rgba(255,255,255,0.06);
+  color:var(--c-cyan);
+  border-color:rgba(255,255,255,0.28);
+  box-shadow:var(--glow-cyan);
+  transform:translateY(-1px);
+}
+#btnLogout{
+  background:linear-gradient(135deg,var(--c-cyan),var(--c-blue));
+  color:#000;border:none;padding:8px 16px;border-radius:8px;
+  font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .25s;display:flex;align-items:center;gap:6px;
+  box-shadow:var(--glow-cyan);
+  letter-spacing:.5px;
+}
+#btnLogout:hover{
+  box-shadow:0 0 8px rgba(255,255,255,0.15),0 0 20px rgba(255,255,255,0.06);
+  transform:translateY(-1px);
+}
+main.p-8{padding:28px;flex:1;}
+
+/* ── Page Sections ── */
+.page-section{animation:fadeUp .35s cubic-bezier(.22,.68,0,1.2) both;}
+.hidden{display:none!important;}
+
+/* ── KPI Cards ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:24px;}
+.kpi-card{
+  background:var(--c-surface2);border-radius:14px;padding:22px;
+  border:1px solid rgba(255,255,255,0.05);
+  position:relative;overflow:hidden;
+  transition:transform .25s cubic-bezier(.22,.68,0,1.2),box-shadow .25s;
+  animation:borderGlow 4s ease-in-out infinite;
+}
+/* Scanline overlay on cards */
+.kpi-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.04) 2px,rgba(255,255,255,0.04) 4px);
+}
+.kpi-card:hover{transform:translateY(-4px) scale(1.01);}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+
+/* Orange KPI */
+.kpi-card.orange::before{background:linear-gradient(90deg,var(--c-orange),var(--c-orange2));}
+.kpi-card.orange{box-shadow:0 0 0 1px rgba(255,255,255,0.05),0 2px 12px rgba(0,0,0,0.7);}
+.kpi-card.orange:hover{box-shadow:0 0 0 1px rgba(255,255,255,0.12),0 6px 24px rgba(0,0,0,0.7);}
+.kpi-card.orange .kpi-value{color:var(--c-orange2);text-shadow:none;}
+
+/* Blue KPI */
+.kpi-card.blue::before{background:linear-gradient(90deg,var(--c-cyan),var(--c-blue));}
+.kpi-card.blue{box-shadow:0 0 0 1px rgba(255,255,255,0.05),0 2px 12px rgba(0,0,0,0.7);}
+.kpi-card.blue:hover{box-shadow:0 0 0 1px rgba(255,255,255,0.12),0 6px 24px rgba(0,0,0,0.7);}
+.kpi-card.blue .kpi-value{color:var(--c-cyan);text-shadow:none;}
+
+/* Green KPI */
+.kpi-card.green::before{background:linear-gradient(90deg,var(--c-cyan),var(--c-blue));}
+.kpi-card.green{box-shadow:0 0 0 1px rgba(255,255,255,0.05),0 2px 12px rgba(0,0,0,0.7);}
+.kpi-card.green:hover{box-shadow:0 0 0 1px rgba(255,255,255,0.12),0 6px 24px rgba(0,0,0,0.7);}
+.kpi-card.green .kpi-value{color:var(--c-text);text-shadow:none;}
+
+/* Purple KPI */
+.kpi-card.purple::before{background:linear-gradient(90deg,var(--c-cyan),var(--c-blue));}
+.kpi-card.purple{box-shadow:0 0 0 1px rgba(255,255,255,0.05),0 2px 12px rgba(0,0,0,0.7);}
+.kpi-card.purple:hover{box-shadow:0 0 0 1px rgba(255,255,255,0.12),0 6px 24px rgba(0,0,0,0.7);}
+.kpi-card.purple .kpi-value{color:var(--c-text);text-shadow:none;}
+
+/* Red KPI */
+.kpi-card.red::before{background:linear-gradient(90deg,var(--c-red),var(--c-blue));}
+.kpi-card.red{box-shadow:0 0 0 1px rgba(255,255,255,0.05),0 2px 12px rgba(0,0,0,0.7);}
+.kpi-card.red:hover{box-shadow:0 0 0 1px rgba(255,255,255,0.12),0 6px 24px rgba(0,0,0,0.7);}
+.kpi-card.red .kpi-value{color:var(--c-red);text-shadow:none;}
+
+.kpi-label{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+  margin-bottom:10px;color:rgba(255,255,255,0.28);
+}
+.kpi-value{
+  font-family:'Orbitron',sans-serif;font-size:30px;font-weight:800;
+  color:var(--c-text);line-height:1;
+  animation:neonPulse 2.5s ease-in-out infinite alternate;
+}
+.kpi-sub{font-size:12px;color:var(--c-muted);margin-top:6px;}
+.kpi-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:36px;opacity:.08;color:var(--c-cyan);}
+
+/* ── Section Cards ── */
+.card{
+  background:var(--c-surface);border-radius:14px;padding:20px;
+  border:1px solid var(--c-border);
+  box-shadow:0 0 0 1px rgba(255,255,255,0.05),0 4px 20px rgba(0,0,0,0.45);
+  margin-bottom:20px;
+  transition:border-color .3s,box-shadow .3s;
+}
+.card:hover{
+  border-color:rgba(255,255,255,0.12);
+  box-shadow:0 0 0 1px rgba(255,255,255,0.06),0 6px 28px rgba(0,0,0,0.7);
+}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.card-title{
+  font-family:'Exo 2',sans-serif;font-size:16px;font-weight:700;
+  color:var(--c-text);
+}
+
+/* ── Tables ── */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{
+  padding:10px 14px;text-align:left;font-size:10px;font-weight:700;
+  color:var(--c-cyan);text-transform:uppercase;letter-spacing:1.5px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+tbody td{
+  padding:11px 14px;border-bottom:1px solid rgba(255,255,255,0.03);
+  color:#999999;vertical-align:middle;transition:all .2s;
+}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{
+  background:rgba(255,255,255,0.03);color:var(--c-text);
+  box-shadow:inset 3px 0 0 var(--c-cyan);
+}
+
+/* ── Badges ── */
+.badge{
+  display:inline-flex;align-items:center;padding:3px 10px;border-radius:6px;
+  font-size:11px;font-weight:700;letter-spacing:.4px;
+}
+.badge-scheduled{background:rgba(196,18,48,0.10);color:var(--c-blue);border:1px solid rgba(196,18,48,0.25);}
+.badge-inprogress{background:rgba(232,160,32,0.12);color:var(--c-orange2);border:1px solid rgba(232,160,32,0.3);}
+.badge-completed{background:rgba(255,255,255,0.06);color:var(--c-text);border:1px solid rgba(255,255,255,0.15);}
+.badge-cancelled{background:rgba(255,0,85,0.1);color:#FF4D6D;border:1px solid rgba(255,0,85,0.25);}
+.badge-open{background:rgba(232,160,32,0.12);color:var(--c-orange2);border:1px solid rgba(232,160,32,0.3);}
+.badge-closed{background:rgba(74,80,112,0.2);color:var(--c-muted);border:1px solid rgba(74,80,112,0.3);}
+.badge-paid{background:rgba(255,255,255,0.06);color:var(--c-text);border:1px solid rgba(255,255,255,0.15);}
+.badge-unpaid{background:rgba(255,0,85,0.1);color:#FF4D6D;border:1px solid rgba(255,0,85,0.25);}
+.badge-urgent{background:rgba(227,28,35,0.15);color:var(--c-cyan);border:1px solid rgba(227,28,35,0.4);}
+.badge-high{background:rgba(212,117,10,0.12);color:var(--c-orange2);border:1px solid rgba(212,117,10,0.3);}
+.badge-medium{background:rgba(232,160,32,0.1);color:var(--c-orange2);border:1px solid rgba(232,160,32,0.25);}
+.badge-low{background:rgba(255,255,255,0.04);color:var(--c-muted);border:1px solid rgba(255,255,255,0.10);}
+.badge-admin{background:rgba(227,28,35,0.10);color:var(--c-cyan);border:1px solid rgba(227,28,35,0.30);}
+.badge-manager{background:rgba(192,192,192,0.08);color:var(--c-magenta);border:1px solid rgba(192,192,192,0.2);}
+.badge-staff{background:rgba(255,255,255,0.05);color:var(--c-muted);border:1px solid rgba(255,255,255,0.12);}
+
+/* ── Buttons ── */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;
+  font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;cursor:pointer;
+  border:none;transition:all .25s;letter-spacing:.3px;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--c-cyan),var(--c-blue));
+  color:#000;box-shadow:var(--glow-cyan);font-weight:700;
+}
+.btn-primary:hover{
+  box-shadow:0 0 8px rgba(255,255,255,0.15),0 0 20px rgba(255,255,255,0.06);
+  transform:translateY(-1px);
+}
+.btn-secondary{
+  background:rgba(255,255,255,0.03);color:var(--c-text);
+  border:1px solid rgba(255,255,255,0.12);
+}
+.btn-secondary:hover{
+  background:rgba(255,255,255,0.06);color:var(--c-cyan);
+  border-color:rgba(255,255,255,0.22);
+  box-shadow:0 0 14px rgba(255,255,255,0.1);
+}
+.btn-sm{padding:5px 12px;font-size:12px;}
+.btn-danger{
+  background:rgba(255,0,85,0.1);color:#FF4D6D;
+  border:1px solid rgba(255,0,85,0.3);
+}
+.btn-danger:hover{
+  background:rgba(255,0,85,0.18);
+  box-shadow:0 0 14px rgba(255,0,85,0.3);
+  border-color:rgba(255,0,85,0.5);
+}
+
+/* ── Form Elements ── */
+.form-group{margin-bottom:16px;}
+.form-label{
+  display:block;font-size:12px;font-weight:600;margin-bottom:6px;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:rgba(255,255,255,0.4);
+}
+.form-control{
+  width:100%;padding:9px 12px;
+  border:1px solid rgba(255,255,255,0.07);border-radius:8px;
+  font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--c-text);
+  outline:none;transition:all .25s;background:var(--c-surface2);
+}
+.form-control:focus{
+  border-color:var(--c-cyan);
+  box-shadow:0 0 0 3px rgba(255,255,255,0.06),var(--glow-cyan);
+}
+select.form-control{cursor:pointer;}
+select.form-control option{background:#111111;color:var(--c-text);}
+textarea.form-control{resize:vertical;}
+
+/* ── Sub-tabs ── */
+.sub-tabs{
+  display:flex;gap:4px;margin-bottom:20px;
+  background:rgba(255,255,255,0.03);padding:4px;border-radius:10px;
+  width:fit-content;flex-wrap:wrap;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.sub-tab{
+  padding:7px 18px;border-radius:7px;border:none;font-family:'Space Grotesk',sans-serif;
+  font-size:13px;font-weight:600;color:var(--c-muted);cursor:pointer;background:transparent;transition:all .2s;
+}
+.sub-tab.active{
+  background:var(--c-surface2);color:var(--c-cyan);
+  box-shadow:0 1px 8px rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,0.18);
+}
+.sub-tab:hover:not(.active){color:var(--c-text);}
+
+/* ── Settings Tabs ── */
+.settings-tab{
+  padding:7px 16px;border-radius:7px;border:none;font-family:'Space Grotesk',sans-serif;
+  font-size:13px;font-weight:600;color:var(--c-muted);cursor:pointer;background:transparent;transition:all .2s;
+}
+.settings-tab.active{
+  background:var(--c-surface2);color:var(--c-cyan);
+  box-shadow:0 1px 8px rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,0.18);
+}
+
+/* ── Permission Chips ── */
+.perm-chip{
+  display:inline-flex;align-items:center;padding:3px 8px;border-radius:6px;
+  font-size:10px;font-weight:700;background:rgba(255,255,255,0.03);color:var(--c-muted);
+  text-transform:uppercase;letter-spacing:.5px;margin:2px;border:1px solid rgba(255,255,255,0.05);
+}
+.perm-chip.on{
+  background:rgba(255,255,255,0.06);color:var(--c-cyan);
+  border-color:rgba(255,255,255,0.18);
+}
+
+/* ── Role Badges ── */
+.role-badge-admin{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(227,28,35,0.10);color:var(--c-cyan);border:1px solid rgba(227,28,35,0.30);}
+.role-badge-manager{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(192,192,192,0.08);color:var(--c-magenta);border:1px solid rgba(192,192,192,0.2);}
+.role-badge-staff{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,0.05);color:var(--c-muted);border:1px solid rgba(255,255,255,0.12);}
+
+/* ── Activity Log Colors ── */
+.act-type-login    { color:var(--c-lime); }
+.act-type-logout   { color:#FF4D6D; }
+.act-type-navigate { color:var(--c-muted); }
+.act-type-appointments { color:var(--c-blue); }
+.act-type-workorders   { color:var(--c-yellow); }
+.act-type-customers    { color:var(--c-purple); }
+.act-type-services     { color:var(--c-cyan); }
+.act-type-settings     { color:var(--c-orange2); }
+
+/* ── Toast ── */
+#toastContainer{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+.toast{
+  background:var(--c-surface2);color:var(--c-text);padding:12px 18px;border-radius:10px;
+  font-size:13px;font-weight:500;
+  box-shadow:0 4px 20px rgba(0,0,0,.6),var(--glow-cyan),0 0 0 1px rgba(255,255,255,0.06);
+  animation:slideIn .3s cubic-bezier(.22,.68,0,1.2);
+  display:flex;align-items:center;gap:8px;
+  border-left:3px solid var(--c-cyan);min-width:220px;
+}
+
+/* ── Modal ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  backdrop-filter:blur(8px);
+}
+.modal-box{
+  background:var(--c-surface);border-radius:16px;padding:28px;width:100%;max-width:480px;
+  box-shadow:0 24px 60px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,0.06);
+  max-height:90vh;overflow-y:auto;
+  border:1px solid rgba(255,255,255,0.10);
+  position:relative;overflow:hidden;
+}
+/* Neon top strip on modal */
+.modal-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--c-cyan),var(--c-magenta),var(--c-cyan));
+  background-size:200% 100%;
+  animation:gradientShift 3s linear infinite;
+}
+.modal-title{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;color:var(--c-text);text-shadow:0 0 10px rgba(255,255,255,0.1);}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);}
+
+/* ── Login Page ── */
+#loginPage{min-height:100vh;display:flex;align-items:stretch;}
+.login-left{
+  flex:1;position:relative;display:flex;flex-direction:column;
+  align-items:flex-start;justify-content:center;padding:72px 80px;
+  overflow:hidden;
+  background-image:url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1400&auto=format&fit=crop&q=80');
+  background-size:cover;background-position:center;
+}
+/* Dark gradient overlay */
+.login-left::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.58) 55%,rgba(0,0,0,0.38) 100%);
+  z-index:0;
+}
+.login-left-content{position:relative;z-index:1;text-align:left;max-width:520px;}
+.login-brand-apex{
+  font-family:'Exo 2',sans-serif;font-size:96px;font-weight:900;
+  color:#FFFFFF;line-height:0.95;letter-spacing:2px;text-transform:uppercase;
+}
+.login-brand-auto{
+  font-family:'Exo 2',sans-serif;font-size:96px;font-weight:900;
+  color:#E31C23;line-height:0.95;letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.login-tagline{
+  color:rgba(255,255,255,0.65);font-size:13px;font-weight:600;
+  margin-bottom:16px;letter-spacing:4px;text-transform:uppercase;
+}
+.login-desc{
+  font-size:13px;color:rgba(255,255,255,0.38);max-width:360px;line-height:1.75;
+}
+.login-stats{
+  position:absolute;bottom:52px;right:52px;z-index:1;
+  display:flex;gap:36px;
+}
+.login-stat{text-align:center;}
+.login-stat-val{
+  font-family:'Orbitron',sans-serif;font-size:22px;font-weight:800;
+  color:#FFFFFF;
+}
+.login-stat-lbl{font-size:10px;color:rgba(255,255,255,0.45);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+.login-right{
+  width:420px;flex-shrink:0;
+  background:rgba(0,0,0,0.98);
+  display:flex;align-items:center;justify-content:center;padding:48px;
+  border-left:1px solid rgba(255,255,255,0.10);
+  box-shadow:-20px 0 60px rgba(0,0,0,0.8);
+  backdrop-filter:blur(10px);
+}
+.login-form-wrap{width:100%;}
+.login-form-title{
+  font-family:'Exo 2',sans-serif;font-size:26px;font-weight:800;
+  color:var(--c-text);margin-bottom:6px;
+}
+.login-form-sub{font-size:13px;color:var(--c-muted);margin-bottom:28px;}
+#loginHint{
+  margin-top:16px;padding:10px 14px;
+  background:rgba(255,255,255,0.05);border-radius:8px;
+  border:1px solid rgba(255,255,255,0.1);font-size:12px;color:var(--c-cyan);
+}
+.login-submit{
+  width:100%;padding:12px;
+  background:linear-gradient(135deg,#E31C23,#C41230);
+  color:#fff;border:none;border-radius:10px;
+  font-family:'Exo 2',sans-serif;font-size:16px;font-weight:800;letter-spacing:2px;cursor:pointer;
+  transition:all .25s;margin-top:8px;
+  box-shadow:0 4px 20px rgba(227,28,35,0.25);
+}
+.login-submit:hover{
+  box-shadow:0 6px 28px rgba(227,28,35,0.35);
+  transform:translateY(-2px) scale(1.01);
+}
+.login-error{color:#FF4D6D;font-size:13px;margin-top:8px;display:none;}
+
+/* ── Dark Mode (deeper void) ── */
+body.dm #mainContent,body.dm main.p-8{background:transparent;}
+body.dm html,body.dm body{background:#000000;}
+body.dm .card,body.dm .kpi-card{background:#0A0A0A;border-color:rgba(255,255,255,0.05);}
+body.dm header{background:rgba(0,0,0,0.96);}
+body.dm .form-control{background:#0A0A0A;border-color:rgba(255,255,255,0.05);}
+body.dm .sub-tabs{background:rgba(255,255,255,0.02);}
+body.dm .sub-tab.active,body.dm .settings-tab.active{background:#0A0A0A;}
+body.dm .modal-box{background:#0A0A0A;}
+body.dm .kanban-col{background:#0A0A0A;}
+body.dm .kanban-card{background:#141414;}
+
+/* ── Kanban Board ── */
+.kanban-board{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+.kanban-col{
+  background:var(--c-surface2);border-radius:12px;padding:14px;
+  border:1px solid rgba(255,255,255,0.06);
+  transition:border-color .3s;
+}
+.kanban-col:hover{border-color:rgba(255,255,255,0.1);}
+.kanban-col-title{
+  font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--c-cyan);margin-bottom:12px;
+  text-shadow:0 0 6px rgba(255,255,255,0.09);
+}
+.kanban-card{
+  background:var(--c-surface);border-radius:8px;padding:12px;margin-bottom:8px;
+  border:1px solid rgba(255,255,255,0.05);
+  border-left:3px solid var(--c-cyan);
+  transition:all .25s;
+}
+.kanban-card:hover{
+  box-shadow:var(--glow-cyan);
+  border-color:rgba(255,255,255,0.15);
+  transform:translateX(2px);
+}
+.kanban-card-id{
+  font-size:10px;font-weight:700;color:var(--c-cyan);
+  margin-bottom:4px;font-family:'Orbitron',sans-serif;
+  text-shadow:none;
+}
+.kanban-card-title{font-size:13px;font-weight:600;color:var(--c-text);}
+.kanban-card-sub{font-size:11px;color:var(--c-muted);margin-top:4px;}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--c-bg);}
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,var(--c-cyan),var(--c-magenta));
+  border-radius:99px;
+}
+::-webkit-scrollbar-thumb:hover{
+  background:linear-gradient(180deg,rgba(227,28,35,0.9),rgba(196,18,48,0.9));
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+}
+
+/* ── Chart Canvas — tuxedo: no glow ── */
+canvas{ filter:none; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════ LOGIN PAGE ══ -->
+<div id="loginPage">
+  <div class="login-left">
+    <div class="racing-stripe"></div>
+    <div class="login-left-content">
+      <div class="login-car-icon">
+        <!-- Car SVG Icon -->
+        <svg viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="carBody" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#E31C23"/>
+              <stop offset="100%" stop-color="#C41230"/>
+            </linearGradient>
+            <linearGradient id="carRoof" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#C41230"/>
+              <stop offset="100%" stop-color="#E31C23"/>
+            </linearGradient>
+          </defs>
+          <rect x="10" y="34" width="100" height="28" rx="8" fill="url(#carBody)" opacity=".95"/>
+          <path d="M22 34 L36 18 L84 18 L98 34Z" fill="url(#carRoof)"/>
+          <rect x="38" y="20" width="20" height="12" rx="3" fill="rgba(255,255,255,.12)"/>
+          <rect x="62" y="20" width="20" height="12" rx="3" fill="rgba(255,255,255,.12)"/>
+          <circle cx="32" cy="62" r="10" fill="#080808"/>
+          <circle cx="32" cy="62" r="6" fill="#111111"/>
+          <circle cx="32" cy="62" r="3" fill="#C0C0C0"/>
+          <circle cx="88" cy="62" r="10" fill="#080808"/>
+          <circle cx="88" cy="62" r="6" fill="#111111"/>
+          <circle cx="88" cy="62" r="3" fill="#C0C0C0"/>
+          <rect x="8" y="40" width="6" height="4" rx="2" fill="#FFFDBB" opacity=".9"/>
+          <rect x="106" y="40" width="6" height="4" rx="2" fill="#FF6644" opacity=".8"/>
+          <path d="M30 34 L10 34" stroke="#C0C0C0" stroke-width="1" opacity=".4"/>
+          <path d="M90 34 L110 34" stroke="#C0C0C0" stroke-width="1" opacity=".4"/>
+        </svg>
+      </div>
+      <div class="login-brand">LIMITLESS <span>AUTOSHOP</span></div>
+      <div class="login-tagline">LIMITLESS AUTO WORKSHOP</div>
+      <div class="login-stats">
+        <div class="login-stat">
+          <div class="login-stat-val">500+</div>
+          <div class="login-stat-lbl">Cars Serviced</div>
+        </div>
+        <div class="login-stat">
+          <div class="login-stat-val">12</div>
+          <div class="login-stat-lbl">Service Bays</div>
+        </div>
+        <div class="login-stat">
+          <div class="login-stat-val">99%</div>
+          <div class="login-stat-lbl">Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="login-form-wrap">
+      <div class="login-form-title">Welcome Back</div>
+      <div class="login-form-sub" id="loginBrandSubtitle">Sign in to your LIMITLESS dashboard</div>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input id="loginUser" type="text" class="form-control" placeholder="Enter username" autocomplete="username"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input id="loginPass" type="password" class="form-control" placeholder="Enter password" autocomplete="current-password"/>
+      </div>
+      <button class="login-submit" onclick="handleLogin()"><i class="fas fa-bolt mr-2"></i>SIGN IN</button>
+      <div id="loginError" class="login-error">Invalid username or password.</div>
+      <div id="loginHint" style="display:none;">
+        <i class="fas fa-info-circle mr-1"></i>
+        Default login: <strong>admin</strong> / <strong>apex2024</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ DASHBOARD APP ══ -->
+<div id="dashboardApp" class="hidden">
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <div id="sidebarLogoWrap">
+<div class="sidebar-brand-text">
+        <div id="sidebarBrandName">LIMITLESS AUTOSHOP</div>
+        <div id="sidebarBrandSubtitle">CARE SYSTEM</div>
+      </div>
+    </div>
+    <nav id="sidebarNav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-link active" id="nav-overview" onclick="showPage('overview',this)">
+        <i class="fas fa-gauge-high"></i> Overview
+      </a>
+      <a class="nav-link" id="nav-appointments" onclick="showPage('appointments',this)">
+        <i class="fas fa-calendar-check"></i> Appointments
+      </a>
+      <a class="nav-link" id="nav-workorders" onclick="showPage('workorders',this)">
+        <i class="fas fa-wrench"></i> Work Orders
+      </a>
+      <div class="nav-section-label">Business</div>
+      <a class="nav-link" id="nav-services" onclick="showPage('services',this)">
+        <i class="fas fa-list-check"></i> Services
+      </a>
+      <a class="nav-link" id="nav-customers" onclick="showPage('customers',this)">
+        <i class="fas fa-users"></i> Customers
+      </a>
+      <a class="nav-link" id="nav-staff" onclick="showPage('staff',this)">
+        <i class="fas fa-id-badge"></i> Staff
+      </a>
+      <div class="nav-section-label">Insights</div>
+      <a class="nav-link" id="nav-analytics" onclick="showPage('analytics',this)">
+        <i class="fas fa-chart-line"></i> Analytics
+      </a>
+      <div class="nav-section-label">System</div>
+      <a class="nav-link" id="nav-settings" onclick="showPage('settings',this)">
+        <i class="fas fa-gear"></i> Settings
+      </a>
+    </nav>
+    <div id="sidebarUserFooter">
+      <div class="sidebar-avatar" id="sidebarAvatar">A</div>
+      <div>
+        <div id="sidebarUserName">Administrator</div>
+        <div id="sidebarUserRole">Admin</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div id="mainContent">
+    <header>
+      <div id="pageTitle">Overview</div>
+      <div class="header-right">
+        <span id="clockDisplay"></span>
+        <button class="header-btn" onclick="toggleDarkMode()" title="Dark Mode"><i class="fas fa-moon"></i></button>
+        <button id="btnLogout" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+      </div>
+    </header>
+    <main class="p-8">
+
+      <!-- ── Overview ── -->
+      <div id="page-overview" class="page-section">
+        <div class="kpi-grid">
+          <div class="kpi-card orange">
+            <div class="kpi-label">Today's Appointments</div>
+            <div class="kpi-value" id="ov-appointments">0</div>
+            <div class="kpi-sub">Scheduled for today</div>
+            <i class="fas fa-calendar kpi-icon"></i>
+          </div>
+          <div class="kpi-card blue">
+            <div class="kpi-label">Active Work Orders</div>
+            <div class="kpi-value" id="ov-workorders">0</div>
+            <div class="kpi-sub">In progress right now</div>
+            <i class="fas fa-wrench kpi-icon"></i>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-label">Revenue This Month</div>
+            <div class="kpi-value" id="ov-revenue">₱0</div>
+            <div class="kpi-sub">Completed services</div>
+            <i class="fas fa-peso-sign kpi-icon"></i>
+          </div>
+          <div class="kpi-card purple">
+            <div class="kpi-label">Total Customers</div>
+            <div class="kpi-value" id="ov-customers">0</div>
+            <div class="kpi-sub">Registered clients</div>
+            <i class="fas fa-users kpi-icon"></i>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Revenue Trend</div></div>
+            <canvas id="ovRevenueChart" height="200"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Performance Gauges</div></div>
+            <div id="ovGaugeWrap" style="display:flex;justify-content:space-around;align-items:center;padding:12px 0;gap:8px;flex-wrap:wrap;"></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:20px;">
+          <div class="card-header">
+            <div class="card-title">Recent Activity</div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Order #</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Status</th><th>Amount</th></tr></thead>
+              <tbody id="ovRecentBody">
+                <tr><td colspan="6" style="text-align:center;color:#9CA3AF;padding:20px;">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Appointments ── -->
+      <div id="page-appointments" class="page-section hidden">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-calendar-check mr-2" style="color:#E31C23;"></i>Appointments</div>
+            <button class="btn btn-primary btn-sm" onclick="openAppointmentModal()"><i class="fas fa-plus"></i> New Appointment</button>
+          </div>
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+            <select class="form-control" style="width:auto;" id="apptFilterStatus" onchange="renderAppointments()">
+              <option value="">All Status</option>
+              <option>Scheduled</option><option>In Progress</option><option>Completed</option><option>Cancelled</option>
+            </select>
+            <input class="form-control" style="width:auto;min-width:200px;" id="apptSearch" placeholder="Search customer or vehicle..." oninput="renderAppointments()"/>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Date & Time</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="apptBody"><tr><td colspan="7" style="text-align:center;color:#9CA3AF;padding:20px;">No appointments yet.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Work Orders ── -->
+      <div id="page-workorders" class="page-section hidden">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-wrench mr-2" style="color:#E31C23;"></i>Work Orders</div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-secondary btn-sm" id="woViewTable" onclick="setWOView('table')"><i class="fas fa-table"></i> Table</button>
+              <button class="btn btn-secondary btn-sm" id="woViewKanban" onclick="setWOView('kanban')"><i class="fas fa-columns"></i> Kanban</button>
+              <button class="btn btn-primary btn-sm" onclick="openWOModal()"><i class="fas fa-plus"></i> New Order</button>
+            </div>
+          </div>
+          <div id="woTableView">
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Order #</th><th>Customer</th><th>Vehicle</th><th>Services</th><th>Mechanic</th><th>Status</th><th>Total</th><th>Actions</th></tr></thead>
+                <tbody id="woBody"><tr><td colspan="8" style="text-align:center;color:#9CA3AF;padding:20px;">No work orders yet.</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="woKanbanView" class="hidden">
+            <div class="kanban-board" id="woKanban"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Services ── -->
+      <div id="page-services" class="page-section hidden">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-list-check mr-2" style="color:#E31C23;"></i>Service Catalog</div>
+            <button class="btn btn-primary btn-sm" onclick="openServiceModal()"><i class="fas fa-plus"></i> Add Service</button>
+          </div>
+          <div class="sub-tabs" id="servicesTabs">
+            <button class="sub-tab active" onclick="filterServices('All')">All</button>
+            <button class="sub-tab" onclick="filterServices('Detailing')">Detailing</button>
+            <button class="sub-tab" onclick="filterServices('Mechanical')">Mechanical</button>
+            <button class="sub-tab" onclick="filterServices('Electrical')">Electrical</button>
+            <button class="sub-tab" onclick="filterServices('Tires')">Tires</button>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Service Name</th><th>Category</th><th>Duration</th><th>Price</th><th>Description</th><th>Actions</th></tr></thead>
+              <tbody id="servicesBody"><tr><td colspan="6" style="text-align:center;color:#9CA3AF;padding:20px;">No services yet.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Customers ── -->
+      <div id="page-customers" class="page-section hidden">
+        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="kpi-card orange">
+            <div class="kpi-label">Total Customers</div>
+            <div class="kpi-value" id="cust-total">0</div>
+            <i class="fas fa-users kpi-icon"></i>
+          </div>
+          <div class="kpi-card blue">
+            <div class="kpi-label">New This Month</div>
+            <div class="kpi-value" id="cust-new">0</div>
+            <i class="fas fa-user-plus kpi-icon"></i>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-label">Returning Clients</div>
+            <div class="kpi-value" id="cust-returning">0</div>
+            <i class="fas fa-repeat kpi-icon"></i>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-users mr-2" style="color:#E31C23;"></i>Customer Directory</div>
+            <button class="btn btn-primary btn-sm" onclick="openCustomerModal()"><i class="fas fa-plus"></i> Add Customer</button>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Mobile</th><th>Email</th><th>Vehicle(s)</th><th>Total Visits</th><th>Last Visit</th><th>Actions</th></tr></thead>
+              <tbody id="custBody"><tr><td colspan="7" style="text-align:center;color:#9CA3AF;padding:20px;">No customers yet.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Staff ── -->
+      <div id="page-staff" class="page-section hidden">
+        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="kpi-card orange">
+            <div class="kpi-label">Total Staff</div>
+            <div class="kpi-value" id="staff-total">0</div>
+            <i class="fas fa-id-badge kpi-icon"></i>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-label">Present Today</div>
+            <div class="kpi-value" id="staff-present">0</div>
+            <i class="fas fa-check-circle kpi-icon"></i>
+          </div>
+          <div class="kpi-card red">
+            <div class="kpi-label">On Leave</div>
+            <div class="kpi-value" id="staff-leave">0</div>
+            <i class="fas fa-plane kpi-icon"></i>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-id-badge mr-2" style="color:#E31C23;"></i>Staff Directory</div>
+            <button class="btn btn-primary btn-sm" onclick="openStaffModal()"><i class="fas fa-plus"></i> Add Staff</button>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Role</th><th>Specialty</th><th>Status</th><th>Mobile</th><th>Salary</th><th>Actions</th></tr></thead>
+              <tbody id="staffBody"><tr><td colspan="7" style="text-align:center;color:#9CA3AF;padding:20px;">No staff yet.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Analytics ── -->
+      <div id="page-analytics" class="page-section hidden">
+        <div class="kpi-grid">
+          <div class="kpi-card orange">
+            <div class="kpi-label">Total Revenue</div>
+            <div class="kpi-value" id="an-revenue">₱0</div>
+            <div class="kpi-sub">All time</div>
+          </div>
+          <div class="kpi-card blue">
+            <div class="kpi-label">Avg. Order Value</div>
+            <div class="kpi-value" id="an-avg">₱0</div>
+            <div class="kpi-sub">Per work order</div>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-label">Completed Orders</div>
+            <div class="kpi-value" id="an-completed">0</div>
+            <div class="kpi-sub">Total closed</div>
+          </div>
+          <div class="kpi-card purple">
+            <div class="kpi-label">Top Service</div>
+            <div class="kpi-value" id="an-top" style="font-size:18px;">—</div>
+            <div class="kpi-sub">By frequency</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Monthly Revenue</div></div>
+            <canvas id="anRevenueChart" height="220"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Service Mix</div></div>
+            <canvas id="anServiceChart" height="240"></canvas>
+          </div>
+        </div>
+        <div class="card" style="margin-top:20px;">
+          <div class="card-header"><div class="card-title">Status Distribution</div></div>
+          <canvas id="anStatusChart" height="140"></canvas>
+        </div>
+      </div>
+
+
+
+      <!-- ── Settings ── -->
+      <div id="page-settings" class="page-section hidden">
+        <div class="flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-fit flex-wrap" style="display:flex;gap:6px;margin-bottom:24px;background:rgba(255,255,255,0.04);padding:4px;border-radius:12px;width:fit-content;flex-wrap:wrap;border:1px solid rgba(255,255,255,0.06);">
+          <button class="settings-tab active" id="stab-accounts" onclick="switchSettingsTab('accounts')"><i class="fas fa-users mr-1"></i> Accounts</button>
+          <button class="settings-tab" id="stab-whitelabel" onclick="switchSettingsTab('whitelabel')"><i class="fas fa-paint-brush mr-1"></i> White Label</button>
+          <button class="settings-tab" id="stab-loginhistory" onclick="switchSettingsTab('loginhistory')"><i class="fas fa-sign-in-alt mr-1"></i> Login History</button>
+          <button class="settings-tab" id="stab-activity" onclick="switchSettingsTab('activity')"><i class="fas fa-history mr-1"></i> Activity Log</button>
+        </div>
+
+        <!-- Accounts Panel -->
+        <div id="spanel-accounts">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Sub-Accounts</div>
+              <button class="btn btn-primary btn-sm" onclick="openAccountModal()"><i class="fas fa-plus"></i> New Account</button>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Display Name</th><th>Username</th><th>Role</th><th>Pages</th><th>Actions</th></tr></thead>
+                <tbody id="accountsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Login History Panel -->
+        <div id="spanel-loginhistory" class="hidden">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Login History</div>
+              <button class="btn btn-danger btn-sm" onclick="clearLoginHistory()"><i class="fas fa-trash"></i> Clear</button>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Time</th><th>Username</th><th>Display Name</th><th>Role</th></tr></thead>
+                <tbody id="loginHistoryBody"><tr><td colspan="4" style="text-align:center;color:#9CA3AF;padding:20px;">No login history yet.</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Log Panel -->
+        <div id="spanel-activity" class="hidden">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Activity Log</div>
+              <button class="btn btn-danger btn-sm" onclick="clearActivityLog()"><i class="fas fa-trash"></i> Clear</button>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Time</th><th>User</th><th>Type</th><th>Detail</th></tr></thead>
+                <tbody id="activityLogBody"><tr><td colspan="4" style="text-align:center;color:#9CA3AF;padding:20px;">No activity yet.</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- White Label Panel -->
+        <div id="spanel-whitelabel" class="hidden">
+          <div class="card" style="max-width:560px;">
+            <div class="card-header"><div class="card-title">Brand Settings</div></div>
+            <div class="form-group">
+              <label class="form-label">Company Name</label>
+              <input id="wl-name" class="form-control" placeholder="LIMITLESS AUTOSHOP"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subtitle</label>
+              <input id="wl-sub" class="form-control" placeholder="CARE SYSTEM"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Logo URL</label>
+              <input id="wl-logo" class="form-control" placeholder="https://..."/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sidebar Color</label>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input id="wl-color" type="color" value="#0D0D14" style="width:44px;height:36px;border-radius:6px;border:1px solid #E5E7EB;cursor:pointer;"/>
+                <input id="wl-colorhex" class="form-control" placeholder="#0D0D14" style="flex:1;" oninput="document.getElementById('wl-color').value=this.value"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                <input type="checkbox" id="wl-hideHint"/>
+                <span class="form-label" style="margin:0;">Hide default credentials hint on login</span>
+              </label>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <button class="btn btn-primary" onclick="saveWhiteLabel()"><i class="fas fa-save"></i> Save</button>
+              <button class="btn btn-secondary" onclick="resetWhiteLabel()"><i class="fas fa-undo"></i> Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ MODALS ══ -->
+
+<!-- Account Modal -->
+<div id="accountModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-title" id="accountModalTitle">New Account</div>
+    <input type="hidden" id="acct-id"/>
+    <div class="form-group">
+      <label class="form-label">Display Name</label>
+      <input id="acct-displayname" class="form-control" placeholder="Full name"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input id="acct-username" class="form-control" placeholder="username"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input id="acct-password" type="password" class="form-control" placeholder="Password"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Role</label>
+      <select id="acct-role" class="form-control" onchange="onRoleChange()">
+        <option value="admin">Admin</option>
+        <option value="manager">Manager</option>
+        <option value="staff">Staff</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Page Access</label>
+      <div id="permChecks" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeAccountModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveAccount()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Appointment Modal -->
+<div id="appointmentModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-title" id="apptModalTitle">New Appointment</div>
+    <input type="hidden" id="appt-id"/>
+    <div class="form-group">
+      <label class="form-label">Customer Name</label>
+      <input id="appt-customer" class="form-control" placeholder="Customer name"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Vehicle (Make / Model / Plate)</label>
+      <input id="appt-vehicle" class="form-control" placeholder="e.g. Toyota Vios ABC-1234"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Service</label>
+      <input id="appt-service" class="form-control" placeholder="e.g. Full Detail, Oil Change"/>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input id="appt-date" type="date" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Time</label>
+        <input id="appt-time" type="time" class="form-control"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select id="appt-status" class="form-control">
+        <option>Scheduled</option><option>In Progress</option><option>Completed</option><option>Cancelled</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <textarea id="appt-notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('appointmentModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveAppointment()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Work Order Modal -->
+<div id="woModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-title" id="woModalTitle">New Work Order</div>
+    <input type="hidden" id="wo-id"/>
+    <div class="form-group">
+      <label class="form-label">Customer Name</label>
+      <input id="wo-customer" class="form-control" placeholder="Customer name"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Vehicle</label>
+      <input id="wo-vehicle" class="form-control" placeholder="Make / Model / Plate"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Services (comma-separated)</label>
+      <input id="wo-services" class="form-control" placeholder="e.g. Oil Change, Tire Rotation"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Assigned Mechanic</label>
+      <input id="wo-mechanic" class="form-control" placeholder="Mechanic name"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select id="wo-status" class="form-control">
+        <option>Scheduled</option><option>In Progress</option><option>Completed</option><option>Cancelled</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Total Amount (₱)</label>
+      <input id="wo-total" type="number" class="form-control" placeholder="0"/>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('woModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveWO()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Service Modal -->
+<div id="serviceModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-title" id="svcModalTitle">Add Service</div>
+    <input type="hidden" id="svc-id"/>
+    <div class="form-group">
+      <label class="form-label">Service Name</label>
+      <input id="svc-name" class="form-control" placeholder="e.g. Full Interior Detail"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select id="svc-cat" class="form-control">
+        <option>Detailing</option><option>Mechanical</option><option>Electrical</option><option>Tires</option><option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Duration (hrs)</label>
+      <input id="svc-duration" type="number" class="form-control" placeholder="2" step="0.5"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Price (₱)</label>
+      <input id="svc-price" type="number" class="form-control" placeholder="0"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea id="svc-desc" class="form-control" rows="2" placeholder="Brief description..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('serviceModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveService()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Customer Modal -->
+<div id="customerModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-title" id="custModalTitle">Add Customer</div>
+    <input type="hidden" id="cust-id"/>
+    <div class="form-group">
+      <label class="form-label">Full Name</label>
+      <input id="cust-name" class="form-control" placeholder="Customer full name"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mobile</label>
+      <input id="cust-mobile" class="form-control" placeholder="09XXXXXXXXX"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input id="cust-email" type="email" class="form-control" placeholder="email@example.com"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Vehicle(s)</label>
+      <input id="cust-vehicles" class="form-control" placeholder="e.g. Toyota Vios ABC-1234"/>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('customerModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCustomer()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Staff Modal -->
+<div id="staffModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-title" id="staffModalTitle">Add Staff</div>
+    <input type="hidden" id="staff-id"/>
+    <div class="form-group">
+      <label class="form-label">Full Name</label>
+      <input id="staff-name" class="form-control" placeholder="Staff full name"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Role / Position</label>
+      <input id="staff-role" class="form-control" placeholder="e.g. Head Mechanic"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Specialty</label>
+      <input id="staff-specialty" class="form-control" placeholder="e.g. Engine Repair, Detailing"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select id="staff-status" class="form-control">
+        <option>Present</option><option>On Leave</option><option>Absent</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mobile</label>
+      <input id="staff-mobile" class="form-control" placeholder="09XXXXXXXXX"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Salary (₱)</label>
+      <input id="staff-salary" type="number" class="form-control" placeholder="0"/>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('staffModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveStaff()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div id="confirmModal" class="modal-overlay hidden">
+  <div class="modal-box" style="max-width:360px;">
+    <div class="modal-title" id="confirmTitle">Are you sure?</div>
+    <p id="confirmMsg" style="color:#9CA3AF;font-size:14px;margin-bottom:0;"></p>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('confirmModal')">Cancel</button>
+      <button class="btn btn-danger" id="confirmOkBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toastContainer"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  webhookUrl: 'https://n8n.srv1326251.hstgr.cloud/webhook/apex-auto',
+};
+const N8N_WEBHOOK = CONFIG.webhookUrl;
+
+async function callBackend(module, action = '', data = {}) {
+  try {
+    const res = await fetch(N8N_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ module, action, data })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.warn(`Backend call failed (${module}/${action}):`, e.message);
+    return null;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STORAGE KEYS
+══════════════════════════════════════════════════════════════ */
+const ACCOUNTS_KEY       = 'apex_accounts';
+const WL_KEY             = 'apex_whitelabel';
+const LOGIN_HISTORY_KEY  = 'apex_login_history';
+const ACTIVITY_LOG_KEY   = 'apex_activity_log';
+const APPT_KEY           = 'apex_appointments';
+const WO_KEY             = 'apex_workorders';
+const SERVICES_KEY       = 'apex_services';
+const CUSTOMERS_KEY      = 'apex_customers';
+const STAFF_KEY          = 'apex_staff';
+const MAX_LOGIN_HIST     = 200;
+const MAX_ACTIVITY_LOG   = 500;
+
+/* ══════════════════════════════════════════════════════════════
+   ROLE & PERMISSIONS
+══════════════════════════════════════════════════════════════ */
+const ALL_PAGES = ['overview','appointments','workorders','services','customers','staff','analytics','settings'];
+const ROLE_DEFAULTS = {
+  admin:   ['overview','appointments','workorders','services','customers','staff','analytics','settings'],
+  manager: ['overview','appointments','workorders','services','customers','staff','analytics'],
+  staff:   ['overview','appointments','workorders'],
+};
+const DEFAULT_ACCOUNTS = [{
+  id:'1', username:'admin', password:'apex2024', role:'admin',
+  displayName:'Administrator', pages: ROLE_DEFAULTS.admin.slice()
+}];
+
+let currentUser = null;
+let _woView = 'table';
+let _serviceFilter = 'All';
+let _apexCharts = {};
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE MAP
+══════════════════════════════════════════════════════════════ */
+const PAGE_MAP = {
+  overview:     { title:'Overview',      init: initOverview },
+  appointments: { title:'Appointments',  init: initAppointments },
+  workorders:   { title:'Work Orders',   init: initWorkOrders },
+  services:     { title:'Services',      init: initServices },
+  customers:    { title:'Customers',     init: initCustomers },
+  staff:        { title:'Staff',         init: initStaff },
+  analytics:    { title:'Analytics',     init: initAnalytics },
+  settings:     { title:'Settings',      init: () => renderAccountsTable() },
+};
+
+/* ══════════════════════════════════════════════════════════════
+   UTILITY
+══════════════════════════════════════════════════════════════ */
+function genKey(){ return Date.now()+'_'+Math.random().toString(36).slice(2,6); }
+function pesoK(v){ if(v>=1000000) return '₱'+(v/1000000).toFixed(1)+'M'; if(v>=1000) return '₱'+(v/1000).toFixed(0)+'K'; return '₱'+v.toLocaleString(); }
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function showToast(msg, type='success'){
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.style.borderLeftColor = type==='error'?'#FF0055':type==='warning'?'#FFFDBB':'#E31C23';
+  el.innerHTML = `<i class="fas fa-${type==='error'?'xmark-circle':type==='warning'?'triangle-exclamation':'check-circle'}" style="color:${type==='error'?'#FF0055':type==='warning'?'#FFFDBB':'#E31C23'};"></i> ${escHtml(msg)}`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(()=>el.remove(), 3500);
+}
+
+function showConfirm(title, msg, onOk){
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent = msg;
+  const btn = document.getElementById('confirmOkBtn');
+  btn.onclick = ()=>{ closeModal('confirmModal'); onOk(); };
+  document.getElementById('confirmModal').classList.remove('hidden');
+}
+
+function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
+
+function updateClock(){
+  const now = new Date();
+  document.getElementById('clockDisplay').textContent = now.toLocaleString('en-PH',{hour:'2-digit',minute:'2-digit',weekday:'short',month:'short',day:'numeric'});
+}
+
+function toggleDarkMode(){
+  document.body.classList.toggle('dm');
+  localStorage.setItem('apex_dm', document.body.classList.contains('dm') ? '1':'0');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════════════════════ */
+function showPage(name, el){
+  if(currentUser && !currentUser.pages.includes(name)){
+    showToast('Access denied','error'); return;
+  }
+  document.querySelectorAll('[id^="page-"]').forEach(p=>p.classList.add('hidden'));
+  document.getElementById('page-'+name).classList.remove('hidden');
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.getElementById('pageTitle').textContent = PAGE_MAP[name]?.title || name;
+  if(PAGE_MAP[name]?.init) PAGE_MAP[name].init();
+  logActivity('navigate','Opened '+PAGE_MAP[name].title);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOGIN / LOGOUT / PERMISSIONS
+══════════════════════════════════════════════════════════════ */
+function getAccounts(){ try{ return JSON.parse(localStorage.getItem(ACCOUNTS_KEY))||DEFAULT_ACCOUNTS; }catch(e){ return DEFAULT_ACCOUNTS; } }
+function saveAccounts(arr){ localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(arr)); }
+
+function handleLogin(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const accounts = getAccounts();
+  const account = accounts.find(a=>a.username===u && a.password===p);
+  if(!account){
+    document.getElementById('loginError').style.display='block';
+    return;
+  }
+  document.getElementById('loginError').style.display='none';
+  currentUser = account;
+  logLogin(account);
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('dashboardApp').classList.remove('hidden');
+  document.getElementById('floatAI').style.display = 'block';
+  applyPermissions(account);
+  showPage('overview', document.getElementById('nav-overview'));
+}
+
+function handleLogout(){
+  logActivity('logout','Logged out');
+  currentUser = null;
+  document.getElementById('dashboardApp').classList.add('hidden');
+  document.getElementById('floatAI').style.display = 'none';
+  document.getElementById('floatChatPanel').style.display = 'none';
+  document.getElementById('loginPage').classList.remove('hidden');
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+}
+
+function applyPermissions(account){
+  ALL_PAGES.forEach(p=>{
+    const el = document.getElementById('nav-'+p);
+    if(el) el.style.display = account.pages.includes(p)?'flex':'none';
+  });
+  document.getElementById('sidebarUserName').textContent = account.displayName;
+  document.getElementById('sidebarUserRole').textContent = account.role.charAt(0).toUpperCase()+account.role.slice(1);
+  document.getElementById('sidebarAvatar').textContent = account.displayName.charAt(0).toUpperCase();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOGIN HISTORY & ACTIVITY LOG
+══════════════════════════════════════════════════════════════ */
+function getLoginHistory(){ try{ return JSON.parse(localStorage.getItem(LOGIN_HISTORY_KEY))||[]; }catch(e){ return []; } }
+function getActivityLog(){  try{ return JSON.parse(localStorage.getItem(ACTIVITY_LOG_KEY))||[];  }catch(e){ return []; } }
+
+function logLogin(account){
+  const history = getLoginHistory();
+  history.unshift({ id:Date.now().toString(), timestamp:new Date().toISOString(), username:account.username, displayName:account.displayName, role:account.role });
+  history.length = Math.min(history.length, MAX_LOGIN_HIST);
+  localStorage.setItem(LOGIN_HISTORY_KEY, JSON.stringify(history));
+}
+
+function logActivity(actionType, detail){
+  if(!currentUser) return;
+  const log = getActivityLog();
+  log.unshift({ id:Date.now().toString(), timestamp:new Date().toISOString(), username:currentUser.username, displayName:currentUser.displayName, actionType, detail });
+  log.length = Math.min(log.length, MAX_ACTIVITY_LOG);
+  localStorage.setItem(ACTIVITY_LOG_KEY, JSON.stringify(log));
+}
+
+function fmtLogTime(iso){
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'})+' '+d.toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});
+}
+
+const ACTIVITY_ICONS = {
+  login:'sign-in-alt', logout:'sign-out-alt', navigate:'compass',
+  appointments:'calendar-check', workorders:'wrench', customers:'users', services:'list-check', settings:'gear'
+};
+
+function renderLoginHistory(){
+  const rows = getLoginHistory();
+  const tb = document.getElementById('loginHistoryBody');
+  if(!rows.length){ tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:#9CA3AF;padding:20px;">No login history yet.</td></tr>'; return; }
+  tb.innerHTML = rows.map(r=>`
+    <tr>
+      <td>${escHtml(fmtLogTime(r.timestamp))}</td>
+      <td><code style="background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;font-size:12px;color:#E31C23;">@${escHtml(r.username)}</code></td>
+      <td>${escHtml(r.displayName)}</td>
+      <td><span class="role-badge-${escHtml(r.role)}">${escHtml(r.role)}</span></td>
+    </tr>`).join('');
+}
+
+function renderActivityLog(){
+  const log = getActivityLog();
+  const tb = document.getElementById('activityLogBody');
+  if(!log.length){ tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:#9CA3AF;padding:20px;">No activity yet.</td></tr>'; return; }
+  tb.innerHTML = log.map(r=>{
+    const icon = ACTIVITY_ICONS[r.actionType]||'circle';
+    return `<tr>
+      <td>${escHtml(fmtLogTime(r.timestamp))}</td>
+      <td><code style="background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;font-size:12px;color:#E31C23;">@${escHtml(r.username)}</code></td>
+      <td><span class="act-type-${escHtml(r.actionType)}"><i class="fas fa-${icon} mr-1"></i>${escHtml(r.actionType)}</span></td>
+      <td>${escHtml(r.detail)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function clearLoginHistory(){
+  showConfirm('Clear Login History','This will permanently delete all login history records.', ()=>{
+    localStorage.removeItem(LOGIN_HISTORY_KEY);
+    renderLoginHistory();
+    showToast('Login history cleared');
+  });
+}
+
+function clearActivityLog(){
+  showConfirm('Clear Activity Log','This will permanently delete all activity log records.', ()=>{
+    localStorage.removeItem(ACTIVITY_LOG_KEY);
+    renderActivityLog();
+    showToast('Activity log cleared');
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SETTINGS — TABS & ACCOUNTS
+══════════════════════════════════════════════════════════════ */
+function switchSettingsTab(tab){
+  ['accounts','whitelabel','loginhistory','activity'].forEach(t=>{
+    document.getElementById('stab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('spanel-'+t).classList.toggle('hidden', t!==tab);
+  });
+  if(tab==='accounts')     renderAccountsTable();
+  if(tab==='whitelabel')   loadWLForm();
+  if(tab==='loginhistory') renderLoginHistory();
+  if(tab==='activity')     renderActivityLog();
+}
+
+function renderAccountsTable(){
+  const accounts = getAccounts();
+  const tb = document.getElementById('accountsBody');
+  tb.innerHTML = accounts.map(a=>`
+    <tr>
+      <td><strong>${escHtml(a.displayName)}</strong></td>
+      <td><code style="background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;font-size:12px;color:#E31C23;">@${escHtml(a.username)}</code></td>
+      <td><span class="role-badge-${escHtml(a.role)}">${escHtml(a.role)}</span></td>
+      <td>${(a.pages||[]).map(p=>`<span class="perm-chip on">${escHtml(p)}</span>`).join('')}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="openAccountModal(${escHtml(JSON.stringify(a))})"><i class="fas fa-edit"></i></button>
+        ${a.id!=='1'?`<button class="btn btn-danger btn-sm" onclick="deleteAccount('${escHtml(a.id)}')"><i class="fas fa-trash"></i></button>`:''}
+      </td>
+    </tr>`).join('');
+}
+
+function openAccountModal(account){
+  document.getElementById('accountModalTitle').textContent = account ? 'Edit Account':'New Account';
+  document.getElementById('acct-id').value = account?.id||'';
+  document.getElementById('acct-displayname').value = account?.displayName||'';
+  document.getElementById('acct-username').value = account?.username||'';
+  document.getElementById('acct-password').value = account?.password||'';
+  document.getElementById('acct-role').value = account?.role||'staff';
+  buildPermChecks(account?.pages||ROLE_DEFAULTS['staff']);
+  document.getElementById('accountModal').classList.remove('hidden');
+}
+
+function closeAccountModal(){ closeModal('accountModal'); }
+
+function buildPermChecks(selectedPages){
+  const wrap = document.getElementById('permChecks');
+  wrap.innerHTML = ALL_PAGES.map(p=>`
+    <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;font-weight:600;color:#9CA3AF;">
+      <input type="checkbox" class="perm-check" value="${p}" ${selectedPages.includes(p)?'checked':''}/>
+      ${p}
+    </label>`).join('');
+}
+
+function onRoleChange(){
+  const role = document.getElementById('acct-role').value;
+  buildPermChecks(ROLE_DEFAULTS[role]||[]);
+}
+
+function saveAccount(){
+  const id = document.getElementById('acct-id').value;
+  const displayName = document.getElementById('acct-displayname').value.trim();
+  const username = document.getElementById('acct-username').value.trim();
+  const password = document.getElementById('acct-password').value;
+  const role = document.getElementById('acct-role').value;
+  const pages = [...document.querySelectorAll('.perm-check:checked')].map(c=>c.value);
+  if(!displayName||!username||!password){ showToast('All fields required','error'); return; }
+  const accounts = getAccounts();
+  if(!id && accounts.find(a=>a.username===username)){ showToast('Username already taken','error'); return; }
+  if(id){
+    const i = accounts.findIndex(a=>a.id===id);
+    if(i>-1) accounts[i] = {...accounts[i], displayName, username, password, role, pages};
+    logActivity('settings',`Updated account: @${username} (${role})`);
+  } else {
+    accounts.push({ id:Date.now().toString(), displayName, username, password, role, pages });
+    logActivity('settings',`Created account: @${username} (${role})`);
+  }
+  saveAccounts(accounts);
+  closeAccountModal();
+  renderAccountsTable();
+  showToast('Account saved');
+}
+
+function deleteAccount(id){
+  showConfirm('Delete Account','This cannot be undone.',()=>{
+    const accounts = getAccounts();
+    const delAcct = accounts.find(a=>a.id===id);
+    saveAccounts(accounts.filter(a=>a.id!==id));
+    logActivity('settings','Deleted account: @'+(delAcct?.username||id));
+    renderAccountsTable();
+    showToast('Account deleted');
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WHITE LABEL
+══════════════════════════════════════════════════════════════ */
+function getWLConfig(){
+  try{ return JSON.parse(localStorage.getItem(WL_KEY))||getDefaultWL(); }catch(e){ return getDefaultWL(); }
+}
+function getDefaultWL(){
+  return { companyName:'LIMITLESS AUTOSHOP', subtitle:'AUTO WORKSHOP', logoUrl:'', sidebarColor:'#0D0D14', hideHint:false };
+}
+function saveWLConfig(cfg){ localStorage.setItem(WL_KEY, JSON.stringify(cfg)); }
+
+function applyWhiteLabel(cfg){
+  document.getElementById('sidebarBrandName').textContent = cfg.companyName||'LIMITLESS AUTOSHOP';
+  document.getElementById('sidebarBrandSubtitle').textContent = cfg.subtitle||'CARE SYSTEM';
+  document.getElementById('sidebar').style.background = cfg.sidebarColor||'#0F0F0F';
+  document.getElementById('loginBrandSubtitle').textContent = 'Sign in to your '+(cfg.companyName||'LIMITLESS')+ ' dashboard';
+  document.getElementById('loginHint').style.display = cfg.hideHint?'none':'block';
+  document.title = (cfg.companyName||'Limitless Autoshop')+ ' Dashboard';
+}
+
+function loadWLForm(){
+  const cfg = getWLConfig();
+  document.getElementById('wl-name').value = cfg.companyName||'';
+  document.getElementById('wl-sub').value = cfg.subtitle||'';
+  document.getElementById('wl-logo').value = cfg.logoUrl||'';
+  document.getElementById('wl-color').value = cfg.sidebarColor||'#0F0F0F';
+  document.getElementById('wl-colorhex').value = cfg.sidebarColor||'#0F0F0F';
+  document.getElementById('wl-hideHint').checked = !!cfg.hideHint;
+}
+
+function saveWhiteLabel(){
+  const cfg = {
+    companyName: document.getElementById('wl-name').value.trim()||'LIMITLESS AUTOSHOP',
+    subtitle:    document.getElementById('wl-sub').value.trim()||'CARE SYSTEM',
+    logoUrl:     document.getElementById('wl-logo').value.trim(),
+    sidebarColor:document.getElementById('wl-color').value,
+    hideHint:    document.getElementById('wl-hideHint').checked,
+  };
+  saveWLConfig(cfg);
+  applyWhiteLabel(cfg);
+  logActivity('settings','Updated white label brand settings');
+  showToast('Brand settings saved');
+}
+
+function resetWhiteLabel(){
+  localStorage.removeItem(WL_KEY);
+  applyWhiteLabel(getDefaultWL());
+  loadWLForm();
+  showToast('Brand settings reset');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   APPOINTMENTS
+══════════════════════════════════════════════════════════════ */
+function getAppointments(){ try{ return JSON.parse(localStorage.getItem(APPT_KEY))||[]; }catch(e){ return []; } }
+function saveAppointments(arr){ localStorage.setItem(APPT_KEY, JSON.stringify(arr)); }
+
+function initAppointments(){
+  renderAppointments();
+  callBackend('appointments').then(d => {
+    if (d?.appointments?.length) {
+      saveAppointments(d.appointments.map(a => ({...a, _key: a._key || a.id || genKey()})));
+      renderAppointments();
+    }
+  });
+}
+
+function renderAppointments(){
+  let appts = getAppointments();
+  const filterStatus = document.getElementById('apptFilterStatus')?.value||'';
+  const search = (document.getElementById('apptSearch')?.value||'').toLowerCase();
+  if(filterStatus) appts = appts.filter(a=>a.status===filterStatus);
+  if(search) appts = appts.filter(a=>(a.customer+a.vehicle).toLowerCase().includes(search));
+  const tb = document.getElementById('apptBody');
+  if(!appts.length){ tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:#9CA3AF;padding:20px;">No appointments found.</td></tr>'; return; }
+  tb.innerHTML = appts.map(a=>`
+    <tr>
+      <td><code style="font-size:11px;background:rgba(255,255,255,0.05);padding:2px 5px;border-radius:4px;color:#E31C23;">${escHtml(a.id)}</code></td>
+      <td>${escHtml(a.date)} ${escHtml(a.time)}</td>
+      <td>${escHtml(a.customer)}</td>
+      <td>${escHtml(a.vehicle)}</td>
+      <td>${escHtml(a.service)}</td>
+      <td><span class="badge badge-${a.status.toLowerCase().replace(' ','')}">
+        ${escHtml(a.status)}</span></td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="openAppointmentModal(${escHtml(JSON.stringify(a))})"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="deleteAppointment('${escHtml(a._key)}')"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+function openAppointmentModal(appt){
+  document.getElementById('apptModalTitle').textContent = appt?'Edit Appointment':'New Appointment';
+  document.getElementById('appt-id').value = appt?._key||'';
+  document.getElementById('appt-customer').value = appt?.customer||'';
+  document.getElementById('appt-vehicle').value = appt?.vehicle||'';
+  document.getElementById('appt-service').value = appt?.service||'';
+  document.getElementById('appt-date').value = appt?.date||'';
+  document.getElementById('appt-time').value = appt?.time||'';
+  document.getElementById('appt-status').value = appt?.status||'Scheduled';
+  document.getElementById('appt-notes').value = appt?.notes||'';
+  document.getElementById('appointmentModal').classList.remove('hidden');
+}
+
+function saveAppointment(){
+  const _key = document.getElementById('appt-id').value;
+  const customer = document.getElementById('appt-customer').value.trim();
+  const vehicle = document.getElementById('appt-vehicle').value.trim();
+  const service = document.getElementById('appt-service').value.trim();
+  const date = document.getElementById('appt-date').value;
+  const time = document.getElementById('appt-time').value;
+  const status = document.getElementById('appt-status').value;
+  const notes = document.getElementById('appt-notes').value.trim();
+  if(!customer||!vehicle||!service||!date){ showToast('Fill in required fields','error'); return; }
+  const appts = getAppointments();
+  const idNum = appts.length + 1;
+  const id = 'APT-'+String(idNum).padStart(4,'0');
+  if(_key){
+    const i = appts.findIndex(a=>a._key===_key);
+    if(i>-1) appts[i] = {...appts[i], customer, vehicle, service, date, time, status, notes};
+    logActivity('appointments',`Updated appointment: ${customer} (${service})`);
+  } else {
+    appts.push({ _key:genKey(), id, customer, vehicle, service, date, time, status, notes });
+    callBackend('appointments', 'write_appointment', { apptId:id, customer, vehicle, service, date, time, status, notes });
+    logActivity('appointments',`Created appointment: ${customer} — ${service}`);
+  }
+  saveAppointments(appts);
+  closeModal('appointmentModal');
+  renderAppointments();
+  showToast('Appointment saved');
+}
+
+function deleteAppointment(_key){
+  showConfirm('Delete Appointment','This cannot be undone.',()=>{
+    saveAppointments(getAppointments().filter(a=>a._key!==_key));
+    logActivity('appointments','Deleted appointment');
+    renderAppointments();
+    showToast('Appointment deleted');
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WORK ORDERS
+══════════════════════════════════════════════════════════════ */
+function getWorkOrders(){ try{ return JSON.parse(localStorage.getItem(WO_KEY))||[]; }catch(e){ return []; } }
+function saveWorkOrders(arr){ localStorage.setItem(WO_KEY, JSON.stringify(arr)); }
+
+function initWorkOrders(){
+  renderWOTable(); renderWOKanban();
+  callBackend('workorders').then(d => {
+    if (d?.workorders?.length) {
+      saveWorkOrders(d.workorders.map(o => ({...o, _key: o._key || o.id || genKey()})));
+      renderWOTable(); renderWOKanban();
+    }
+  });
+}
+
+function setWOView(view){
+  _woView = view;
+  document.getElementById('woTableView').classList.toggle('hidden', view!=='table');
+  document.getElementById('woKanbanView').classList.toggle('hidden', view!=='kanban');
+  document.getElementById('woViewTable').classList.toggle('btn-primary', view==='table');
+  document.getElementById('woViewTable').classList.toggle('btn-secondary', view!=='table');
+  document.getElementById('woViewKanban').classList.toggle('btn-primary', view==='kanban');
+  document.getElementById('woViewKanban').classList.toggle('btn-secondary', view!=='kanban');
+}
+
+function renderWOTable(){
+  const orders = getWorkOrders();
+  const tb = document.getElementById('woBody');
+  if(!orders.length){ tb.innerHTML='<tr><td colspan="8" style="text-align:center;color:#9CA3AF;padding:20px;">No work orders yet.</td></tr>'; return; }
+  tb.innerHTML = orders.map(o=>`
+    <tr>
+      <td><code style="font-size:11px;background:rgba(255,255,255,0.05);padding:2px 5px;border-radius:4px;color:#E31C23;">${escHtml(o.id)}</code></td>
+      <td>${escHtml(o.customer)}</td>
+      <td>${escHtml(o.vehicle)}</td>
+      <td>${escHtml(o.services)}</td>
+      <td>${escHtml(o.mechanic)}</td>
+      <td><span class="badge badge-${o.status.toLowerCase().replace(' ','')}">
+        ${escHtml(o.status)}</span></td>
+      <td>₱${Number(o.total||0).toLocaleString()}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="openWOModal(${escHtml(JSON.stringify(o))})"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="deleteWO('${escHtml(o._key)}')"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderWOKanban(){
+  const orders = getWorkOrders();
+  const statuses = ['Scheduled','In Progress','Completed','Cancelled'];
+  document.getElementById('woKanban').innerHTML = statuses.map(s=>`
+    <div class="kanban-col">
+      <div class="kanban-col-title">${s} <span style="background:rgba(0,0,0,.08);padding:1px 6px;border-radius:99px;font-size:10px;">${orders.filter(o=>o.status===s).length}</span></div>
+      ${orders.filter(o=>o.status===s).map(o=>`
+        <div class="kanban-card">
+          <div class="kanban-card-id">${escHtml(o.id)}</div>
+          <div class="kanban-card-title">${escHtml(o.customer)}</div>
+          <div class="kanban-card-sub">${escHtml(o.vehicle)}</div>
+          <div class="kanban-card-sub" style="margin-top:4px;color:#E31C23;font-weight:600;">₱${Number(o.total||0).toLocaleString()}</div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function openWOModal(o){
+  document.getElementById('woModalTitle').textContent = o?'Edit Work Order':'New Work Order';
+  document.getElementById('wo-id').value = o?._key||'';
+  document.getElementById('wo-customer').value = o?.customer||'';
+  document.getElementById('wo-vehicle').value = o?.vehicle||'';
+  document.getElementById('wo-services').value = o?.services||'';
+  document.getElementById('wo-mechanic').value = o?.mechanic||'';
+  document.getElementById('wo-status').value = o?.status||'Scheduled';
+  document.getElementById('wo-total').value = o?.total||'';
+  document.getElementById('woModal').classList.remove('hidden');
+}
+
+function saveWO(){
+  const _key = document.getElementById('wo-id').value;
+  const customer = document.getElementById('wo-customer').value.trim();
+  const vehicle = document.getElementById('wo-vehicle').value.trim();
+  const services = document.getElementById('wo-services').value.trim();
+  const mechanic = document.getElementById('wo-mechanic').value.trim();
+  const status = document.getElementById('wo-status').value;
+  const total = document.getElementById('wo-total').value||'0';
+  if(!customer||!vehicle){ showToast('Customer and vehicle required','error'); return; }
+  const orders = getWorkOrders();
+  const idNum = orders.length + 1;
+  const id = 'WO-'+String(idNum).padStart(4,'0');
+  if(_key){
+    const i = orders.findIndex(o=>o._key===_key);
+    if(i>-1) orders[i] = {...orders[i], customer, vehicle, services, mechanic, status, total};
+    logActivity('workorders',`Updated work order: ${customer} (${id})`);
+  } else {
+    orders.push({ _key:genKey(), id, customer, vehicle, services, mechanic, status, total });
+    callBackend('workorders', 'write_workorder', { woId:id, customer, vehicle, services, mechanic, status, total, date: new Date().toISOString().split('T')[0] });
+    logActivity('workorders',`Created work order: ${customer} — ${services}`);
+  }
+  saveWorkOrders(orders);
+  closeModal('woModal');
+  renderWOTable();
+  renderWOKanban();
+  showToast('Work order saved');
+}
+
+function deleteWO(_key){
+  showConfirm('Delete Work Order','This cannot be undone.',()=>{
+    saveWorkOrders(getWorkOrders().filter(o=>o._key!==_key));
+    logActivity('workorders','Deleted work order');
+    renderWOTable();
+    renderWOKanban();
+    showToast('Work order deleted');
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SERVICES CATALOG
+══════════════════════════════════════════════════════════════ */
+function getServices(){ try{ return JSON.parse(localStorage.getItem(SERVICES_KEY))||getDefaultServices(); }catch(e){ return getDefaultServices(); } }
+function saveServices(arr){ localStorage.setItem(SERVICES_KEY, JSON.stringify(arr)); }
+function getDefaultServices(){
+  return [
+    { _key:'svc1', name:'Full Interior Detail', category:'Detailing', duration:'3', price:'1800', desc:'Complete interior vacuum, wipe, shampoo' },
+    { _key:'svc2', name:'Exterior Hand Wash & Wax', category:'Detailing', duration:'2', price:'1200', desc:'Hand wash, clay bar, wax polish' },
+    { _key:'svc3', name:'Oil Change (Synthetic)', category:'Mechanical', duration:'1', price:'800', desc:'Full synthetic oil change with filter' },
+    { _key:'svc4', name:'Brake Inspection & Pad Replacement', category:'Mechanical', duration:'2', price:'2500', desc:'Check and replace brake pads' },
+    { _key:'svc5', name:'Tire Rotation & Balancing', category:'Tires', duration:'1', price:'600', desc:'Rotate all four tires and balance' },
+  ];
+}
+
+function initServices(){
+  renderServicesTable();
+  callBackend('services').then(d => {
+    if (d?.services?.length) {
+      saveServices(d.services.map(s => ({...s, _key: s._key || s.id || genKey()})));
+      renderServicesTable();
+    }
+  });
+}
+
+function filterServices(cat){
+  _serviceFilter = cat;
+  document.querySelectorAll('#servicesTabs .sub-tab').forEach(b=>b.classList.toggle('active', b.textContent.trim()===cat));
+  renderServicesTable();
+}
+
+function renderServicesTable(){
+  let svcs = getServices();
+  if(_serviceFilter!=='All') svcs = svcs.filter(s=>s.category===_serviceFilter);
+  const tb = document.getElementById('servicesBody');
+  if(!svcs.length){ tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:#9CA3AF;padding:20px;">No services in this category.</td></tr>'; return; }
+  tb.innerHTML = svcs.map(s=>`
+    <tr>
+      <td><strong>${escHtml(s.name)}</strong></td>
+      <td><span class="badge badge-scheduled">${escHtml(s.category)}</span></td>
+      <td>${escHtml(s.duration)} hr${s.duration!=1?'s':''}</td>
+      <td>₱${Number(s.price||0).toLocaleString()}</td>
+      <td style="color:#6B7280;font-size:12px;">${escHtml(s.desc)}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="openServiceModal(${escHtml(JSON.stringify(s))})"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="deleteService('${escHtml(s._key)}')"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+function openServiceModal(s){
+  document.getElementById('svcModalTitle').textContent = s?'Edit Service':'Add Service';
+  document.getElementById('svc-id').value = s?._key||'';
+  document.getElementById('svc-name').value = s?.name||'';
+  document.getElementById('svc-cat').value = s?.category||'Detailing';
+  document.getElementById('svc-duration').value = s?.duration||'';
+  document.getElementById('svc-price').value = s?.price||'';
+  document.getElementById('svc-desc').value = s?.desc||'';
+  document.getElementById('serviceModal').classList.remove('hidden');
+}
+
+function saveService(){
+  const _key = document.getElementById('svc-id').value;
+  const name = document.getElementById('svc-name').value.trim();
+  const category = document.getElementById('svc-cat').value;
+  const duration = document.getElementById('svc-duration').value;
+  const price = document.getElementById('svc-price').value;
+  const desc = document.getElementById('svc-desc').value.trim();
+  if(!name){ showToast('Service name required','error'); return; }
+  const svcs = getServices();
+  if(_key){
+    const i = svcs.findIndex(s=>s._key===_key);
+    if(i>-1) svcs[i] = {...svcs[i], name, category, duration, price, desc};
+    logActivity('services',`Updated service: ${name}`);
+  } else {
+    svcs.push({ _key:genKey(), name, category, duration, price, desc });
+    callBackend('services', 'write_service', { name, category, duration, price, desc });
+    logActivity('services',`Added service: ${name} (${category})`);
+  }
+  saveServices(svcs);
+  closeModal('serviceModal');
+  renderServicesTable();
+  showToast('Service saved');
+}
+
+function deleteService(_key){
+  showConfirm('Delete Service','This cannot be undone.',()=>{
+    saveServices(getServices().filter(s=>s._key!==_key));
+    logActivity('services','Deleted service');
+    renderServicesTable();
+    showToast('Service deleted');
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CUSTOMERS
+══════════════════════════════════════════════════════════════ */
+function getCustomers(){ try{ return JSON.parse(localStorage.getItem(CUSTOMERS_KEY))||[]; }catch(e){ return []; } }
+function saveCustomers(arr){ localStorage.setItem(CUSTOMERS_KEY, JSON.stringify(arr)); }
+
+function initCustomers(){
+  renderCustomers();
+  callBackend('customers').then(d => {
+    if (d?.customers?.length) {
+      saveCustomers(d.customers.map(c => ({...c, _key: c._key || c.id || genKey()})));
+      renderCustomers();
+    }
+  });
+}
+
+function renderCustomers(){
+  const customers = getCustomers();
+  document.getElementById('cust-total').textContent = customers.length;
+  document.getElementById('cust-new').textContent = customers.filter(c=>c.isNew).length;
+  document.getElementById('cust-returning').textContent = customers.filter(c=>!c.isNew).length;
+  const tb = document.getElementById('custBody');
+  if(!customers.length){ tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:#9CA3AF;padding:20px;">No customers yet.</td></tr>'; return; }
+  tb.innerHTML = customers.map(c=>`
+    <tr>
+      <td><strong>${escHtml(c.name)}</strong></td>
+      <td>${escHtml(c.mobile)}</td>
+      <td>${escHtml(c.email)}</td>
+      <td>${escHtml(c.vehicles)}</td>
+      <td>${c.visits||0}</td>
+      <td style="color:#9CA3AF;font-size:12px;">${c.lastVisit||'—'}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="openCustomerModal(${escHtml(JSON.stringify(c))})"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${escHtml(c._key)}')"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+function openCustomerModal(c){
+  document.getElementById('custModalTitle').textContent = c?'Edit Customer':'Add Customer';
+  document.getElementById('cust-id').value = c?._key||'';
+  document.getElementById('cust-name').value = c?.name||'';
+  document.getElementById('cust-mobile').value = c?.mobile||'';
+  document.getElementById('cust-email').value = c?.email||'';
+  document.getElementById('cust-vehicles').value = c?.vehicles||'';
+  document.getElementById('customerModal').classList.remove('hidden');
+}
+
+function saveCustomer(){
+  const _key = document.getElementById('cust-id').value;
+  const name = document.getElementById('cust-name').value.trim();
+  const mobile = document.getElementById('cust-mobile').value.trim();
+  const email = document.getElementById('cust-email').value.trim();
+  const vehicles = document.getElementById('cust-vehicles').value.trim();
+  if(!name||!mobile){ showToast('Name and mobile required','error'); return; }
+  const customers = getCustomers();
+  if(_key){
+    const i = customers.findIndex(c=>c._key===_key);
+    if(i>-1) customers[i] = {...customers[i], name, mobile, email, vehicles};
+    logActivity('customers',`Updated customer: ${name}`);
+  } else {
+    customers.push({ _key:genKey(), name, mobile, email, vehicles, visits:0, isNew:true });
+    callBackend('customers', 'write_customer', { name, mobile, email, vehicles, visits: 0, lastVisit: new Date().toISOString().split('T')[0] });
+    logActivity('customers',`Added customer: ${name}`);
+  }
+  saveCustomers(customers);
+  closeModal('customerModal');
+  renderCustomers();
+  showToast('Customer saved');
+}
+
+function deleteCustomer(_key){
+  showConfirm('Delete Customer','This cannot be undone.',()=>{
+    saveCustomers(getCustomers().filter(c=>c._key!==_key));
+    logActivity('customers','Deleted customer');
+    renderCustomers();
+    showToast('Customer deleted');
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STAFF
+══════════════════════════════════════════════════════════════ */
+function getStaff(){ try{ return JSON.parse(localStorage.getItem(STAFF_KEY))||[]; }catch(e){ return []; } }
+function saveStaff(arr){ localStorage.setItem(STAFF_KEY, JSON.stringify(arr)); }
+
+function initStaff(){
+  renderStaff();
+  callBackend('staff').then(d => {
+    if (d?.staff?.length) {
+      localStorage.setItem(STAFF_KEY, JSON.stringify(d.staff.map(s => ({...s, _key: s._key || s.id || genKey()}))));
+      renderStaff();
+    }
+  });
+}
+
+function renderStaff(){
+  const staff = getStaff();
+  document.getElementById('staff-total').textContent = staff.length;
+  document.getElementById('staff-present').textContent = staff.filter(s=>s.status==='Present').length;
+  document.getElementById('staff-leave').textContent = staff.filter(s=>s.status==='On Leave').length;
+  const tb = document.getElementById('staffBody');
+  if(!staff.length){ tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:#9CA3AF;padding:20px;">No staff yet.</td></tr>'; return; }
+  const statusClass = { Present:'badge-completed', 'On Leave':'badge-medium', Absent:'badge-cancelled' };
+  tb.innerHTML = staff.map(s=>`
+    <tr>
+      <td><strong>${escHtml(s.name)}</strong></td>
+      <td>${escHtml(s.role)}</td>
+      <td>${escHtml(s.specialty)}</td>
+      <td><span class="badge ${statusClass[s.status]||'badge-open'}">${escHtml(s.status)}</span></td>
+      <td>${escHtml(s.mobile)}</td>
+      <td>₱${Number(s.salary||0).toLocaleString()}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="openStaffModal(${escHtml(JSON.stringify(s))})"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="deleteStaffMember('${escHtml(s._key)}')"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+function openStaffModal(s){
+  document.getElementById('staffModalTitle').textContent = s?'Edit Staff':'Add Staff';
+  document.getElementById('staff-id').value = s?._key||'';
+  document.getElementById('staff-name').value = s?.name||'';
+  document.getElementById('staff-role').value = s?.role||'';
+  document.getElementById('staff-specialty').value = s?.specialty||'';
+  document.getElementById('staff-status').value = s?.status||'Present';
+  document.getElementById('staff-mobile').value = s?.mobile||'';
+  document.getElementById('staff-salary').value = s?.salary||'';
+  document.getElementById('staffModal').classList.remove('hidden');
+}
+
+function saveStaff(){
+  const _key = document.getElementById('staff-id').value;
+  const name = document.getElementById('staff-name').value.trim();
+  const role = document.getElementById('staff-role').value.trim();
+  const specialty = document.getElementById('staff-specialty').value.trim();
+  const status = document.getElementById('staff-status').value;
+  const mobile = document.getElementById('staff-mobile').value.trim();
+  const salary = document.getElementById('staff-salary').value;
+  if(!name||!role){ showToast('Name and role required','error'); return; }
+  const staff = getStaff();
+  if(_key){
+    const i = staff.findIndex(s=>s._key===_key);
+    if(i>-1) staff[i] = {...staff[i], name, role, specialty, status, mobile, salary};
+    logActivity('settings',`Updated staff: ${name}`);
+  } else {
+    staff.push({ _key:genKey(), name, role, specialty, status, mobile, salary });
+    callBackend('staff', 'write_staff', { name, role, specialty, status, mobile, salary });
+    logActivity('settings',`Added staff: ${name} (${role})`);
+  }
+  saveStaff(staff);
+  closeModal('staffModal');
+  renderStaff();
+  showToast('Staff saved');
+}
+
+function deleteStaffMember(_key){
+  showConfirm('Delete Staff Member','This cannot be undone.',()=>{
+    saveStaff(getStaff().filter(s=>s._key!==_key));
+    logActivity('settings','Deleted staff member');
+    renderStaff();
+    showToast('Staff member deleted');
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   OVERVIEW
+══════════════════════════════════════════════════════════════ */
+function initOverview(){
+  const today = new Date().toISOString().slice(0,10);
+  const appts = getAppointments();
+  const orders = getWorkOrders();
+  const customers = getCustomers();
+
+  document.getElementById('ov-appointments').textContent = appts.filter(a=>a.date===today).length;
+  document.getElementById('ov-workorders').textContent = orders.filter(o=>o.status==='In Progress').length;
+  document.getElementById('ov-customers').textContent = customers.length;
+
+  const revenue = orders.filter(o=>o.status==='Completed').reduce((s,o)=>s+Number(o.total||0),0);
+  document.getElementById('ov-revenue').textContent = pesoK(revenue);
+
+  // Recent orders
+  const tb = document.getElementById('ovRecentBody');
+  const recent = [...orders].reverse().slice(0,8);
+  if(!recent.length){ tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:#9CA3AF;padding:20px;">No orders yet.</td></tr>'; }
+  else tb.innerHTML = recent.map(o=>`
+    <tr>
+      <td><code style="font-size:11px;background:rgba(255,255,255,0.05);padding:2px 5px;border-radius:4px;color:#E31C23;">${escHtml(o.id)}</code></td>
+      <td>${escHtml(o.customer)}</td>
+      <td>${escHtml(o.vehicle)}</td>
+      <td>${escHtml(o.services)}</td>
+      <td><span class="badge badge-${o.status.toLowerCase().replace(' ','')}">
+        ${escHtml(o.status)}</span></td>
+      <td>₱${Number(o.total||0).toLocaleString()}</td>
+    </tr>`).join('');
+
+  // Charts
+  const months = ['Oct','Nov','Dec','Jan','Feb','Mar'];
+  const baseRev = [42000,58000,71000,65000,83000,revenue||0];
+  mkApexChart('ovRevenueChart','line',months,baseRev,'#E31C23');
+  const completedOrders = orders.filter(o=>o.status==='Completed');
+  const completionRate = orders.length ? Math.round(completedOrders.length/orders.length*100) : 0;
+  const avgJobVal = completedOrders.length ? Math.round(completedOrders.reduce((s,o)=>s+Number(o.total||0),0)/completedOrders.length) : 0;
+  mkGaugeChart('ovGaugeWrap',[
+    { label:'Completion Rate', value:completionRate, max:100,  unit:'%',  color:'#E31C23' },
+    { label:'Avg Job Value',   value:avgJobVal,      max:15000, unit:'₱', color:'#C0C0C0' },
+    { label:'Satisfaction',    value:4.2,            max:5,    unit:'/5', color:'#D4750A' },
+  ]);
+
+  // Refresh KPIs from live backend data
+  callBackend('analytics').then(d => {
+    if (!d) return;
+    if (d.revenueChart?.values?.length) {
+      const rev = d.revenueChart.values.reduce((a,b)=>a+b,0);
+      document.getElementById('ov-revenue').textContent = pesoK(rev);
+      mkApexChart('ovRevenueChart','line', d.revenueChart.labels, d.revenueChart.values, '#E31C23');
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ANALYTICS
+══════════════════════════════════════════════════════════════ */
+function initAnalytics(){
+  const orders = getWorkOrders();
+  const completed = orders.filter(o=>o.status==='Completed');
+  const totalRev = completed.reduce((s,o)=>s+Number(o.total||0),0);
+  const avgVal = completed.length ? Math.round(totalRev/completed.length) : 0;
+
+  document.getElementById('an-revenue').textContent = pesoK(totalRev);
+  document.getElementById('an-avg').textContent = pesoK(avgVal);
+  document.getElementById('an-completed').textContent = completed.length;
+
+  // Top service
+  const svcCount = {};
+  orders.forEach(o=>(o.services||'').split(',').forEach(s=>{
+    const t=s.trim();if(t){svcCount[t]=(svcCount[t]||0)+1;}
+  }));
+  const topSvc = Object.entries(svcCount).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('an-top').textContent = topSvc?topSvc[0]:'—';
+
+  const months = ['Oct','Nov','Dec','Jan','Feb','Mar'];
+  mkApexChart('anRevenueChart','bar', months, [52000,68000,81000,75000,93000,totalRev||0],
+    ['#E31C23','#C41230','#D4750A','#E8A020','#C0C0C0','#888888']
+  );
+  mkApexChart('anServiceChart','hbar',
+    ['Detailing','Mechanical','Tires','Electrical','Other'],
+    [38,30,15,12,5],
+    ['#E31C23','#C41230','#D4750A','#E8A020','#C0C0C0']
+  );
+
+  const statuses = ['Scheduled','In Progress','Completed','Cancelled'];
+  mkApexChart('anStatusChart','hbar',statuses,
+    statuses.map(s=>orders.filter(o=>o.status===s).length),
+    ['#E31C23','#C41230','#D4750A','#C0C0C0']
+  );
+
+  // Refresh charts from live backend data
+  callBackend('analytics').then(d => {
+    if (!d) return;
+    if (d.revenueChart?.labels?.length) {
+      mkApexChart('anRevenueChart','bar', d.revenueChart.labels, d.revenueChart.values,
+        ['#E31C23','#C41230','#D4750A','#E8A020','#C0C0C0','#888888']
+      );
+    }
+    if (d.serviceChart?.length) {
+      mkApexChart('anServiceChart','hbar',
+        d.serviceChart.map(s=>s.name), d.serviceChart.map(s=>s.count),
+        ['#E31C23','#C41230','#D4750A','#E8A020','#C0C0C0']
+      );
+    }
+    if (d.woStatusChart?.length) {
+      mkApexChart('anStatusChart','hbar',
+        d.woStatusChart.map(s=>s.status), d.woStatusChart.map(s=>s.count),
+        ['#E31C23','#C41230','#D4750A','#C0C0C0']
+      );
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CHART HELPER
+══════════════════════════════════════════════════════════════ */
+function mkApexChart(id, type, labels, data, color){
+  if(_apexCharts[id]){ _apexCharts[id].destroy(); delete _apexCharts[id]; }
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+
+  // 'hbar' = horizontal bar (Chart.js bar + indexAxis:'y')
+  const isHBar = type === 'hbar';
+  const chartType = isHBar ? 'bar' : type;
+  const isDoughnut = type === 'doughnut';
+  const isLine = type === 'line';
+  const isBar = type === 'bar' || isHBar;
+  const colors = Array.isArray(color) ? color : undefined;
+
+  // Tuxedo palette for bar charts when no explicit color array given
+  const neonPalette = ['#E31C23','#C41230','#D4750A','#E8A020','#C0C0C0','#888888'];
+
+  // Gradient fill for line/area charts
+  let gradientFill = null;
+  if(isLine){
+    const lineColor = (Array.isArray(color) ? color[0] : color) || '#E31C23';
+    // parse hex to rgb for gradient
+    const hex = lineColor.replace('#','');
+    const r=parseInt(hex.substring(0,2),16), g=parseInt(hex.substring(2,4),16), b=parseInt(hex.substring(4,6),16);
+    const canvasCtx = ctx.getContext('2d');
+    const h = ctx.parentElement ? ctx.parentElement.offsetHeight || 200 : 200;
+    gradientFill = canvasCtx.createLinearGradient(0, 0, 0, h);
+    gradientFill.addColorStop(0,   `rgba(${r},${g},${b},0.45)`);
+    gradientFill.addColorStop(0.5, `rgba(${r},${g},${b},0.12)`);
+    gradientFill.addColorStop(1,   `rgba(${r},${g},${b},0.00)`);
+  }
+
+  const cfg = {
+    type: chartType,
+    data:{
+      labels,
+      datasets:[{
+        data,
+        backgroundColor: isDoughnut
+          ? (colors || ['#E31C23','#C41230','#D4750A','#E8A020','#C0C0C0'])
+          : isLine
+            ? gradientFill
+            : (colors || neonPalette.slice(0, data.length)),
+        borderColor: isLine ? (Array.isArray(color)?color[0]:color) || '#E31C23' : (isDoughnut ? 'transparent' : undefined),
+        borderWidth: isLine ? 2.5 : (isDoughnut ? 2 : 0),
+        fill: isLine,
+        tension: 0.4,
+        pointBackgroundColor: isLine ? (Array.isArray(color)?color[0]:color) || '#E31C23' : undefined,
+        pointBorderColor:     isLine ? 'rgba(255,255,255,0.15)' : undefined,
+        pointBorderWidth:     isLine ? 2 : undefined,
+        pointRadius:          isLine ? 4 : 0,
+        pointHoverRadius:     isLine ? 7 : 0,
+        borderRadius:         isBar  ? 8 : 0,
+        borderSkipped:        isBar  ? false : undefined,
+        hoverBorderWidth:     isDoughnut ? 3 : undefined,
+        hoverBorderColor:     isDoughnut ? '#FFFFFF' : undefined,
+        hoverOffset:          isDoughnut ? 6 : undefined,
+      }]
+    },
+    options:{
+      responsive: true,
+      maintainAspectRatio: true,
+      indexAxis: isHBar ? 'y' : 'x',
+      plugins:{
+        legend:{
+          display: isDoughnut,
+          position: 'right',
+          labels:{
+            font:{ family:'Space Grotesk', size:12 },
+            color:'#999999',
+            padding: 16,
+            usePointStyle: true,
+            pointStyleWidth: 10,
+          }
+        },
+        tooltip:{
+          backgroundColor:'#000000',
+          titleColor:'#FFFFFF',
+          bodyColor:'#999999',
+          borderColor:'rgba(255,255,255,0.12)',
+          borderWidth:1,
+          padding: 10,
+          callbacks:{
+            label: c => isDoughnut
+              ? c.label+': '+c.raw+'%'
+              : isHBar
+                ? c.label+': '+c.raw
+                : '₱'+Number(c.raw).toLocaleString()
+          }
+        }
+      },
+      scales: isDoughnut ? {} : {
+        x:{
+          grid:{ display: isHBar, color:'rgba(255,255,255,0.04)' },
+          ticks:{
+            font:{ family:'Space Grotesk', size:11 },
+            color:'#555555',
+            callback: isHBar ? undefined : (v=>'₱'+v.toLocaleString())
+          }
+        },
+        y:{
+          grid:{ display: !isHBar, color:'rgba(255,255,255,0.04)' },
+          ticks:{
+            font:{ family:'Space Grotesk', size:11 },
+            color:'#555555',
+            callback: isHBar ? undefined : (v=>'₱'+v.toLocaleString())
+          }
+        }
+      },
+      animation:{
+        duration: 700,
+        easing: 'easeOutQuart'
+      }
+    }
+  };
+  _apexCharts[id] = new Chart(ctx, cfg);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ANALOG SPEEDOMETER GAUGE
+══════════════════════════════════════════════════════════════ */
+function mkGaugeChart(containerId, gauges){
+  // gauges = [{ label, value, max, unit, color }]
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  gauges.forEach(g => {
+    const pct   = Math.min(Math.max(g.value / g.max, 0), 1);
+    const R     = 70;          // arc radius
+    const cx    = 90, cy = 90; // SVG center (180×180 viewBox)
+    const startA = Math.PI * 0.75;           // -225° from right = lower-left
+    const endA   = Math.PI * 2.25;           // sweeps 270° to lower-right
+    const sweep  = endA - startA;
+    const fillA  = startA + sweep * pct;
+
+    function pt(angle, r){ return [cx + r*Math.cos(angle), cy + r*Math.sin(angle)]; }
+
+    // Background arc path (full 270°)
+    const [bx1,by1] = pt(startA,R);
+    const [bx2,by2] = pt(endA,  R);
+    const bgArc = `M${bx1},${by1} A${R},${R} 0 1,1 ${bx2},${by2}`;
+
+    // Fill arc path
+    const [fx1,fy1] = pt(startA,R);
+    const [fx2,fy2] = pt(fillA, R);
+    const largeArc  = (sweep * pct) > Math.PI ? 1 : 0;
+    const fillArc   = pct > 0
+      ? `M${fx1},${fy1} A${R},${R} 0 ${largeArc},1 ${fx2},${fy2}`
+      : '';
+
+    // Needle tip
+    const [nx,ny] = pt(fillA, R - 14);
+    // Tick marks (major every 30° of the 270° sweep = 9 ticks)
+    let ticks = '';
+    for(let i=0; i<=9; i++){
+      const a = startA + (sweep/9)*i;
+      const [ox,oy] = pt(a, R+6);
+      const [ix,iy] = pt(a, R+1);
+      ticks += `<line x1="${ox}" y1="${oy}" x2="${ix}" y2="${iy}" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" stroke-linecap="round"/>`;
+    }
+
+    const color = g.color || '#E31C23';
+    const displayVal = g.unit === '₱' ? '₱'+Number(g.value).toLocaleString() : Math.round(g.value)+(g.unit||'%');
+
+    const div = document.createElement('div');
+    div.style.cssText = 'text-align:center;flex:1;min-width:140px;max-width:180px;';
+    div.innerHTML = `
+      <svg viewBox="0 0 180 110" width="170" style="display:block;margin:0 auto;overflow:visible;">
+        <defs>
+          <linearGradient id="gfill_${containerId}_${g.label.replace(/\s/g,'')}" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="${color}" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="${color}" stop-opacity="1"/>
+          </linearGradient>
+        </defs>
+        <!-- Background track -->
+        <path d="${bgArc}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10" stroke-linecap="round"/>
+        <!-- Filled arc -->
+        ${fillArc ? `<path d="${fillArc}" fill="none" stroke="url(#gfill_${containerId}_${g.label.replace(/\s/g,'')})" stroke-width="10" stroke-linecap="round"/>` : ''}
+        <!-- Tick marks -->
+        ${ticks}
+        <!-- Needle -->
+        <line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="${color}" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+        <circle cx="${cx}" cy="${cy}" r="5" fill="${color}" opacity="0.9"/>
+        <circle cx="${cx}" cy="${cy}" r="2.5" fill="#000"/>
+        <!-- Center value -->
+        <text x="${cx}" y="${cy+26}" text-anchor="middle" font-family="Orbitron,sans-serif" font-size="13" font-weight="800" fill="#ffffff">${displayVal}</text>
+      </svg>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.35);margin-top:4px;">${g.label}</div>
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FLOATING AI CHAT BUBBLE
+══════════════════════════════════════════════════════════════ */
+function toggleFloatChat(){
+  const panel = document.getElementById('floatChatPanel');
+  const icon = document.getElementById('floatAIIcon');
+  const isOpen = panel.style.display === 'flex';
+  panel.style.display = isOpen ? 'none' : 'flex';
+  panel.style.flexDirection = 'column';
+  icon.className = isOpen ? 'fas fa-robot' : 'fas fa-times';
+  if(!isOpen) setTimeout(()=>document.getElementById('floatInput')?.focus(), 50);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   AI ASSISTANT
+══════════════════════════════════════════════════════════════ */
+function sendChat(){
+  const input = document.getElementById('floatInput');
+  const msg = input.value.trim();
+  if(!msg) return;
+  input.value = '';
+  appendChat('user', msg);
+  setTimeout(()=>appendChat('assistant', generateResponse(msg)), 400);
+}
+
+function askPreset(btn){ document.getElementById('floatInput').value=btn.textContent; sendChat(); }
+
+function appendChat(role, text){
+  const wrap = document.getElementById('floatMessages');
+  const el = document.createElement('div');
+  el.style.cssText = `display:flex;${role==='user'?'justify-content:flex-end;':''}`;
+  el.innerHTML = `<div style="max-width:70%;padding:10px 14px;border-radius:${role==='user'?'12px 12px 4px 12px':'12px 12px 12px 4px'};background:${role==='user'?'linear-gradient(135deg,#E31C23,#C41230)':'#191919'};color:${role==='user'?'#fff':'#999999'};font-size:13px;line-height:1.5;border:${role==='user'?'1px solid rgba(255,255,255,0.22)':'1px solid rgba(255,255,255,0.06)'};box-shadow:${role==='user'?'0 0 8px rgba(255,255,255,0.07)':'none'};">${escHtml(text)}</div>`;
+  wrap.appendChild(el);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function generateResponse(q){
+  const ql = q.toLowerCase();
+  const appts = getAppointments();
+  const orders = getWorkOrders();
+  const customers = getCustomers();
+  const staff = getStaff();
+  const today = new Date().toISOString().slice(0,10);
+
+  if(ql.includes('appointment') || ql.includes('today')){
+    const todayAppts = appts.filter(a=>a.date===today);
+    if(!todayAppts.length) return "No appointments scheduled for today.";
+    return `You have ${todayAppts.length} appointment(s) today: ${todayAppts.map(a=>a.customer+' — '+a.service).join('; ')}.`;
+  }
+  if(ql.includes('revenue')){
+    const rev = orders.filter(o=>o.status==='Completed').reduce((s,o)=>s+Number(o.total||0),0);
+    return `Total revenue from completed work orders is ₱${rev.toLocaleString()}.`;
+  }
+  if(ql.includes('pending') || ql.includes('work order')){
+    const pending = orders.filter(o=>o.status==='In Progress'||o.status==='Scheduled');
+    return `You have ${pending.length} pending/active work order(s).`;
+  }
+  if(ql.includes('customer')){
+    return `You have ${customers.length} registered customer(s) in the system.`;
+  }
+  if(ql.includes('staff')){
+    const present = staff.filter(s=>s.status==='Present').length;
+    return `You have ${staff.length} staff member(s). ${present} are present today.`;
+  }
+  if(ql.includes('top service') || ql.includes('popular')){
+    const svcCount = {};
+    orders.forEach(o=>(o.services||'').split(',').forEach(s=>{const t=s.trim();if(t)svcCount[t]=(svcCount[t]||0)+1;}));
+    const top = Object.entries(svcCount).sort((a,b)=>b[1]-a[1])[0];
+    return top ? `Your most popular service is "${top[0]}" with ${top[1]} order(s).` : "Not enough order data yet.";
+  }
+  return "I can help with appointments, revenue, work orders, customers, staff, and popular services. Try asking about those!";
+}
+
+/* ══════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════ */
+setInterval(updateClock, 1000);
+updateClock();
+
+// Restore dark mode
+if(localStorage.getItem('apex_dm')==='1') document.body.classList.add('dm');
+
+// Auto-apply white label before login
+(function(){
+  const cfg = (() => { try{ return JSON.parse(localStorage.getItem(WL_KEY)); }catch(e){ return null; } })();
+  if(cfg) applyWhiteLabel(cfg);
+  else {
+    const d = { companyName:'LIMITLESS AUTOSHOP', subtitle:'AUTO WORKSHOP', logoUrl:'', sidebarColor:'#0D0D14', hideHint:false };
+    applyWhiteLabel(d);
+  }
+})();
+
+// Login on Enter key
+document.getElementById('loginPass').addEventListener('keydown', e=>{ if(e.key==='Enter') handleLogin(); });
+document.getElementById('loginUser').addEventListener('keydown', e=>{ if(e.key==='Enter') handleLogin(); });
+
+// Sync color picker hex input
+document.getElementById('wl-color').addEventListener('input', function(){
+  document.getElementById('wl-colorhex').value = this.value;
+});
+</script>
+
+<!-- FLOATING AI CHAT BUBBLE -->
+<div id="floatAI" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;">
+  <button onclick="toggleFloatChat()" title="AI Assistant" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#E31C23,#C41230);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;transition:all 0.2s;" onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 28px rgba(0,0,0,0.7)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(0,0,0,0.6)'"
+    <i id="floatAIIcon" class="fas fa-robot"></i>
+  </button>
+</div>
+<div id="floatChatPanel" style="display:none;position:fixed;bottom:96px;right:24px;z-index:9998;width:360px;background:#111111;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.8),0 0 0 1px rgba(255,255,255,0.06),0 0 16px rgba(255,255,255,0.03);flex-direction:column;overflow:hidden;max-height:520px;border:1px solid rgba(255,255,255,0.09);">
+  <div style="background:linear-gradient(135deg,#E31C23,#C41230);padding:14px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <div style="width:34px;height:34px;background:rgba(0,0,0,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(255,255,255,0.15);">
+      <i class="fas fa-robot" style="color:#fff;font-size:15px;"></i>
+    </div>
+    <div style="flex:1;min-width:0;">
+      <div style="color:#fff;font-weight:800;font-size:14px;font-family:'Exo 2',sans-serif;letter-spacing:.5px;">AI Assistant</div>
+      <div style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:1px;">Limitless Autoshop</div>
+    </div>
+    <button onclick="toggleFloatChat()" style="background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.15);cursor:pointer;color:#fff;width:28px;height:28px;border-radius:8px;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;" onmouseover="this.style.background='rgba(0,0,0,0.35)'" onmouseout="this.style.background='rgba(0,0,0,0.2)'"
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div id="floatMessages" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#080808;min-height:0;max-height:320px;">
+    <div style="background:#191919;border-radius:12px 12px 12px 4px;padding:10px 14px;font-size:13px;color:#999999;max-width:88%;border:1px solid rgba(255,255,255,0.06);line-height:1.5;">
+      Hi! Ask me about today's appointments, revenue, work orders, customers, or staff.
+    </div>
+  </div>
+  <div style="padding:8px 12px;background:#080808;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
+    <button onclick="askPreset(this)" style="background:rgba(255,255,255,0.05);color:#E31C23;border:1px solid rgba(255,255,255,0.15);cursor:pointer;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Today's appointments</button>
+    <button onclick="askPreset(this)" style="background:rgba(255,255,255,0.05);color:#E31C23;border:1px solid rgba(255,255,255,0.15);cursor:pointer;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Revenue this month</button>
+    <button onclick="askPreset(this)" style="background:rgba(255,255,255,0.05);color:#E31C23;border:1px solid rgba(255,255,255,0.15);cursor:pointer;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Pending work orders</button>
+    <button onclick="askPreset(this)" style="background:rgba(255,255,255,0.05);color:#E31C23;border:1px solid rgba(255,255,255,0.15);cursor:pointer;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Top services</button>
+  </div>
+  <div style="padding:10px 12px;background:#080808;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:8px;align-items:center;flex-shrink:0;">
+    <input id="floatInput" type="text" style="flex:1;border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:8px 12px;font-size:13px;outline:none;font-family:inherit;transition:all 0.2s;background:#111111;color:#F0F0F0;" placeholder="Ask anything..." onfocus="this.style.borderColor='rgba(227,28,35,0.6)';this.style.boxShadow='none'" onblur="this.style.borderColor='rgba(255,255,255,0.09)';this.style.boxShadow='none'" onkeydown="if(event.key==='Enter')sendChat()">
+    <button onclick="sendChat()" style="background:linear-gradient(135deg,#E31C23,#C41230);border:none;cursor:pointer;color:#fff;width:36px;height:36px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,0.5);transition:all .2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('loginUser').value = 'admin';
+  document.getElementById('loginPass').value = 'apex2024';
+  handleLogin();
+});
+</script>
+</body>
+</html>
