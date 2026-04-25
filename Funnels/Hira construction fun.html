@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hiraya Construction Supply — Built Without Compromise</title>
+  <meta name="description" content="Premium construction materials for contractors and developers who hold their work to a higher standard." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #F5F3F0;
+      --dark:     #0D0D0D;
+      --charcoal: #1A1A1A;
+      --slate:    #8A8A8A;
+      --sand:     #C9B99A;
+      --sand-lt:  #E8DDD0;
+      --white:    #FFFFFF;
+      --border:   #E0D8CF;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+      --sans:     'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--charcoal);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* ────────────────── NAV ────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26px 56px;
+      transition: background 0.4s, padding 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(245,243,240,0.96);
+      backdrop-filter: blur(16px);
+      padding: 18px 56px;
+      border-color: var(--border);
+    }
+
+    .nav-wordmark {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 1.2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.4s;
+    }
+    nav.scrolled .nav-wordmark { color: var(--charcoal); }
+    .nav-wordmark span {
+      display: block;
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 36px; }
+
+    .nav-link {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    nav.scrolled .nav-link { color: var(--slate); }
+    .nav-link:hover { color: var(--white); }
+    nav.scrolled .nav-link:hover { color: var(--charcoal); }
+
+    .nav-cta-btn {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--white);
+      text-decoration: none;
+      padding: 11px 26px;
+      border: 1px solid var(--white);
+      transition: background 0.25s, color 0.25s, border-color 0.25s;
+    }
+    nav.scrolled .nav-cta-btn {
+      background: var(--dark);
+      color: var(--white);
+      border-color: var(--dark);
+    }
+    .nav-cta-btn:hover {
+      background: transparent;
+      color: var(--white);
+    }
+    nav.scrolled .nav-cta-btn:hover {
+      background: transparent;
+      color: var(--dark);
+    }
+
+    /* ────────────────── HERO ────────────────── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=85');
+      background-size: cover;
+      background-position: center 30%;
+      transform: scale(1.04);
+      transition: transform 8s ease-out;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(0,0,0,0.72) 0%,
+        rgba(0,0,0,0.45) 50%,
+        rgba(0,0,0,0.25) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 56px 80px;
+      max-width: 1400px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.66rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 36px;
+      height: 1px;
+      background: var(--sand);
+    }
+
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(4rem, 9vw, 8rem);
+      font-weight: 300;
+      line-height: 0.95;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 36px;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--sand);
+    }
+
+    .hero-bottom-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+
+    .hero-sub {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.55);
+      max-width: 400px;
+      line-height: 1.85;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero-primary {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--white);
+      text-decoration: none;
+      padding: 16px 40px;
+      border: 1px solid var(--white);
+      transition: background 0.25s, color 0.25s;
+    }
+    .btn-hero-primary:hover { background: transparent; color: var(--white); }
+
+    .btn-hero-ghost {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.2s;
+    }
+    .btn-hero-ghost:hover { color: rgba(255,255,255,0.8); }
+    .btn-hero-ghost svg { width: 20px; opacity: 0.6; }
+
+    /* Stat bar in hero */
+    .hero-stats {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      z-index: 2;
+    }
+    .hero-stat-pill {
+      padding: 20px 36px;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+      text-align: center;
+    }
+    .hero-stat-num {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-top: 5px;
+    }
+
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.4;
+    }
+    .hero-scroll span {
+      font-size: 0.58rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--white), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+    @keyframes scrollPulse {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ────────────────── MARQUEE STRIP ────────────────── */
+    #marquee {
+      background: var(--dark);
+      padding: 0;
+      overflow: hidden;
+      height: 280px;
+      position: relative;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 3px;
+      width: max-content;
+      animation: marqueeScroll 40s linear infinite;
+    }
+    #marquee:hover .marquee-track { animation-play-state: paused; }
+
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .marquee-photo {
+      width: 420px;
+      height: 280px;
+      flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .marquee-photo img {
+      transition: transform 0.6s ease;
+      filter: brightness(0.7) saturate(0.85);
+    }
+    .marquee-photo:hover img {
+      transform: scale(1.06);
+      filter: brightness(0.85) saturate(1);
+    }
+    .marquee-photo-label {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      pointer-events: none;
+    }
+
+    .marquee-overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      text-align: center;
+      pointer-events: none;
+    }
+    .marquee-overlay-text p {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    /* ────────────────── STANDARD (SPLIT) ────────────────── */
+    #standard {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    .standard-photo-side {
+      position: relative;
+      overflow: hidden;
+    }
+    .standard-photo-side .photo-frame {
+      position: absolute;
+      inset: 0;
+    }
+    .standard-photo-side .photo-frame img {
+      transition: transform 10s ease;
+    }
+    .standard-photo-side:hover .photo-frame img { transform: scale(1.04); }
+    .standard-photo-side .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, transparent 100%);
+    }
+    .standard-photo-caption {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .standard-content-side {
+      background: var(--bg);
+      padding: 100px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .section-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .section-eyebrow::before {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: var(--sand);
+    }
+
+    .section-headline {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.12;
+      color: var(--charcoal);
+    }
+    .section-headline em { font-style: italic; color: var(--slate); }
+
+    .prop-list { margin-top: 64px; }
+
+    .prop-item {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 24px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .prop-item:first-child { border-top: 1px solid var(--border); }
+
+    .prop-num {
+      font-family: var(--serif);
+      font-size: 0.8rem;
+      color: var(--sand);
+      padding-top: 3px;
+    }
+    .prop-body h3 {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+    .prop-body p {
+      font-size: 0.82rem;
+      color: var(--slate);
+      line-height: 1.9;
+    }
+
+    /* ────────────────── PROJECTS SHOWCASE ────────────────── */
+    #showcase {
+      background: var(--dark);
+      padding: 0;
+    }
+
+    .showcase-header {
+      padding: 80px 56px 56px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .showcase-header .section-eyebrow { color: rgba(255,255,255,0.35); margin-bottom: 20px; }
+    .showcase-header .section-eyebrow::before { background: rgba(255,255,255,0.3); }
+    .showcase-header .section-headline { color: var(--white); }
+    .showcase-header p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.35);
+      max-width: 280px;
+      line-height: 1.85;
+      text-align: right;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      grid-template-rows: 320px 320px;
+      gap: 3px;
+    }
+
+    .showcase-cell {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .showcase-cell.tall { grid-row: span 2; }
+
+    .showcase-cell img {
+      transition: transform 0.7s ease, filter 0.5s ease;
+      filter: brightness(0.6) saturate(0.8);
+    }
+    .showcase-cell:hover img {
+      transform: scale(1.06);
+      filter: brightness(0.75) saturate(1);
+    }
+
+    .showcase-cell-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+      transition: opacity 0.4s;
+    }
+
+    .showcase-cell-info {
+      position: absolute;
+      bottom: 28px;
+      left: 28px;
+      right: 28px;
+      transform: translateY(8px);
+      transition: transform 0.4s;
+    }
+    .showcase-cell:hover .showcase-cell-info { transform: translateY(0); }
+
+    .showcase-cell-tag {
+      font-size: 0.58rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 6px;
+    }
+    .showcase-cell-title {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    /* ────────────────── MATERIALS TEXTURE ────────────────── */
+    #materials {
+      padding: 120px 56px;
+      background: var(--bg);
+    }
+
+    .materials-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .materials-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 80px;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+    .materials-top .section-headline { max-width: 480px; }
+    .materials-top p {
+      font-size: 0.85rem;
+      color: var(--slate);
+      max-width: 360px;
+      line-height: 1.9;
+      padding-top: 16px;
+    }
+
+    .materials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 260px 260px;
+      gap: 16px;
+    }
+
+    .mat-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0;
+    }
+    .mat-card.wide { grid-column: span 2; }
+    .mat-card img {
+      transition: transform 0.7s ease;
+      filter: saturate(0.7) brightness(0.75);
+    }
+    .mat-card:hover img {
+      transform: scale(1.05);
+      filter: saturate(0.9) brightness(0.85);
+    }
+    .mat-card-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 40px 28px 24px;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+    }
+    .mat-card-label h4 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .mat-card-label p {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ────────────────── WHO WE WORK WITH ────────────────── */
+    #clients {
+      background: var(--dark);
+      padding: 100px 0 0;
+    }
+
+    .clients-header-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 56px 64px;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+    .clients-header-row .section-eyebrow { color: rgba(255,255,255,0.3); margin-bottom: 20px; }
+    .clients-header-row .section-eyebrow::before { background: rgba(255,255,255,0.25); }
+    .clients-header-row .section-headline { color: var(--white); }
+    .clients-header-row .note {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.28);
+      max-width: 260px;
+      line-height: 1.85;
+      text-align: right;
+    }
+
+    .clients-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+    }
+
+    .client-photo-card {
+      position: relative;
+      height: 360px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .client-photo-card img {
+      transition: transform 0.7s ease, filter 0.5s;
+      filter: brightness(0.45) saturate(0.7);
+    }
+    .client-photo-card:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.6) saturate(0.9);
+    }
+
+    .client-photo-card-body {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 60px 28px 28px;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+      transform: translateY(20px);
+      transition: transform 0.4s;
+    }
+    .client-photo-card:hover .client-photo-card-body { transform: translateY(0); }
+
+    .client-photo-card-icon {
+      font-size: 1.2rem;
+      color: var(--sand);
+      margin-bottom: 12px;
+      opacity: 0.7;
+    }
+    .client-photo-card-body h4 {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .client-photo-card-body p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.7;
+    }
+
+    /* ────────────────── QUOTE FULL-BLEED ────────────────── */
+    #quote-band {
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+    }
+
+    #quote-band .quote-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1497366754035-f200581a6d14?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    #quote-band .quote-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.68);
+    }
+
+    #quote-band .quote-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 56px;
+    }
+
+    .big-quote-mark {
+      font-family: var(--serif);
+      font-size: 6rem;
+      color: var(--sand);
+      line-height: 0.5;
+      margin-bottom: 32px;
+      opacity: 0.6;
+    }
+
+    .big-quote-text {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--white);
+      max-width: 820px;
+      line-height: 1.45;
+      margin-bottom: 40px;
+    }
+
+    .big-quote-attr {
+      font-size: 0.7rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sand);
+    }
+
+    /* ────────────────── TESTIMONIALS ────────────────── */
+    #proof {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 640px;
+    }
+
+    .proof-photo-side {
+      position: relative;
+      overflow: hidden;
+    }
+    .proof-photo-side img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.75) saturate(0.85);
+    }
+    .proof-photo-label {
+      position: absolute;
+      bottom: 36px;
+      left: 36px;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .proof-content-side {
+      background: var(--charcoal);
+      padding: 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+    }
+    .proof-content-side .section-eyebrow { color: rgba(255,255,255,0.3); margin-bottom: 40px; }
+    .proof-content-side .section-eyebrow::before { background: rgba(255,255,255,0.2); }
+
+    .testimonial-item {
+      padding: 32px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .testimonial-item:first-of-type { padding-top: 0; }
+
+    .testimonial-quote {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .testimonial-quote::before {
+      content: '\201C';
+      color: var(--sand);
+      font-size: 1.8rem;
+      line-height: 0;
+      vertical-align: -0.25em;
+      margin-right: 4px;
+    }
+
+    .testimonial-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sand);
+      flex-shrink: 0;
+    }
+    .testimonial-name {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .testimonial-role {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ────────────────── FORM ────────────────── */
+    #consult {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    .consult-photo-side {
+      position: relative;
+      overflow: hidden;
+    }
+    .consult-photo-side img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.55) saturate(0.75);
+    }
+
+    .consult-photo-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 56px;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+    }
+
+    .consult-photo-tagline {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .consult-photo-tagline em { color: var(--sand); font-style: normal; }
+
+    .consult-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .consult-bullet {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .consult-bullet::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sand);
+      flex-shrink: 0;
+    }
+
+    .consult-form-side {
+      background: var(--white);
+      padding: 100px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+    .form-title em { font-style: italic; color: var(--slate); }
+
+    .form-subtitle {
+      font-size: 0.82rem;
+      color: var(--slate);
+      line-height: 1.85;
+      margin-bottom: 52px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .field-group:first-child { padding-top: 0; border-top: 1px solid var(--border); }
+
+    .field-group label {
+      font-size: 0.6rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--slate);
+    }
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: var(--charcoal);
+      padding: 0;
+      width: 100%;
+      resize: none;
+      appearance: none;
+    }
+    .field-group input::placeholder,
+    .field-group textarea::placeholder { color: var(--border); }
+    .field-group select { cursor: pointer; }
+    .field-group select option { background: var(--white); color: var(--charcoal); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 32px;
+    }
+    .form-row .field-group { border-top: 1px solid var(--border); }
+
+    .form-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 44px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .form-disclaimer {
+      font-size: 0.68rem;
+      color: var(--slate);
+      max-width: 240px;
+      line-height: 1.75;
+    }
+
+    .btn-submit {
+      background: var(--dark);
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 17px 44px;
+      border: 1px solid var(--dark);
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+    }
+    .btn-submit:hover { background: transparent; color: var(--dark); }
+
+    /* Success */
+    #formSuccess {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .success-mark {
+      font-family: var(--serif);
+      font-size: 3.5rem;
+      color: var(--sand);
+      margin-bottom: 20px;
+    }
+    #formSuccess h3 {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+    }
+    #formSuccess p {
+      font-size: 0.85rem;
+      color: var(--slate);
+      line-height: 1.85;
+    }
+
+    /* ────────────────── FOOTER ────────────────── */
+    footer {
+      background: var(--dark);
+      padding: 0;
+    }
+
+    .footer-photo-band {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-photo-band img {
+      filter: brightness(0.3) saturate(0.6);
+    }
+    .footer-photo-band-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 0%, var(--dark) 100%);
+    }
+
+    .footer-main {
+      padding: 64px 56px 48px;
+    }
+    .footer-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding-bottom: 56px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      flex-wrap: wrap;
+      gap: 48px;
+    }
+
+    .footer-brand h2 {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .footer-brand p {
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .footer-links-col h5 {
+      font-size: 0.6rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 20px;
+    }
+    .footer-links-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-links-col ul li a {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links-col ul li a:hover { color: rgba(255,255,255,0.7); }
+
+    .footer-tagline-col {
+      max-width: 280px;
+    }
+    .footer-tagline-col p {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.25);
+      line-height: 1.65;
+    }
+
+    .footer-bottom {
+      padding-top: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.18); letter-spacing: 0.06em; }
+
+    /* ────────────────── ANIMATIONS ────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+    .d5 { transition-delay: 0.5s; }
+
+    /* ────────────────── RESPONSIVE ────────────────── */
+    @media (max-width: 1024px) {
+      nav { padding: 22px 28px; }
+      nav.scrolled { padding: 16px 28px; }
+      .nav-link { display: none; }
+      #standard { grid-template-columns: 1fr; }
+      .standard-photo-side { height: 420px; }
+      .standard-content-side { padding: 72px 36px; }
+      .showcase-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 280px 280px; }
+      .showcase-cell.tall { grid-row: span 1; }
+      .clients-photo-grid { grid-template-columns: repeat(2, 1fr); }
+      #proof { grid-template-columns: 1fr; }
+      .proof-photo-side { height: 360px; }
+      #consult { grid-template-columns: 1fr; }
+      .consult-photo-side { height: 480px; }
+      .consult-form-side { padding: 72px 36px; }
+      .hero-stats { display: none; }
+    }
+
+    @media (max-width: 700px) {
+      .hero-content { padding: 0 28px 72px; }
+      .hero-headline { font-size: 3.2rem; }
+      .showcase-grid { grid-template-columns: 1fr; grid-template-rows: repeat(5, 240px); }
+      .clients-photo-grid { grid-template-columns: 1fr; }
+      .materials-grid { grid-template-columns: 1fr; grid-template-rows: repeat(5, 220px); }
+      .mat-card.wide { grid-column: span 1; }
+      section, #materials { padding: 72px 24px; }
+      .showcase-header, .clients-header-row { padding: 56px 24px 40px; }
+      .footer-main { padding: 48px 24px 36px; }
+      .consult-form-side { padding: 56px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      #quote-band .quote-bg { background-attachment: scroll; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav id="mainNav">
+    <a href="#" class="nav-wordmark">
+      Hiraya
+      <span>Construction Supply</span>
+    </a>
+    <div class="nav-right">
+      <a href="#standard" class="nav-link">Our Standard</a>
+      <a href="#showcase" class="nav-link">Projects</a>
+      <a href="#proof" class="nav-link">Partners</a>
+      <a href="#consult" class="nav-cta-btn">Consult</a>
+    </div>
+  </nav>
+
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow fade-up">Premium Construction Materials — Philippines</p>
+      <h1 class="hero-headline fade-up d1">
+        Built Without<br><em>Compromise.</em>
+      </h1>
+      <div class="hero-bottom-row">
+        <p class="hero-sub fade-up d2">
+          Premium construction materials for contractors and developers
+          who hold their work to a higher standard.
+        </p>
+        <div class="hero-actions fade-up d3">
+          <a href="#consult" class="btn-hero-primary">Request a Consultation</a>
+          <a href="#standard" class="btn-hero-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+            Our Standard
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-stats fade-up d4">
+      <div class="hero-stat-pill">
+        <div class="hero-stat-num">500+</div>
+        <div class="hero-stat-label">Projects Supplied</div>
+      </div>
+      <div class="hero-stat-pill">
+        <div class="hero-stat-num">12+</div>
+        <div class="hero-stat-label">Years of Precision</div>
+      </div>
+      <div class="hero-stat-pill">
+        <div class="hero-stat-num">98%</div>
+        <div class="hero-stat-label">On-Time Delivery</div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+
+  <!-- ── PHOTO MARQUEE ── -->
+  <div id="marquee">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+
+
+  <!-- ── THE STANDARD ── -->
+  <section id="standard">
+    <div class="standard-photo-side">
+      <div class="photo-frame">
+        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=960&q=85" alt="Construction steel structure" loading="lazy" />
+      </div>
+      <div class="photo-overlay"></div>
+      <p class="standard-photo-caption">Structural Steel — Grade 60</p>
+    </div>
+
+    <div class="standard-content-side">
+      <p class="section-eyebrow fade-up">The Hiraya Standard</p>
+      <h2 class="section-headline fade-up d1">
+        What we hold ourselves to,<br>
+        <em>so you never have to.</em>
+      </h2>
+
+      <div class="prop-list">
+        <div class="prop-item fade-up d1">
+          <div class="prop-num">01</div>
+          <div class="prop-body">
+            <h3>Verified Quality</h3>
+            <p>Every product passes our incoming inspection protocol before it leaves our yard. No unverified substitutions. No surprises mid-pour.</p>
+          </div>
+        </div>
+        <div class="prop-item fade-up d2">
+          <div class="prop-num">02</div>
+          <div class="prop-body">
+            <h3>Dependable Logistics</h3>
+            <p>Delivery dates are obligations, not estimates. When variables arise, you hear from us before your foreman does.</p>
+          </div>
+        </div>
+        <div class="prop-item fade-up d3">
+          <div class="prop-num">03</div>
+          <div class="prop-body">
+            <h3>One Contact. One Account.</h3>
+            <p>A named account manager who knows your project from the ground up. That person answers when you call.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── PROJECTS SHOWCASE ── -->
+  <section id="showcase">
+    <div class="showcase-header">
+      <div>
+        <p class="section-eyebrow fade-up">Selected Projects</p>
+        <h2 class="section-headline fade-up d1">
+          Materials at work,<br><em>in the field.</em>
+        </h2>
+      </div>
+      <p class="fade-up d2">
+        A selection of completed builds where Hiraya materials were specified
+        from foundation to finish.
+      </p>
+    </div>
+
+    <div class="showcase-grid">
+      <div class="showcase-cell tall">
+        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=85" alt="Luxury residential project" loading="lazy" />
+        <div class="showcase-cell-overlay"></div>
+        <div class="showcase-cell-info">
+          <p class="showcase-cell-tag">Residential — Laguna</p>
+          <p class="showcase-cell-title">Four-Bedroom Custom Villa</p>
+        </div>
+      </div>
+
+      <div class="showcase-cell">
+        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=85" alt="Modern commercial building" loading="lazy" />
+        <div class="showcase-cell-overlay"></div>
+        <div class="showcase-cell-info">
+          <p class="showcase-cell-tag">Commercial — Makati</p>
+          <p class="showcase-cell-title">Office Fit-Out, 3 Floors</p>
+        </div>
+      </div>
+
+      <div class="showcase-cell">
+        <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=85" alt="Building under construction" loading="lazy" />
+        <div class="showcase-cell-overlay"></div>
+        <div class="showcase-cell-info">
+          <p class="showcase-cell-tag">Mixed-Use — Quezon City</p>
+          <p class="showcase-cell-title">6-Storey Development</p>
+        </div>
+      </div>
+
+      <div class="showcase-cell">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=85" alt="Modern interior architecture" loading="lazy" />
+        <div class="showcase-cell-overlay"></div>
+        <div class="showcase-cell-info">
+          <p class="showcase-cell-tag">Interior — BGC</p>
+          <p class="showcase-cell-title">Premium Condominium</p>
+        </div>
+      </div>
+
+      <div class="showcase-cell">
+        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=800&q=85" alt="Modern building facade" loading="lazy" />
+        <div class="showcase-cell-overlay"></div>
+        <div class="showcase-cell-info">
+          <p class="showcase-cell-tag">Corporate — Ortigas</p>
+          <p class="showcase-cell-title">Façade Cladding Systems</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── MATERIALS ── -->
+  <section id="materials">
+    <div class="materials-inner">
+      <div class="materials-top">
+        <div>
+          <p class="section-eyebrow fade-up">Material Categories</p>
+          <h2 class="section-headline fade-up d1">
+            Sourced with intent.<br>
+            <em>Specified with purpose.</em>
+          </h2>
+        </div>
+        <p class="fade-up d2">
+          From structural steel and concrete to finishing materials and MEP supplies —
+          every category curated for professional-grade builds.
+        </p>
+      </div>
+
+      <div class="materials-grid">
+        <div class="mat-card wide fade-up">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=85" alt="Concrete materials" loading="lazy" />
+          <div class="mat-card-label">
+            <h4>Concrete & Masonry</h4>
+            <p>Structural Grade</p>
+          </div>
+        </div>
+
+        <div class="mat-card fade-up d1">
+          <img src="https://images.unsplash.com/photo-1590074072786-a66914d668f1?auto=format&fit=crop&w=600&q=85" alt="Steel reinforcement" loading="lazy" />
+          <div class="mat-card-label">
+            <h4>Structural Steel</h4>
+            <p>Rebar & Sections</p>
+          </div>
+        </div>
+
+        <div class="mat-card fade-up d2">
+          <img src="https://images.unsplash.com/photo-1564182842519-8a3b2af3e228?auto=format&fit=crop&w=600&q=85" alt="Finishing materials" loading="lazy" />
+          <div class="mat-card-label">
+            <h4>Finishing Materials</h4>
+            <p>Tile, Paint & Cladding</p>
+          </div>
+        </div>
+
+        <div class="mat-card fade-up d1">
+          <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=600&q=85" alt="Site supplies" loading="lazy" />
+          <div class="mat-card-label">
+            <h4>Site Supplies</h4>
+            <p>Equipment & Tools</p>
+          </div>
+        </div>
+
+        <div class="mat-card wide fade-up d2">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=85" alt="Interior materials" loading="lazy" />
+          <div class="mat-card-label">
+            <h4>Interior Systems</h4>
+            <p>MEP & Ceiling Systems</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── WHO WE WORK WITH ── -->
+  <section id="clients">
+    <div class="clients-header-row">
+      <div>
+        <p class="section-eyebrow fade-up">Who We Work With</p>
+        <h2 class="section-headline fade-up d1">
+          Builders who know<br><em>the difference.</em>
+        </h2>
+      </div>
+      <p class="note fade-up d2">
+        We work with a select number of contractors and developers each season.
+        Our relationships are long-term, not transactional.
+      </p>
+    </div>
+
+    <div class="clients-photo-grid">
+      <div class="client-photo-card fade-up">
+        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80" alt="General contractors" loading="lazy" />
+        <div class="client-photo-card-body">
+          <div class="client-photo-card-icon">◻</div>
+          <h4>General Contractors</h4>
+          <p>Mid-to-high-end residential and commercial builds requiring consistent quality across long project cycles.</p>
+        </div>
+      </div>
+      <div class="client-photo-card fade-up d1">
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" alt="Real estate developers" loading="lazy" />
+        <div class="client-photo-card-body">
+          <div class="client-photo-card-icon">◻</div>
+          <h4>Real Estate Developers</h4>
+          <p>Boutique and mid-scale developers who understand that material grade directly affects resale value.</p>
+        </div>
+      </div>
+      <div class="client-photo-card fade-up d2">
+        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80" alt="Architects and designers" loading="lazy" />
+        <div class="client-photo-card-body">
+          <div class="client-photo-card-icon">◻</div>
+          <h4>Architects & Designers</h4>
+          <p>Professionals specifying materials who need a supplier that delivers exactly to spec, without substitution.</p>
+        </div>
+      </div>
+      <div class="client-photo-card fade-up d3">
+        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80" alt="Premium home builders" loading="lazy" />
+        <div class="client-photo-card-body">
+          <div class="client-photo-card-icon">◻</div>
+          <h4>Premium Home Builders</h4>
+          <p>Builders of custom homes where every finish is deliberate and every material reflects the client's investment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── FULL-BLEED QUOTE ── -->
+  <div id="quote-band">
+    <div class="quote-bg"></div>
+    <div class="quote-overlay"></div>
+    <div class="quote-content">
+      <div class="big-quote-mark fade-up">"</div>
+      <p class="big-quote-text fade-up d1">
+        Our catalog is not for everyone. It is for builders who understand
+        that the right material today prevents the wrong conversation tomorrow.
+      </p>
+      <p class="big-quote-attr fade-up d2">— Hiraya Construction Supply</p>
+    </div>
+  </div>
+
+
+  <!-- ── TESTIMONIALS ── -->
+  <section id="proof">
+    <div class="proof-photo-side">
+      <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=900&q=85" alt="Construction site" loading="lazy" />
+      <p class="proof-photo-label">On-site — Metro Manila</p>
+    </div>
+
+    <div class="proof-content-side">
+      <p class="section-eyebrow fade-up">From the Field</p>
+
+      <div class="testimonial-item fade-up d1">
+        <p class="testimonial-quote">
+          I've worked with three suppliers in ten years. Hiraya is the only one where
+          I've never had to explain a delivery failure to a client. That kind of reliability
+          is worth more than the best discount I've ever been offered.
+        </p>
+        <div class="testimonial-meta">
+          <div class="testimonial-dot"></div>
+          <div>
+            <p class="testimonial-name">R. Dela Cruz</p>
+            <p class="testimonial-role">General Contractor — 14 years in residential</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-item fade-up d2">
+        <p class="testimonial-quote">
+          My account manager knew which materials I'd need for phase two before I had
+          finalized my own timeline. That's not service — that's a partner who actually
+          reads the brief.
+        </p>
+        <div class="testimonial-meta">
+          <div class="testimonial-dot"></div>
+          <div>
+            <p class="testimonial-name">M. Santos</p>
+            <p class="testimonial-role">Architect — Boutique residential projects</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-item fade-up d3">
+        <p class="testimonial-quote">
+          We moved to Hiraya after a substitution issue cost us two weeks on a P80M project.
+          We haven't had an undisclosed substitution since.
+        </p>
+        <div class="testimonial-meta">
+          <div class="testimonial-dot"></div>
+          <div>
+            <p class="testimonial-name">J. Reyes</p>
+            <p class="testimonial-role">Project Manager — Mid-scale development firm</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── CONSULTATION FORM ── -->
+  <section id="consult">
+    <div class="consult-photo-side">
+      <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=85" alt="Premium construction interior" loading="lazy" />
+      <div class="consult-photo-overlay">
+        <h2 class="consult-photo-tagline">
+          Your standard is<br>our <em>baseline.</em>
+        </h2>
+        <div class="consult-bullets">
+          <p class="consult-bullet">Personal review — no forms routed to a call center</p>
+          <p class="consult-bullet">Response within one business day</p>
+          <p class="consult-bullet">Project-specific proposal, not a price list</p>
+          <p class="consult-bullet">Limited capacity — we work with select partners</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="consult-form-side">
+      <p class="section-eyebrow fade-up">Start the Conversation</p>
+      <h2 class="form-title fade-up d1">Request a<br><em>Project Consultation</em></h2>
+      <p class="form-subtitle fade-up d2">
+        No obligation. No sales pitch. A conversation about your project
+        and whether Hiraya is the right fit.
+      </p>
+
+      <form id="consultForm" onsubmit="handleFormSubmit(event)">
+        <div class="form-fields fade-up d2">
+          <div class="form-row">
+            <div class="field-group">
+              <label for="f-name">Full Name</label>
+              <input type="text" id="f-name" placeholder="Your name" required />
+            </div>
+            <div class="field-group">
+              <label for="f-mobile">Mobile Number</label>
+              <input type="tel" id="f-mobile" placeholder="+63 9XX XXX XXXX" required />
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="f-company">Company / Project Name</label>
+            <input type="text" id="f-company" placeholder="Company or project description" required />
+          </div>
+          <div class="field-group">
+            <label for="f-role">Your Role</label>
+            <select id="f-role" required>
+              <option value="" disabled selected>Select your role</option>
+              <option>General Contractor</option>
+              <option>Real Estate Developer</option>
+              <option>Architect / Designer</option>
+              <option>Project Manager</option>
+              <option>Home Builder</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="f-project">Tell us about your project</label>
+            <textarea id="f-project" rows="3" placeholder="Project type, location, timeline, materials you're sourcing..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-footer fade-up d3">
+          <p class="form-disclaimer">
+            Your information is not shared. A real person reaches out — not an automated sequence.
+          </p>
+          <button type="submit" class="btn-submit">Submit Inquiry</button>
+        </div>
+      </form>
+
+      <div id="formSuccess">
+        <div class="success-mark">✦</div>
+        <h3>We received your inquiry.</h3>
+        <p>A member of our team will reach out within one business day.<br>We look forward to learning about your project.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-photo-band">
+      <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=70" alt="" loading="lazy" />
+      <div class="footer-photo-band-overlay"></div>
+    </div>
+
+    <div class="footer-main">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h2>Hiraya</h2>
+          <p>Construction Supply</p>
+        </div>
+        <div class="footer-links-col">
+          <h5>Navigate</h5>
+          <ul>
+            <li><a href="#standard">Our Standard</a></li>
+            <li><a href="#showcase">Projects</a></li>
+            <li><a href="#materials">Materials</a></li>
+            <li><a href="#clients">Who We Serve</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-col">
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="#consult">Request Consultation</a></li>
+            <li><a href="tel:+63">+63 (0) XXX XXX XXXX</a></li>
+            <li><a href="mailto:accounts@hiraya.ph">accounts@hiraya.ph</a></li>
+          </ul>
+        </div>
+        <div class="footer-tagline-col">
+          <p>
+            "The fruit of one's hopes and dreams —
+            built with materials that match the vision."
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Hiraya Construction Supply. All rights reserved.</p>
+        <p class="footer-copy">Built Without Compromise.</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    // ── Nav scroll ──
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── Hero bg zoom-in on load ──
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('load', () => heroBg.classList.add('loaded'));
+
+    // ── Fade-up on scroll ──
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+    fadeEls.forEach(el => io.observe(el));
+
+    // Hero elements visible after small delay
+    document.querySelectorAll('#hero .fade-up').forEach(el => {
+      const delay = parseInt(el.className.match(/d(\d)/)?.[1] || 0) * 100;
+      setTimeout(() => el.classList.add('visible'), 200 + delay);
+    });
+
+    // ── Marquee ──
+    const marqueePhotos = [
+      { url: 'photo-1486406146926-c627a92ad1ab', label: 'Structural Glass' },
+      { url: 'photo-1600596542815-ffad4c1539a9', label: 'Custom Residence' },
+      { url: 'photo-1504307651254-35680f356dfd', label: 'Steel Framing' },
+      { url: 'photo-1503387762-592deb58ef4e', label: 'Commercial Build' },
+      { url: 'photo-1541888946425-d81bb19240f5', label: 'Site Works' },
+      { url: 'photo-1558618666-fcd25c85cd64', label: 'Concrete Works' },
+      { url: 'photo-1560448204-e02f11c3d0e2', label: 'Premium Finish' },
+      { url: 'photo-1486325212027-8081e485255e', label: 'Façade Systems' },
+    ];
+
+    const track = document.getElementById('marqueeTrack');
+    // Double the array for seamless loop
+    [...marqueePhotos, ...marqueePhotos].forEach(({ url, label }) => {
+      const div = document.createElement('div');
+      div.className = 'marquee-photo';
+      div.innerHTML = `
+        <img src="https://images.unsplash.com/${url}?auto=format&fit=crop&w=420&h=280&q=75" alt="${label}" loading="lazy" />
+        <span class="marquee-photo-label">${label}</span>
+      `;
+      track.appendChild(div);
+    });
+
+    // ── Parallax quote bg (desktop only) ──
+    const quoteBg = document.querySelector('#quote-band .quote-bg');
+    if (window.innerWidth > 700) {
+      window.addEventListener('scroll', () => {
+        const rect = document.getElementById('quote-band').getBoundingClientRect();
+        if (rect.bottom > 0 && rect.top < window.innerHeight) {
+          const pct = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+          quoteBg.style.transform = `translateY(${(pct - 0.5) * 80}px)`;
+        }
+      }, { passive: true });
+    }
+
+    // ── Form submit ──
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const data = {
+        name:    document.getElementById('f-name').value,
+        mobile:  document.getElementById('f-mobile').value,
+        company: document.getElementById('f-company').value,
+        role:    document.getElementById('f-role').value,
+        project: document.getElementById('f-project').value,
+        submitted_at: new Date().toISOString()
+      };
+
+      console.log('Hiraya inquiry:', data);
+
+      document.getElementById('consultForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+
+      /*
+        Wire to n8n — uncomment when ready:
+
+        fetch('https://n8n.srv1326251.hstgr.cloud/webhook/hiraya-funnel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      */
+    }
+  </script>
+
+</body>
+</html>
