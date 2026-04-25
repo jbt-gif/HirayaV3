@@ -2108,31 +2108,51 @@
           <!-- AI Assistant panel -->
           <div class="pcat-panel pcat-hidden" data-cat="ai">
             <div class="funnel-strip-wrap">
-              <div class="funnel-strip-track">
-                <div class="pcat-strip-card pcat-video-card" data-video="">
-                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
-                  <div class="funnel-card-name">Sales Chatbot</div>
+              <div class="pcat-static" style="grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); max-width:900px; gap:2.5rem; align-items:start;">
+
+                <!-- Live demo card -->
+                <div class="pcat-strip-card pcat-db-card" data-funnel="Bernard/index.html" style="width:auto;">
+                  <div class="funnel-card-preview pcat-db-preview">
+                    <img src="Bernard/thumb-bernard.svg" alt="Hiraya AI Assistant" />
+                    <div class="pcat-db-open">→</div>
+                  </div>
+                  <div style="padding:0.85rem 1.25rem 1rem;">
+                    <div class="funnel-card-name" style="padding:0; margin-bottom:0.65rem;">Hiraya AI Assistant <span class="pcat-db-tag">Live Demo</span></div>
+                    <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                      <span style="font-size:10px; padding:3px 9px; border-radius:20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); color:rgba(255,255,255,0.4); font-family:'Space Grotesk',sans-serif; white-space:nowrap;">Daily briefing</span>
+                      <span style="font-size:10px; padding:3px 9px; border-radius:20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); color:rgba(255,255,255,0.4); font-family:'Space Grotesk',sans-serif; white-space:nowrap;">Inventory alert</span>
+                      <span style="font-size:10px; padding:3px 9px; border-radius:20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); color:rgba(255,255,255,0.4); font-family:'Space Grotesk',sans-serif; white-space:nowrap;">Hot leads</span>
+                      <span style="font-size:10px; padding:3px 9px; border-radius:20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); color:rgba(255,255,255,0.4); font-family:'Space Grotesk',sans-serif; white-space:nowrap;">Sales report</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="pcat-strip-card pcat-video-card" data-video="">
-                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
-                  <div class="funnel-card-name">FAQ Bot</div>
+
+                <!-- Usage guide -->
+                <div style="padding:0.25rem 0;">
+                  <p style="font-family:'Space Grotesk',sans-serif; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:1.1rem;">How to use</p>
+                  <div style="display:flex; flex-direction:column; gap:0.85rem; margin-bottom:1.8rem;">
+                    <div style="display:flex; gap:0.75rem; align-items:flex-start;">
+                      <span style="font-size:0.95rem; line-height:1.5;">💬</span>
+                      <span style="font-size:0.82rem; color:rgba(255,255,255,0.55); font-family:'Space Grotesk',sans-serif; line-height:1.6;">Type any business question in plain English</span>
+                    </div>
+                    <div style="display:flex; gap:0.75rem; align-items:flex-start;">
+                      <span style="font-size:0.95rem; line-height:1.5;">⚡</span>
+                      <span style="font-size:0.82rem; color:rgba(255,255,255,0.55); font-family:'Space Grotesk',sans-serif; line-height:1.6;">Use the quick tool buttons on the left for instant reports</span>
+                    </div>
+                    <div style="display:flex; gap:0.75rem; align-items:flex-start;">
+                      <span style="font-size:0.95rem; line-height:1.5;">🔑</span>
+                      <span style="font-size:0.82rem; color:rgba(255,255,255,0.55); font-family:'Space Grotesk',sans-serif; line-height:1.6;">Enter your Anthropic API key in Settings to activate</span>
+                    </div>
+                  </div>
+                  <p style="font-family:'Space Grotesk',sans-serif; font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.2); margin-bottom:0.7rem;">Try asking</p>
+                  <div style="display:flex; flex-direction:column; gap:0.4rem;">
+                    <div style="font-size:0.78rem; color:rgba(255,255,255,0.38); font-family:'Space Grotesk',sans-serif; padding:0.5rem 0.8rem; border:1px solid rgba(255,255,255,0.07); border-radius:8px; font-style:italic; line-height:1.4;">"Give me a complete daily briefing"</div>
+                    <div style="font-size:0.78rem; color:rgba(255,255,255,0.38); font-family:'Space Grotesk',sans-serif; padding:0.5rem 0.8rem; border:1px solid rgba(255,255,255,0.07); border-radius:8px; font-style:italic; line-height:1.4;">"Which inventory items are low in stock?"</div>
+                    <div style="font-size:0.78rem; color:rgba(255,255,255,0.38); font-family:'Space Grotesk',sans-serif; padding:0.5rem 0.8rem; border:1px solid rgba(255,255,255,0.07); border-radius:8px; font-style:italic; line-height:1.4;">"List all hot leads and who to call first"</div>
+                    <div style="font-size:0.78rem; color:rgba(255,255,255,0.38); font-family:'Space Grotesk',sans-serif; padding:0.5rem 0.8rem; border:1px solid rgba(255,255,255,0.07); border-radius:8px; font-style:italic; line-height:1.4;">"What is our financial status this month?"</div>
+                  </div>
                 </div>
-                <div class="pcat-strip-card pcat-video-card" data-video="">
-                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
-                  <div class="funnel-card-name">Onboarding Assistant</div>
-                </div>
-                <div class="pcat-strip-card pcat-video-card" data-video="">
-                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
-                  <div class="funnel-card-name">Sales Chatbot</div>
-                </div>
-                <div class="pcat-strip-card pcat-video-card" data-video="">
-                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
-                  <div class="funnel-card-name">FAQ Bot</div>
-                </div>
-                <div class="pcat-strip-card pcat-video-card" data-video="">
-                  <div class="funnel-card-preview pcat-video-thumb"><div class="pcat-video-play"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><path d="M19 16l14 8-14 8V16z" fill="rgba(255,255,255,0.9)"/></svg></div></div>
-                  <div class="funnel-card-name">Onboarding Assistant</div>
-                </div>
+
               </div>
             </div>
           </div>

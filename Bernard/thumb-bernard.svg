@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" shape-rendering="crispEdges">
+  <!-- Background -->
+  <rect width="640" height="360" fill="#f9fafb"/>
+
+  <!-- Header -->
+  <rect width="640" height="52" fill="white"/>
+  <rect y="52" width="640" height="1" fill="#f1f5f9"/>
+  <text x="24" y="31" font-family="Inter,sans-serif" font-size="15" font-weight="700" fill="#111827">AI Assistant</text>
+  <text x="24" y="46" font-family="Inter,sans-serif" font-size="10" fill="#9ca3af">Powered by Claude AI · Live Business Data</text>
+  <!-- Header icons -->
+  <rect x="560" y="14" width="24" height="24" rx="8" fill="#f3f4f6"/>
+  <rect x="592" y="14" width="24" height="24" rx="8" fill="#f3f4f6"/>
+  <rect x="580" y="14" width="60" height="24" rx="8" fill="#111827"/>
+  <text x="606" y="30" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="white" text-anchor="middle">Refresh</text>
+
+  <!-- Chat area background -->
+  <rect y="53" width="640" height="255" fill="#f9fafb"/>
+
+  <!-- Bot message 1 -->
+  <rect x="20" y="72" width="320" height="52" rx="12" fill="white" filter="url(#s)"/>
+  <rect x="20" y="72" width="320" height="52" rx="12" fill="white"/>
+  <rect x="20" y="72" width="320" height="1" fill="#f3f4f6"/>
+  <text x="36" y="92" font-family="Inter,sans-serif" font-size="11" fill="#374151">Hello! I'm your AI business assistant.</text>
+  <text x="36" y="108" font-family="Inter,sans-serif" font-size="11" fill="#374151">Ask me about sales, inventory, HR, or leads.</text>
+
+  <!-- User message -->
+  <rect x="364" y="140" width="256" height="32" rx="12" fill="#1f2937"/>
+  <text x="492" y="160" font-family="Inter,sans-serif" font-size="11" fill="white" text-anchor="middle">Give me a daily briefing</text>
+
+  <!-- Bot response -->
+  <rect x="20" y="188" width="380" height="100" rx="12" fill="white"/>
+  <rect x="20" y="188" width="380" height="1" fill="#f3f4f6"/>
+  <text x="36" y="208" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#6366f1">DAILY BRIEFING — Today</text>
+  <text x="36" y="226" font-family="Inter,sans-serif" font-size="11" fill="#374151">📈  Revenue: ₱587,420  (+8.2% vs target)</text>
+  <text x="36" y="244" font-family="Inter,sans-serif" font-size="11" fill="#374151">⚠️  Low stock: Steel Bar 16mm, GI Sheet 26GA</text>
+  <text x="36" y="262" font-family="Inter,sans-serif" font-size="11" fill="#374151">👤  Attendance: 8/10 present · 1 on leave</text>
+  <text x="36" y="280" font-family="Inter,sans-serif" font-size="11" fill="#374151">🔥  Hot leads: Pacific Builders (₱85k)</text>
+
+  <!-- Input bar -->
+  <rect y="308" width="640" height="52" fill="white"/>
+  <rect y="308" width="640" height="1" fill="#f1f5f9"/>
+  <rect x="20" y="320" width="540" height="28" rx="10" fill="#f3f4f6"/>
+  <text x="36" y="338" font-family="Inter,sans-serif" font-size="11" fill="#9ca3af">Ask anything about your business…</text>
+  <rect x="572" y="318" width="52" height="32" rx="10" fill="#1f2937"/>
+  <text x="598" y="338" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="white" text-anchor="middle">Send</text>
+</svg>
