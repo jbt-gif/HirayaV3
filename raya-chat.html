@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask Raya — Hiraya Systems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #000; --card: #0f0f0f; --border: rgba(255,255,255,0.07);
+      --white: #f0ede8; --body: rgba(255,255,255,0.62); --muted: rgba(255,255,255,0.38);
+    }
+    html, body { height: 100%; background: var(--bg); color: var(--white); font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
+
+    .raya-shell { display: flex; flex-direction: column; height: 100vh; }
+
+    /* Header */
+    .raya-header {
+      flex-shrink: 0; padding: 0.85rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.75rem;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(12px);
+    }
+    .raya-logo { font-family: 'Unbounded', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; }
+    .raya-divider { width: 1px; height: 14px; background: var(--border); }
+    .raya-tag { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    .raya-dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 6px rgba(34,197,94,0.8); animation: pulse 2s infinite; margin-left: auto; flex-shrink: 0; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    /* Messages */
+    .raya-msgs-wrap {
+      flex: 1; overflow-y: auto; padding: 2rem 1.5rem;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent;
+    }
+    .raya-msgs-wrap::-webkit-scrollbar { width: 4px; }
+    .raya-msgs-wrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    .raya-msgs { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+
+    /* Welcome */
+    .raya-welcome { text-align: center; padding: 2.5rem 1rem 1rem; }
+    .raya-welcome-mark { font-size: 2rem; margin-bottom: 0.85rem; opacity: 0.6; }
+    .raya-welcome h2 { font-family: 'Unbounded', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: 0.04em; }
+    .raya-welcome p { color: var(--body); font-size: 0.83rem; max-width: 320px; margin: 0 auto; line-height: 1.6; }
+
+    /* Bubbles */
+    .raya-msg { max-width: 84%; line-height: 1.65; font-size: 0.875rem; word-break: break-word; }
+    .raya-msg.bot { align-self: flex-start; background: var(--card); border: 1px solid var(--border); border-radius: 2px 14px 14px 14px; padding: 0.8rem 1rem; }
+    .raya-msg.user { align-self: flex-end; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11); border-radius: 14px 2px 14px 14px; padding: 0.8rem 1rem; }
+
+    /* Typing dots */
+    .raya-typing {
+      display: none; align-self: flex-start; padding: 0.7rem 0.9rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 2px 14px 14px 14px; gap: 4px; align-items: center;
+    }
+    .raya-typing span { display: block; width: 5px; height: 5px; background: var(--muted); border-radius: 50%; animation: typeDot 1.2s ease-in-out infinite; }
+    .raya-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .raya-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typeDot { 0%,80%,100% { transform:translateY(0); opacity:0.4; } 40% { transform:translateY(-5px); opacity:1; } }
+
+    /* Chips */
+    .raya-chips {
+      flex-shrink: 0; padding: 0 1.5rem 0.85rem;
+      display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: center;
+      max-width: 720px; margin: 0 auto; width: 100%;
+    }
+    .raya-chip {
+      border: 1px solid var(--border); background: transparent; color: var(--body);
+      padding: 0.35rem 0.85rem; border-radius: 999px; font-size: 0.76rem;
+      font-family: 'Space Grotesk', sans-serif; cursor: pointer;
+      transition: border-color 0.2s, color 0.2s; white-space: nowrap;
+    }
+    .raya-chip:hover { border-color: rgba(255,255,255,0.28); color: var(--white); }
+
+    /* Input bar */
+    .raya-input-area {
+      flex-shrink: 0; padding: 0.85rem 1.5rem 1.1rem;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(12px);
+    }
+    .raya-input-wrap {
+      max-width: 680px; margin: 0 auto; display: flex; gap: 0.5rem;
+      align-items: flex-end; background: #111; border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 14px; padding: 0.45rem 0.45rem 0.45rem 1rem;
+      transition: border-color 0.2s;
+    }
+    .raya-input-wrap:focus-within { border-color: rgba(255,255,255,0.22); }
+    .raya-input {
+      flex: 1; background: none; border: none; outline: none; color: var(--white);
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.875rem; line-height: 1.5;
+      resize: none; max-height: 120px; min-height: 22px;
+    }
+    .raya-input::placeholder { color: var(--muted); }
+    .raya-send {
+      width: 34px; height: 34px; background: var(--white); border: none;
+      border-radius: 9px; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; transition: opacity 0.2s;
+    }
+    .raya-send:disabled { opacity: 0.25; cursor: default; }
+    .raya-footnote {
+      max-width: 680px; margin: 0.45rem auto 0; text-align: center;
+      font-size: 0.68rem; color: var(--muted);
+    }
+    .raya-footnote a { color: inherit; }
+  </style>
+</head>
+<body>
+
+<div class="raya-shell">
+  <header class="raya-header">
+    <div class="raya-logo">HIRAYA</div>
+    <div class="raya-divider"></div>
+    <div class="raya-tag">Ask Raya</div>
+    <div class="raya-dot"></div>
+  </header>
+
+  <div class="raya-msgs-wrap" id="msgsWrap">
+    <div class="raya-msgs" id="msgs">
+      <div class="raya-welcome" id="welcome">
+        <div class="raya-welcome-mark">✦</div>
+        <h2>Hi, I'm Raya</h2>
+        <p>Ask me anything about Hiraya Systems — services, pricing, process, or whether we're the right fit for your business.</p>
+      </div>
+      <div class="raya-typing" id="typing"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+
+  <div class="raya-chips" id="chips">
+    <button class="raya-chip" data-q="What services does Hiraya offer?">What do you build?</button>
+    <button class="raya-chip" data-q="How much does a project typically cost?">How much does it cost?</button>
+    <button class="raya-chip" data-q="How long does a project take from start to finish?">How long does it take?</button>
+    <button class="raya-chip" data-q="Can you build a chatbot for my business?">Can I get a chatbot?</button>
+    <button class="raya-chip" data-q="What's the first step to working with Hiraya?">First step?</button>
+    <button class="raya-chip" data-q="What makes Hiraya different from other agencies?">Why Hiraya?</button>
+  </div>
+
+  <div class="raya-input-area">
+    <form class="raya-input-wrap" id="form">
+      <textarea class="raya-input" id="input" placeholder="Ask me anything..." rows="1" autocomplete="off"></textarea>
+      <button type="submit" class="raya-send" id="sendBtn">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M14 8L2 2l4 6-4 6 12-6z" fill="#000"/></svg>
+      </button>
+    </form>
+    <p class="raya-footnote">Raya may make mistakes. For specific inquiries — <a href="mailto:hello@hirayasystems.com">hello@hirayasystems.com</a></p>
+  </div>
+</div>
+
+<script>
+const msgsWrap  = document.getElementById('msgsWrap');
+const msgsEl    = document.getElementById('msgs');
+const typingEl  = document.getElementById('typing');
+const welcomeEl = document.getElementById('welcome');
+const chipsEl   = document.getElementById('chips');
+const formEl    = document.getElementById('form');
+const inputEl   = document.getElementById('input');
+const sendBtn   = document.getElementById('sendBtn');
+
+let history = [];
+let busy    = false;
+
+const scrollBottom = () => { msgsWrap.scrollTop = msgsWrap.scrollHeight; };
+
+function appendMsg(text, role) {
+  const div = document.createElement('div');
+  div.className = `raya-msg ${role}`;
+  div.textContent = text;
+  msgsEl.insertBefore(div, typingEl);
+  scrollBottom();
+  return div;
+}
+
+function hideWelcome() {
+  if (welcomeEl && welcomeEl.parentNode) {
+    welcomeEl.remove();
+    chipsEl.style.display = 'none';
+  }
+}
+
+async function send(text) {
+  if (busy || !text.trim()) return;
+  hideWelcome();
+  appendMsg(text, 'user');
+  busy = true;
+  sendBtn.disabled = true;
+  typingEl.style.display = 'flex';
+  scrollBottom();
+
+  try {
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, history: history.slice(-9) })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || `Error ${resp.status}`);
+    typingEl.style.display = 'none';
+    appendMsg(data.reply, 'bot');
+    history.push({ role: 'user', content: text });
+    history.push({ role: 'assistant', content: data.reply });
+    history = history.slice(-12);
+  } catch (err) {
+    typingEl.style.display = 'none';
+    appendMsg('Having trouble connecting. Try again or email hello@hirayasystems.com', 'bot');
+  } finally {
+    busy = false;
+    sendBtn.disabled = false;
+    inputEl.focus();
+  }
+}
+
+formEl.addEventListener('submit', e => {
+  e.preventDefault();
+  const text = inputEl.value.trim();
+  if (!text) return;
+  inputEl.value = '';
+  inputEl.style.height = 'auto';
+  send(text);
+});
+
+document.querySelectorAll('.raya-chip').forEach(chip => {
+  chip.addEventListener('click', () => send(chip.dataset.q));
+});
+
+inputEl.addEventListener('input', () => {
+  inputEl.style.height = 'auto';
+  inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
+});
+inputEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); formEl.dispatchEvent(new Event('submit')); }
+});
+</script>
+</body>
+</html>

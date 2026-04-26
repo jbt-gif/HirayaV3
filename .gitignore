@@ -22,6 +22,11 @@ mockup2.html
 parallax-bg.html
 projects/
 
+# Env / secrets
+.env
+.env.local
+.env.*.local
+
 # OS
 .DS_Store
 Thumbs.db
