@@ -374,8 +374,8 @@
       cursor: pointer;
     }
     .btn-primary:hover { background-position: left center; transform: translateY(-1px); }
-    #cta .btn-primary { box-shadow: 0 0 30px rgba(45,212,191,0.35), 0 0 70px rgba(45,212,191,0.15); }
-    #cta .btn-primary:hover { box-shadow: 0 0 40px rgba(45,212,191,0.55), 0 0 90px rgba(45,212,191,0.25); }
+    #cta .btn-primary { filter: drop-shadow(0 0 18px rgba(45,212,191,0.5)) drop-shadow(0 0 40px rgba(45,212,191,0.25)); }
+    #cta .btn-primary:hover { filter: drop-shadow(0 0 24px rgba(45,212,191,0.7)) drop-shadow(0 0 55px rgba(45,212,191,0.35)); }
 
     .btn-ghost {
       color: var(--body);
@@ -1466,8 +1466,8 @@
     /* ── CTA ── */
     .cta-footer-wrap {
       position: relative;
+      overflow: hidden;
     }
-    .fluid-bl { overflow: hidden; }
 
     #cta {
       background: transparent;
