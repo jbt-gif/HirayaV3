@@ -48,7 +48,8 @@
     .scout-logo { font-family: 'Unbounded', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; }
     .scout-divider { width: 1px; height: 14px; background: var(--border); }
     .scout-tag { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
-    .scout-dot { width: 6px; height: 6px; background: #2dd4bf; border-radius: 50%; box-shadow: 0 0 6px rgba(45,212,191,0.8); animation: pulse 2s infinite; margin-left: auto; flex-shrink: 0; }
+    .scout-dot { display: none; }
+    .scout-diamond { font-size: 0.75rem; color: #2dd4bf; text-shadow: 0 0 8px rgba(45,212,191,0.8); animation: pulse 2s infinite; flex-shrink: 0; line-height: 1; }
     @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
     /* Messages */
@@ -175,7 +176,7 @@
     <a href="index.html" class="scout-logo" style="text-decoration:none;color:inherit;cursor:pointer;">HIRAYA</a>
     <div class="scout-divider"></div>
     <div class="scout-tag">Lead Qualifier</div>
-    <div class="scout-dot"></div>
+    <span class="scout-diamond">◈</span>
     <a href="index.html" style="margin-left:auto;padding:0.4rem 1rem;border:1px solid rgba(255,255,255,0.12);border-radius:8px;font-size:0.72rem;color:rgba(255,255,255,0.5);text-decoration:none;letter-spacing:0.06em;transition:border-color 0.2s,color 0.2s;flex-shrink:0;" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.color='rgba(255,255,255,0.5)'">← Back to site</a>
   </header>
 
@@ -326,18 +327,20 @@ if (!SpeechRecognition) {
 
   micBtn.addEventListener('click', () => {
     if (listening) { recognition.stop(); return; }
-    recognition.start();
+    try { recognition.start(); } catch(e) {}
   });
 
   recognition.onstart = () => {
     listening = true;
     micBtn.classList.add('listening');
-    micBtn.title = 'Listening... click to stop';
+    micBtn.title = 'Listening… click to stop';
+    inputEl.placeholder = 'Listening…';
   };
 
   recognition.onresult = e => {
     const transcript = e.results[0][0].transcript;
     inputEl.value = transcript;
+    inputEl.placeholder = 'Tell me about your business...';
     inputEl.style.height = 'auto';
     inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
     inputEl.focus();
@@ -347,11 +350,17 @@ if (!SpeechRecognition) {
     listening = false;
     micBtn.classList.remove('listening');
     micBtn.title = 'Speak your message';
+    if (!inputEl.value) inputEl.placeholder = 'Tell me about your business...';
   };
 
-  recognition.onerror = () => {
+  recognition.onerror = e => {
     listening = false;
     micBtn.classList.remove('listening');
+    inputEl.placeholder = 'Tell me about your business...';
+    if (e.error === 'not-allowed') {
+      inputEl.placeholder = 'Mic blocked — allow access in browser settings';
+      setTimeout(() => { inputEl.placeholder = 'Tell me about your business...'; }, 3000);
+    }
   };
 }
 </script>
