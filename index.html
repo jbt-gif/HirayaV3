@@ -358,7 +358,9 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: var(--white);
+      background-image: linear-gradient(to right, #2dd4bf 50%, var(--white) 50%);
+      background-size: 200% 100%;
+      background-position: right center;
       color: #06060f;
       padding: 0.8rem 1.8rem;
       border-radius: 999px;
@@ -366,12 +368,14 @@
       font-size: var(--fs-ui);
       letter-spacing: 0.05em;
       text-decoration: none;
-      transition: opacity 0.2s, transform 0.2s;
+      transition: background-position 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.2s, box-shadow 0.3s;
       font-family: inherit;
       border: none;
       cursor: pointer;
     }
-    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-primary:hover { background-position: left center; transform: translateY(-1px); }
+    #cta .btn-primary { box-shadow: 0 0 30px rgba(45,212,191,0.35), 0 0 70px rgba(45,212,191,0.15); }
+    #cta .btn-primary:hover { box-shadow: 0 0 40px rgba(45,212,191,0.55), 0 0 90px rgba(45,212,191,0.25); }
 
     .btn-ghost {
       color: var(--body);
@@ -1498,6 +1502,31 @@
       font-size: var(--fs-body);
       color: var(--muted);
     }
+
+    /* ── STICKY CTA BAR ── */
+    .sticky-cta {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
+      background: rgba(6,6,15,0.88); backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 0.85rem 2rem;
+      display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .sticky-cta.visible { transform: translateY(0); }
+    .sticky-cta-text { font-size: 0.82rem; color: rgba(255,255,255,0.55); letter-spacing: 0.02em; }
+    .sticky-cta-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background-image: linear-gradient(to right, #2dd4bf 50%, var(--white) 50%);
+      background-size: 200% 100%; background-position: right center;
+      color: #06060f; padding: 0.5rem 1.3rem; border-radius: 999px;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.05em;
+      text-decoration: none; font-family: inherit;
+      transition: background-position 0.4s cubic-bezier(0.16,1,0.3,1);
+      white-space: nowrap;
+    }
+    .sticky-cta-btn:hover { background-position: left center; }
+    @media (max-width: 768px) { .sticky-cta-text { display: none; } .sticky-cta { justify-content: center; } }
 
     /* ── SOCIAL FLOAT ── */
     .social-float {
@@ -3272,6 +3301,12 @@
   </footer>
   </div><!-- /.cta-footer-wrap -->
 
+  <!-- STICKY CTA BAR -->
+  <div class="sticky-cta" id="stickyCta">
+    <span class="sticky-cta-text">Stop losing hours to manual work.</span>
+    <a href="lead-qualifier.html" class="sticky-cta-btn">Book a Free Discovery Call →</a>
+  </div>
+
   <!-- FLOATING SOCIAL BAR -->
   <div class="social-float">
     <div class="social-float-line"></div>
@@ -3323,6 +3358,14 @@
     dualLoop('fluid-process-wrap');
     dualLoop('fluid-portfolio-wrap');
     dualLoop('fluid-bl-wrap');
+
+    // Sticky CTA bar — show after scrolling past hero
+    const stickyCta = document.getElementById('stickyCta');
+    const heroSection = document.getElementById('hero');
+    window.addEventListener('scroll', () => {
+      if (!heroSection || !stickyCta) return;
+      stickyCta.classList.toggle('visible', heroSection.getBoundingClientRect().bottom < 0);
+    }, { passive: true });
 
     // Pause corner glow animations when tab is hidden
     document.addEventListener('visibilitychange', () => {
