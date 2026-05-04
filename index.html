@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hiraya Systems</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Unbounded:wght@700;800;900&family=Inter:wght@800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,16 +41,22 @@
       position: fixed;
       inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.022;
+      opacity: 0;
       pointer-events: none;
       z-index: 9999;
     }
 
     /* ── CORNER CHROMATIC GLOWS ── */
-    .corner-glow {
+    .corner-glow-wrap {
       position: fixed;
+      inset: 0;
+      overflow: hidden;
       pointer-events: none;
       z-index: 3;
+    }
+    .corner-glow {
+      position: absolute;
+      pointer-events: none;
       border-radius: 50%;
       filter: blur(130px);
       opacity: 0.18;
@@ -195,6 +202,8 @@
       position: absolute;
       pointer-events: none;
       mix-blend-mode: screen;
+      background: #000000;
+      clip-path: inset(5px);
       z-index: 2;
     }
     .fluid-accent img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -558,10 +567,10 @@
     }
 
     /* ── PROCESS ── */
-    #process { position: relative; }
+    #process { background: var(--bg); position: relative; isolation: isolate; }
     #process .container { max-width: 860px; position: relative; z-index: 1; }
 
-    .process-fluid {
+    .process-fluid-wrap {
       position: absolute;
       left: -1070px;
       top: 50%;
@@ -569,11 +578,15 @@
       width: 2100px;
       height: 2100px;
       pointer-events: none;
-      mix-blend-mode: screen;
       z-index: 0;
+      mask-image: linear-gradient(to right, black 0%, black 80%, transparent 90%);
+      -webkit-mask-image: linear-gradient(to right, black 0%, black 80%, transparent 90%);
+    }
+    .process-fluid {
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: screen;
       opacity: 0.85;
-      mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 75%);
-      -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 75%);
     }
     .process-fluid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 
@@ -777,9 +790,9 @@
     .service-card p  { font-size: var(--fs-ui); color: var(--body); line-height: 1.65; }
 
     /* ── PORTFOLIO ── */
-    #portfolio { background: var(--bg); position: relative; }
+    #portfolio { background: var(--bg); position: relative; isolation: isolate; }
 
-    .portfolio-fluid {
+    .portfolio-fluid-wrap {
       position: absolute;
       right: -1070px;
       top: 50%;
@@ -787,8 +800,14 @@
       width: 2100px;
       height: 2100px;
       pointer-events: none;
-      mix-blend-mode: screen;
       z-index: 0;
+      mask-image: linear-gradient(to left, black 0%, black 80%, transparent 90%);
+      -webkit-mask-image: linear-gradient(to left, black 0%, black 80%, transparent 90%);
+    }
+    .portfolio-fluid {
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: screen;
       opacity: 0.85;
     }
     .portfolio-fluid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
@@ -1031,6 +1050,391 @@
       .cs-metrics { grid-template-columns: 1fr 1fr; }
     }
 
+    /* ── AUTO DEMO PANEL ── */
+    .auto-demo-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100%;
+    }
+    .auto-demo-left {
+      background: #050505;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      padding: 3rem 2.5rem 3rem 3rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .auto-demo-trigger-label {
+      font-size: 9px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 0.4rem;
+    }
+    .auto-demo-trigger-val {
+      font-size: 0.8rem;
+      font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 7px;
+      padding: 0.4rem 0.75rem;
+      display: inline-block;
+    }
+    .auto-demo-flow-label {
+      font-size: 9px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 1.1rem;
+      border-left: 2px solid rgba(255,255,255,0.15);
+      padding-left: 0.55rem;
+    }
+    .auto-demo-nodes { display: flex; flex-direction: column; }
+    .auto-demo-node {
+      display: flex;
+      align-items: stretch;
+      gap: 0.85rem;
+      position: relative;
+      transition: opacity 0.35s;
+    }
+    .auto-demo-node[data-state="pending"] { opacity: 1; }
+    .auto-demo-node[data-state="active"]  { opacity: 1; }
+    .auto-demo-node[data-state="done"]    { opacity: 1; }
+    .auto-demo-node-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .auto-demo-node-icon {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.03);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      transition: background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s;
+      flex-shrink: 0;
+    }
+    .auto-demo-node-line {
+      width: 0;
+      border-left: 1px dashed rgba(255,255,255,0.22);
+      min-height: 1.6rem;
+      margin: 3px 0;
+      flex: 1;
+    }
+    .auto-demo-node:last-child .auto-demo-node-line { display: none; }
+    .auto-demo-node[data-state="active"] .auto-demo-node-icon {
+      border-color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+      animation: nodeActivePulse 0.9s ease-in-out infinite alternate;
+    }
+    @keyframes nodeActivePulse {
+      from { box-shadow: 0 0 0 0 rgba(255,255,255,0.2); }
+      to   { box-shadow: 0 0 0 6px rgba(255,255,255,0); }
+    }
+    .auto-demo-node-body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-top: 3px;
+      padding-bottom: 1.6rem;
+    }
+    .auto-demo-node:last-child .auto-demo-node-body { padding-bottom: 0; }
+    .auto-demo-node-text {
+      font-size: 0.88rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.3s;
+      line-height: 1.3;
+    }
+    .auto-demo-node-hint {
+      font-size: 0.68rem;
+      font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.25);
+      line-height: 1.3;
+    }
+    .auto-demo-node[data-state="active"] .auto-demo-node-text { color: var(--white); font-weight: 500; }
+    .auto-demo-node[data-state="active"] .auto-demo-node-hint { color: rgba(255,255,255,0.4); }
+    .auto-demo-node[data-state="done"]   .auto-demo-node-text { color: rgba(255,255,255,0.6); }
+    /* Integration chips */
+    .auto-flow-chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem;
+      margin: 0.65rem 0 0.25rem;
+    }
+    .auto-flow-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03);
+      font-size: 0.7rem;
+      font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.5);
+      white-space: nowrap;
+    }
+    .auto-flow-arrow { color: rgba(255,255,255,0.18); font-size: 0.7rem; }
+    /* Metrics */
+    .auto-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.65rem;
+    }
+    .auto-metric {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 0.8rem 0.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1px;
+    }
+    .auto-metric-before {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.28);
+      text-decoration: line-through;
+      line-height: 1.2;
+    }
+    .auto-metric-arrow { font-size: 0.65rem; color: rgba(255,255,255,0.18); line-height: 1; }
+    .auto-metric-after {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.45rem;
+      line-height: 1.1;
+    }
+    .auto-metric-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.3;
+      margin-top: 4px;
+    }
+    /* Description + section labels */
+    .auto-demo-desc {
+      font-size: 0.9rem;
+      font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.62);
+      line-height: 1.7;
+      margin: 0.5rem 0 1.5rem;
+    }
+    .auto-demo-section-label {
+      font-size: 9px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 0;
+      border-left: 2px solid var(--section-color, rgba(255,255,255,0.15));
+      padding-left: 0.55rem;
+    }
+    /* Info/log transition */
+    .auto-demo-info { display: flex; flex-direction: column; transition: opacity 0.25s; }
+    .auto-demo-log-wrap { display: none; flex-direction: column; flex: 1; opacity: 0; transition: opacity 0.3s; }
+    .auto-run-btn {
+      margin-top: 2.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 999px;
+      border: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      align-self: flex-start;
+    }
+    .auto-run-btn:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
+    .auto-run-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .auto-demo-right {
+      padding: 3rem 3rem 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .auto-demo-log-label {
+      font-size: 9px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 1.25rem;
+    }
+    .auto-demo-log {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-height: 180px;
+    }
+    .auto-demo-log-empty {
+      font-size: 0.78rem;
+      font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.18);
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .auto-demo-log-entry {
+      display: grid;
+      grid-template-columns: 2.4rem 1.2rem 1fr;
+      gap: 0 0.5rem;
+      align-items: flex-start;
+      animation: logEntryIn 0.25s ease-out both;
+    }
+    @keyframes logEntryIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .log-time {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.25);
+      font-variant-numeric: tabular-nums;
+      padding-top: 2px;
+      text-align: right;
+    }
+    .log-check { font-size: 0.72rem; padding-top: 2px; }
+    .log-content {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+    }
+    .log-content strong { color: rgba(255,255,255,0.85); font-weight: 600; display: block; }
+    .log-detail { color: rgba(255,255,255,0.32); font-size: 0.72rem; margin-top: 1px; display: block; }
+    .auto-demo-result {
+      margin-top: 2rem;
+      padding: 0.9rem 1.25rem;
+      border-radius: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    /* Use case tags */
+    .auto-use-cases { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.5rem 0 1.5rem; }
+    .auto-use-tag {
+      font-size: 0.65rem; font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+      letter-spacing: 0.05em; color: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px; padding: 0.22rem 0.7rem; white-space: nowrap;
+    }
+    /* Before / After comparison */
+    .auto-compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+      border: 1px solid rgba(255,255,255,0.07); border-radius: 10px;
+      overflow: hidden; margin-top: 0.65rem;
+    }
+    .auto-compare-col { display: flex; flex-direction: column; }
+    .auto-compare-before { border-right: 1px solid rgba(255,255,255,0.07); }
+    .auto-compare-head {
+      font-size: 0.65rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .auto-compare-before .auto-compare-head { color: rgba(255,255,255,0.28); background: rgba(255,255,255,0.02); }
+    .auto-compare-after .auto-compare-head  { color: var(--node-color, rgba(255,255,255,0.6)); background: rgba(255,255,255,0.03); }
+    .auto-compare-item {
+      font-size: 0.72rem; font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.38); line-height: 1.4;
+      padding: 0.42rem 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex; align-items: flex-start; gap: 0.4rem;
+    }
+    .auto-compare-item:last-child { border-bottom: none; }
+    .auto-compare-before .auto-compare-item::before { content: '✗'; color: rgba(255,255,255,0.2); flex-shrink: 0; }
+    .auto-compare-after  .auto-compare-item { color: rgba(255,255,255,0.6); }
+    .auto-compare-after  .auto-compare-item::before { content: '✓'; flex-shrink: 0; }
+    /* Outputs */
+    .auto-outputs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.65rem; }
+    .auto-output {
+      display: flex; align-items: flex-start; gap: 0.65rem;
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px; padding: 0.65rem 0.75rem;
+    }
+    .auto-output-icon { font-size: 1rem; flex-shrink: 0; line-height: 1.4; }
+    .auto-output-label {
+      font-size: 0.62rem; font-family: 'Unbounded', sans-serif;
+      font-weight: 700; color: rgba(255,255,255,0.8); line-height: 1.3;
+      letter-spacing: 0.02em;
+    }
+    .auto-output-detail {
+      font-size: 0.68rem; font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.35); line-height: 1.4; margin-top: 3px;
+    }
+    /* ROI Calculator */
+    .auto-roi { margin-top: 0.65rem; }
+    .auto-roi-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.65rem; }
+    .auto-roi-slider {
+      flex: 1; -webkit-appearance: none; appearance: none;
+      height: 3px; border-radius: 999px; outline: none; cursor: pointer;
+      background: rgba(255,255,255,0.12);
+    }
+    .auto-roi-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--thumb-color, #fff); cursor: pointer;
+    }
+    .auto-roi-qty {
+      font-size: 0.72rem; font-family: 'Space Grotesk', sans-serif;
+      color: rgba(255,255,255,0.45); white-space: nowrap; min-width: 7rem; text-align: right;
+    }
+    .auto-roi-result {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; padding: 1rem 1.25rem;
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; color: rgba(255,255,255,0.4);
+      display: flex; align-items: baseline; gap: 0.5rem;
+    }
+    .auto-roi-hrs {
+      font-family: 'Instrument Serif', serif; font-size: 2.2rem; line-height: 1;
+    }
+    /* Setup strip */
+    .auto-setup {
+      display: flex; gap: 0; margin-top: 0.65rem;
+      border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden;
+    }
+    .auto-setup-item {
+      flex: 1; padding: 0.85rem 0.9rem; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .auto-setup-item:last-child { border-right: none; }
+    .auto-setup-label {
+      font-size: 0.58rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.22);
+      margin-bottom: 0.35rem;
+    }
+    .auto-setup-val {
+      font-size: 0.78rem; font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+      color: rgba(255,255,255,0.7); line-height: 1.4;
+    }
+    @media (max-width: 768px) {
+      .auto-demo-wrap { grid-template-columns: 1fr; }
+      .auto-demo-left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 2rem 1.5rem; }
+      .auto-demo-right { padding: 2rem 1.5rem; }
+      .auto-compare { grid-template-columns: 1fr; }
+      .auto-compare-before { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .auto-setup { flex-direction: column; }
+      .auto-setup-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .auto-setup-item:last-child { border-bottom: none; }
+    }
+
     /* ── ABOUT ── */
     #about { background: transparent; }
 
@@ -1060,6 +1464,7 @@
       position: relative;
       overflow: hidden;
     }
+
     #cta {
       background: transparent;
       text-align: center;
@@ -1131,8 +1536,6 @@
     .split-inner,
     .split-char { will-change: transform, opacity; }
     .glitch-letter { will-change: transform, filter; }
-    .fluid-accent,
-    .process-fluid { will-change: transform; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -1968,8 +2371,10 @@
   </div>
 
   <!-- FIXED VIDEO BACKGROUND -->
-  <div class="corner-glow tl"></div>
-  <div class="corner-glow br"></div>
+  <div class="corner-glow-wrap">
+    <div class="corner-glow tl"></div>
+    <div class="corner-glow br"></div>
+  </div>
 
   <!-- HERO -->
   <section id="hero">
@@ -2090,14 +2495,14 @@
 
   <!-- PROCESS -->
   <section id="process">
-    <div class="process-fluid" id="fluid-process-wrap">
+    <div class="process-fluid-wrap"><div class="process-fluid" id="fluid-process-wrap">
       <video autoplay muted playsinline>
         <source src="Fluid3 ani.mp4" type="video/mp4">
       </video>
       <video autoplay muted playsinline style="opacity:0;">
         <source src="Fluid3 ani.mp4" type="video/mp4">
       </video>
-    </div>
+    </div></div>
     <div class="container">
       <div class="process-header">
         <div class="section-label fade-up">How We Work</div>
@@ -2204,14 +2609,14 @@
 
   <!-- PORTFOLIO -->
   <section id="portfolio">
-    <div class="portfolio-fluid" id="fluid-portfolio-wrap">
+    <div class="portfolio-fluid-wrap"><div class="portfolio-fluid" id="fluid-portfolio-wrap">
       <video autoplay muted playsinline>
         <source src="Fluid1 Ani.mp4" type="video/mp4" />
       </video>
       <video autoplay muted playsinline style="opacity:0;">
         <source src="Fluid1 Ani.mp4" type="video/mp4" />
       </video>
-    </div>
+    </div></div>
     <div class="container">
       <div class="section-label fade-up">Our Work</div>
       <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
@@ -2308,8 +2713,8 @@
                 </div>
                 <div class="pcat-strip-card pcat-db-card" data-funnel="raya-chat.html">
                   <div class="funnel-card-preview pcat-db-preview">
-                    <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
-                      <rect width="480" height="38" fill="#0f0f0f"/>
+                    <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#070707">
+                      <rect width="480" height="38" fill="rgba(0,0,0,0.65)"/>
                       <circle cx="20" cy="19" r="4" fill="#22c55e" opacity="0.9"/>
                       <circle cx="20" cy="19" r="7" fill="none" stroke="#22c55e" stroke-width="0.8" opacity="0.3"/>
                       <text x="33" y="23" fill="rgba(255,255,255,0.45)" font-size="7.5" font-family="monospace" letter-spacing="1.5">RAYA — AI FAQ</text>
@@ -2321,7 +2726,7 @@
                       <text x="28" y="66" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">Hey! I'm Raya. Ask me anything</text>
                       <text x="28" y="78" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">about Hiraya Systems.</text>
                       <!-- User bubble -->
-                      <rect x="254" y="96" width="210" height="24" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                      <rect x="254" y="96" width="210" height="24" rx="2" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.22)" stroke-width="1"/>
                       <text x="264" y="112" fill="rgba(255,255,255,0.7)" font-size="7.5" font-family="sans-serif">How much does a project cost?</text>
                       <!-- Bot bubble 2 -->
                       <rect x="16" y="130" width="230" height="44" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
@@ -2340,16 +2745,43 @@
                       <rect x="16" y="216" width="448" height="1" fill="rgba(255,255,255,0.06)"/>
                       <rect x="16" y="226" width="400" height="26" rx="8" fill="#111" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
                       <text x="30" y="242" fill="rgba(255,255,255,0.2)" font-size="7.5" font-family="sans-serif">Ask me anything...</text>
-                      <rect x="428" y="226" width="26" height="26" rx="7" fill="rgba(255,255,255,0.85)"/>
-                      <path d="M441 239l-6-3 2 3-2 3 6-3z" fill="#000"/>
+                      <rect x="428" y="226" width="26" height="26" rx="7" fill="#a78bfa"/>
+                      <path d="M441 239l-6-3 2 3-2 3 6-3z" fill="#1a1a2e"/>
                     </svg>
                     <div class="pcat-db-open">→</div>
                   </div>
                   <div class="funnel-card-name">Raya FAQ Chatbot <span class="pcat-db-tag">Live Demo</span></div>
                 </div>
-                <div class="pcat-strip-card">
-                  <div class="funnel-card-preview pcat-ph-inner"></div>
-                  <div class="funnel-card-name">AI Project 3</div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="lead-qualifier.html">
+                  <div class="funnel-card-preview pcat-db-preview">
+                    <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#070707">
+                      <rect width="480" height="38" fill="rgba(0,0,0,0.65)"/>
+                      <circle cx="20" cy="19" r="4" fill="#2dd4bf" opacity="0.9"/>
+                      <circle cx="20" cy="19" r="7" fill="none" stroke="#2dd4bf" stroke-width="0.8" opacity="0.3"/>
+                      <text x="33" y="23" fill="rgba(255,255,255,0.45)" font-size="7.5" font-family="monospace" letter-spacing="1.5">SCOUT — LEAD QUALIFIER</text>
+                      <text x="450" y="23" text-anchor="end" fill="rgba(255,255,255,0.18)" font-size="7" font-family="monospace">HIRAYA</text>
+                      <rect x="0" y="37" width="480" height="1" fill="rgba(255,255,255,0.06)"/>
+                      <rect x="16" y="52" width="200" height="24" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                      <text x="26" y="66" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">What problem are you trying to solve?</text>
+                      <rect x="254" y="84" width="210" height="24" rx="2" fill="rgba(45,212,191,0.08)" stroke="rgba(45,212,191,0.2)" stroke-width="1"/>
+                      <text x="264" y="98" fill="rgba(255,255,255,0.7)" font-size="7.5" font-family="sans-serif">I lose leads after hours.</text>
+                      <rect x="16" y="116" width="196" height="24" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                      <text x="26" y="130" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">What type of business do you run?</text>
+                      <rect x="16" y="150" width="300" height="70" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                      <text x="26" y="166" fill="rgba(255,255,255,0.42)" font-size="7" font-family="monospace" letter-spacing="0.5">SUMMARY</text>
+                      <text x="26" y="180" fill="rgba(255,255,255,0.58)" font-size="7" font-family="sans-serif">Business: Auto repair shop, 4 staff</text>
+                      <text x="26" y="192" fill="rgba(255,255,255,0.58)" font-size="7" font-family="sans-serif">Goal: Capture after-hours leads</text>
+                      <text x="26" y="204" fill="rgba(255,255,255,0.58)" font-size="7" font-family="sans-serif">Best fit: AI Chatbot — 24/7 booking</text>
+                      <text x="26" y="216" fill="rgba(255,255,255,0.35)" font-size="7" font-family="sans-serif">Next: Book a Discovery Call</text>
+                      <rect x="16" y="232" width="448" height="1" fill="rgba(255,255,255,0.06)"/>
+                      <rect x="16" y="240" width="400" height="24" rx="8" fill="#111" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                      <text x="30" y="254" fill="rgba(255,255,255,0.2)" font-size="7.5" font-family="sans-serif">Tell me about your business...</text>
+                      <rect x="428" y="240" width="24" height="24" rx="7" fill="rgba(45,212,191,0.75)"/>
+                      <path d="M440 252l-5-3 2 3-2 3 5-3z" fill="#0a1a1a"/>
+                    </svg>
+                    <div class="pcat-db-open">→</div>
+                  </div>
+                  <div class="funnel-card-name">Lead Qualifier <span class="pcat-db-tag">Live Demo</span></div>
                 </div>
                 <!-- Duplicates for scroll -->
                 <div class="pcat-strip-card pcat-db-card" data-funnel="Bernard/index.html">
@@ -2361,8 +2793,8 @@
                 </div>
                 <div class="pcat-strip-card pcat-db-card" data-funnel="raya-chat.html">
                   <div class="funnel-card-preview pcat-db-preview">
-                    <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
-                      <rect width="480" height="38" fill="#0f0f0f"/>
+                    <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#070707">
+                      <rect width="480" height="38" fill="rgba(0,0,0,0.65)"/>
                       <circle cx="20" cy="19" r="4" fill="#22c55e" opacity="0.9"/>
                       <circle cx="20" cy="19" r="7" fill="none" stroke="#22c55e" stroke-width="0.8" opacity="0.3"/>
                       <text x="33" y="23" fill="rgba(255,255,255,0.45)" font-size="7.5" font-family="monospace" letter-spacing="1.5">RAYA — AI FAQ</text>
@@ -2372,7 +2804,7 @@
                       <rect x="16" y="52" width="3" height="34" rx="1" fill="rgba(255,255,255,0.06)"/>
                       <text x="28" y="66" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">Hey! I'm Raya. Ask me anything</text>
                       <text x="28" y="78" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">about Hiraya Systems.</text>
-                      <rect x="254" y="96" width="210" height="24" rx="2" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                      <rect x="254" y="96" width="210" height="24" rx="2" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.22)" stroke-width="1"/>
                       <text x="264" y="112" fill="rgba(255,255,255,0.7)" font-size="7.5" font-family="sans-serif">How much does a project cost?</text>
                       <rect x="16" y="130" width="230" height="44" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
                       <rect x="16" y="130" width="3" height="44" rx="1" fill="rgba(255,255,255,0.06)"/>
@@ -2388,16 +2820,43 @@
                       <rect x="16" y="216" width="448" height="1" fill="rgba(255,255,255,0.06)"/>
                       <rect x="16" y="226" width="400" height="26" rx="8" fill="#111" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
                       <text x="30" y="242" fill="rgba(255,255,255,0.2)" font-size="7.5" font-family="sans-serif">Ask me anything...</text>
-                      <rect x="428" y="226" width="26" height="26" rx="7" fill="rgba(255,255,255,0.85)"/>
-                      <path d="M441 239l-6-3 2 3-2 3 6-3z" fill="#000"/>
+                      <rect x="428" y="226" width="26" height="26" rx="7" fill="#a78bfa"/>
+                      <path d="M441 239l-6-3 2 3-2 3 6-3z" fill="#1a1a2e"/>
                     </svg>
                     <div class="pcat-db-open">→</div>
                   </div>
                   <div class="funnel-card-name">Raya FAQ Chatbot <span class="pcat-db-tag">Live Demo</span></div>
                 </div>
-                <div class="pcat-strip-card">
-                  <div class="funnel-card-preview pcat-ph-inner"></div>
-                  <div class="funnel-card-name">AI Project 3</div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="lead-qualifier.html">
+                  <div class="funnel-card-preview pcat-db-preview">
+                    <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#070707">
+                      <rect width="480" height="38" fill="rgba(0,0,0,0.65)"/>
+                      <circle cx="20" cy="19" r="4" fill="#2dd4bf" opacity="0.9"/>
+                      <circle cx="20" cy="19" r="7" fill="none" stroke="#2dd4bf" stroke-width="0.8" opacity="0.3"/>
+                      <text x="33" y="23" fill="rgba(255,255,255,0.45)" font-size="7.5" font-family="monospace" letter-spacing="1.5">SCOUT — LEAD QUALIFIER</text>
+                      <text x="450" y="23" text-anchor="end" fill="rgba(255,255,255,0.18)" font-size="7" font-family="monospace">HIRAYA</text>
+                      <rect x="0" y="37" width="480" height="1" fill="rgba(255,255,255,0.06)"/>
+                      <rect x="16" y="52" width="200" height="24" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                      <text x="26" y="66" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">What problem are you trying to solve?</text>
+                      <rect x="254" y="84" width="210" height="24" rx="2" fill="rgba(45,212,191,0.08)" stroke="rgba(45,212,191,0.2)" stroke-width="1"/>
+                      <text x="264" y="98" fill="rgba(255,255,255,0.7)" font-size="7.5" font-family="sans-serif">I lose leads after hours.</text>
+                      <rect x="16" y="116" width="196" height="24" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                      <text x="26" y="130" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">What type of business do you run?</text>
+                      <rect x="16" y="150" width="300" height="70" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                      <text x="26" y="166" fill="rgba(255,255,255,0.42)" font-size="7" font-family="monospace" letter-spacing="0.5">SUMMARY</text>
+                      <text x="26" y="180" fill="rgba(255,255,255,0.58)" font-size="7" font-family="sans-serif">Business: Auto repair shop, 4 staff</text>
+                      <text x="26" y="192" fill="rgba(255,255,255,0.58)" font-size="7" font-family="sans-serif">Goal: Capture after-hours leads</text>
+                      <text x="26" y="204" fill="rgba(255,255,255,0.58)" font-size="7" font-family="sans-serif">Best fit: AI Chatbot — 24/7 booking</text>
+                      <text x="26" y="216" fill="rgba(255,255,255,0.35)" font-size="7" font-family="sans-serif">Next: Book a Discovery Call</text>
+                      <rect x="16" y="232" width="448" height="1" fill="rgba(255,255,255,0.06)"/>
+                      <rect x="16" y="240" width="400" height="24" rx="8" fill="#111" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                      <text x="30" y="254" fill="rgba(255,255,255,0.2)" font-size="7.5" font-family="sans-serif">Tell me about your business...</text>
+                      <rect x="428" y="240" width="24" height="24" rx="7" fill="rgba(45,212,191,0.75)"/>
+                      <path d="M440 252l-5-3 2 3-2 3 5-3z" fill="#0a1a1a"/>
+                    </svg>
+                    <div class="pcat-db-open">→</div>
+                  </div>
+                  <div class="funnel-card-name">Lead Qualifier <span class="pcat-db-tag">Live Demo</span></div>
                 </div>
               </div>
             </div>
@@ -2407,33 +2866,53 @@
           <div class="pcat-panel pcat-hidden" data-cat="sites">
             <div class="funnel-strip-wrap">
               <div class="funnel-strip-track">
-                <div class="pcat-strip-card">
-                  <div class="funnel-card-preview pcat-ph-inner"></div>
-                  <div class="funnel-card-name">Site Build 1</div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="Venta.html">
+                  <div class="funnel-card-preview pcat-db-preview">
+                    <img src="thumb-vanta.png" alt="Vanta Detail Co." />
+                    <div class="pcat-db-open">→</div>
+                  </div>
+                  <div class="funnel-card-name">Vanta Detail Co. <span class="pcat-db-tag">Site Build</span></div>
                 </div>
-                <div class="pcat-strip-card">
-                  <div class="funnel-card-preview pcat-ph-inner"></div>
-                  <div class="funnel-card-name">Site Build 2</div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="Boreas.html">
+                  <div class="funnel-card-preview pcat-db-preview">
+                    <img src="thumb-boreas.png" alt="Boreas Climate Co." />
+                    <div class="pcat-db-open">→</div>
+                  </div>
+                  <div class="funnel-card-name">Boreas Climate Co. <span class="pcat-db-tag">Site Build</span></div>
                 </div>
-                <div class="pcat-strip-card">
-                  <div class="funnel-card-preview pcat-ph-inner"></div>
-                  <div class="funnel-card-name">Site Build 3</div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="Drift.html">
+                  <div class="funnel-card-preview pcat-db-preview">
+                    <img src="thumb-drift.png" alt="Drift Store" />
+                    <div class="pcat-db-open">→</div>
+                  </div>
+                  <div class="funnel-card-name">Drift Store <span class="pcat-db-tag">Site Build</span></div>
                 </div>
-                <div class="pcat-strip-card">
-                  <div class="funnel-card-preview pcat-ph-inner"></div>
-                  <div class="funnel-card-name">Site Build 1</div>
+                <!-- Duplicates for scroll -->
+                <div class="pcat-strip-card pcat-db-card" data-funnel="Venta.html">
+                  <div class="funnel-card-preview pcat-db-preview">
+                    <img src="thumb-vanta.png" alt="Vanta Detail Co." />
+                    <div class="pcat-db-open">→</div>
+                  </div>
+                  <div class="funnel-card-name">Vanta Detail Co. <span class="pcat-db-tag">Site Build</span></div>
                 </div>
-                <div class="pcat-strip-card">
-                  <div class="funnel-card-preview pcat-ph-inner"></div>
-                  <div class="funnel-card-name">Site Build 2</div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="Boreas.html">
+                  <div class="funnel-card-preview pcat-db-preview">
+                    <img src="thumb-boreas.png" alt="Boreas Climate Co." />
+                    <div class="pcat-db-open">→</div>
+                  </div>
+                  <div class="funnel-card-name">Boreas Climate Co. <span class="pcat-db-tag">Site Build</span></div>
                 </div>
-                <div class="pcat-strip-card">
-                  <div class="funnel-card-preview pcat-ph-inner"></div>
-                  <div class="funnel-card-name">Site Build 3</div>
+                <div class="pcat-strip-card pcat-db-card" data-funnel="Drift.html">
+                  <div class="funnel-card-preview pcat-db-preview">
+                    <img src="thumb-drift.png" alt="Drift Store" />
+                    <div class="pcat-db-open">→</div>
+                  </div>
+                  <div class="funnel-card-name">Drift Store <span class="pcat-db-tag">Site Build</span></div>
                 </div>
               </div>
             </div>
           </div>
+
 
           <!-- Automation panel -->
           <div class="pcat-panel pcat-hidden" data-cat="automation">
@@ -2596,6 +3075,58 @@
                   <div class="funnel-card-name">Revenue Intelligence Digest</div>
                 </div>
 
+                <!-- Card 4: Email Activation Workflow -->
+                <div class="pcat-strip-card" data-panel="auto-4">
+                  <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+                    <rect width="480" height="3" fill="#fb923c" opacity="0.85"/>
+                    <text x="20" y="22" fill="rgba(251,146,60,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · ONBOARDING</text>
+                    <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(251,146,60,0.1)" stroke-width="0.5"/>
+                    <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text>
+                    <text x="180" y="52" text-anchor="middle" fill="rgba(251,146,60,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+                    <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SEQUENCE</text>
+                    <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">CONVERT</text>
+                    <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+                    <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">✉</text>
+                    <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">New Signup</text>
+                    <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Account created</text>
+                    <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(251,146,60,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="126,86 134,90 126,94" fill="rgba(251,146,60,0.45)"/>
+                    <rect x="135" y="58" width="90" height="64" rx="8" fill="#100a03" stroke="rgba(251,146,60,0.4)" stroke-width="1.2"/>
+                    <rect x="135" y="58" width="90" height="2" rx="1" fill="#fb923c"/>
+                    <circle cx="180" cy="83" r="13" fill="rgba(251,146,60,0.07)" stroke="rgba(251,146,60,0.5)" stroke-width="1"/>
+                    <text x="180" y="87" text-anchor="middle" fill="#fb923c" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+                    <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Personalize</text>
+                    <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Behavior · Plan · Stage</text>
+                    <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(251,146,60,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="246,86 254,90 246,94" fill="rgba(251,146,60,0.45)"/>
+                    <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+                    <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">📬</text>
+                    <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Email Sequence</text>
+                    <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Timed + adaptive</text>
+                    <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(251,146,60,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <polygon points="366,86 374,90 366,94" fill="rgba(251,146,60,0.45)"/>
+                    <rect x="375" y="58" width="90" height="64" rx="8" fill="#0d0803" stroke="rgba(251,146,60,0.3)" stroke-width="1"/>
+                    <rect x="375" y="58" width="90" height="2" rx="1" fill="#fb923c" opacity="0.7"/>
+                    <text x="420" y="93" text-anchor="middle" fill="rgba(251,146,60,0.6)" font-size="18">✓</text>
+                    <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Activated</text>
+                    <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Goal completed</text>
+                    <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+                    <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(251,146,60,0.06)" stroke="rgba(251,146,60,0.15)" stroke-width="0.5"/>
+                    <text x="81" y="165" text-anchor="middle" fill="rgba(251,146,60,0.7)" font-size="7.5" font-family="monospace">68% LESS DROP-OFF</text>
+                    <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(251,146,60,0.06)" stroke="rgba(251,146,60,0.15)" stroke-width="0.5"/>
+                    <text x="224" y="165" text-anchor="middle" fill="rgba(251,146,60,0.7)" font-size="7.5" font-family="monospace">ZERO MANUAL CHASE</text>
+                    <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(251,146,60,0.06)" stroke="rgba(251,146,60,0.15)" stroke-width="0.5"/>
+                    <text x="367" y="165" text-anchor="middle" fill="rgba(251,146,60,0.7)" font-size="7.5" font-family="monospace">2× FASTER ACTIVATE</text>
+                    <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Email Activation Workflow</text>
+                    <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Turn signups into active users automatically. Timed emails, behavior triggers, zero manual follow-up.</text>
+                    <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(251,146,60,0.07)" stroke="rgba(251,146,60,0.18)" stroke-width="0.5"/>
+                    <text x="407" y="257" text-anchor="middle" fill="rgba(251,146,60,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+                  </svg></div>
+                  <div class="funnel-card-name">Email Activation Workflow</div>
+                </div>
+
                 <!-- Duplicates for seamless loop -->
                 <div class="pcat-strip-card" data-panel="auto-1">
                   <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808"><rect width="480" height="3" fill="#2dd4bf" opacity="0.85"/><text x="20" y="22" fill="rgba(45,212,191,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · SALES</text><line x1="20" y1="30" x2="460" y2="30" stroke="rgba(45,212,191,0.1)" stroke-width="0.5"/><text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text><text x="180" y="52" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text><text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCORE</text><text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">ACTION</text><rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⬡</text><text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Form Lead</text><text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">New submission</text><line x1="106" y1="90" x2="128" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="126,86 134,90 126,94" fill="rgba(45,212,191,0.45)"/><rect x="135" y="58" width="90" height="64" rx="8" fill="#031110" stroke="rgba(45,212,191,0.4)" stroke-width="1.2"/><rect x="135" y="58" width="90" height="2" rx="1" fill="#2dd4bf"/><circle cx="180" cy="83" r="13" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.5)" stroke-width="1"/><text x="180" y="87" text-anchor="middle" fill="#2dd4bf" font-size="7.5" font-family="monospace" font-weight="700">AI</text><text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Enrich + Qualify</text><text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Intent · Budget · ICP</text><line x1="226" y1="90" x2="248" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="246,86 254,90 246,94" fill="rgba(45,212,191,0.45)"/><rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">◆</text><text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Lead Score</text><text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Hot / Warm / Cold</text><line x1="346" y1="90" x2="368" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="366,86 374,90 366,94" fill="rgba(45,212,191,0.45)"/><rect x="375" y="58" width="90" height="64" rx="8" fill="#06100a" stroke="rgba(34,197,94,0.3)" stroke-width="1"/><rect x="375" y="58" width="90" height="2" rx="1" fill="#22c55e" opacity="0.7"/><text x="420" y="93" text-anchor="middle" fill="rgba(34,197,94,0.6)" font-size="18">✓</text><text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">CRM + Email</text><text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Auto-assigned + sent</text><line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/><rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/><text x="81" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">3× FASTER RESPONSE</text><rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/><text x="224" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">ZERO MANUAL ENTRY</text><rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/><text x="367" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">4.5 HRS/WEEK SAVED</text><text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Lead Intelligence Pipeline</text><text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Enrich, score, and route every inbound lead automatically. Zero manual work until it's hot.</text><rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.18)" stroke-width="0.5"/><text x="407" y="257" text-anchor="middle" fill="rgba(45,212,191,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text></svg></div>
@@ -2608,6 +3139,10 @@
                 <div class="pcat-strip-card" data-panel="auto-3">
                   <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808"><rect width="480" height="3" fill="#f472b6" opacity="0.85"/><text x="20" y="22" fill="rgba(244,114,182,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · REPORTING</text><line x1="20" y1="30" x2="460" y2="30" stroke="rgba(244,114,182,0.1)" stroke-width="0.5"/><text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCHEDULE</text><text x="180" y="52" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text><text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">GENERATE</text><text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">DELIVER</text><rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⏱</text><text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Data Pull</text><text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">CRM · Ads · Sheets</text><line x1="106" y1="90" x2="128" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="126,86 134,90 126,94" fill="rgba(244,114,182,0.45)"/><rect x="135" y="58" width="90" height="64" rx="8" fill="#120a10" stroke="rgba(244,114,182,0.4)" stroke-width="1.2"/><rect x="135" y="58" width="90" height="2" rx="1" fill="#f472b6"/><circle cx="180" cy="83" r="13" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.5)" stroke-width="1"/><text x="180" y="87" text-anchor="middle" fill="#f472b6" font-size="7.5" font-family="monospace" font-weight="700">AI</text><text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Analyze Trends</text><text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Revenue · CAC · Churn</text><line x1="226" y1="90" x2="248" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="246,86 254,90 246,94" fill="rgba(244,114,182,0.45)"/><rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">▦</text><text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Build Report</text><text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Insights + Actions</text><line x1="346" y1="90" x2="368" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="366,86 374,90 366,94" fill="rgba(244,114,182,0.45)"/><rect x="375" y="58" width="90" height="64" rx="8" fill="#0c0810" stroke="rgba(244,114,182,0.3)" stroke-width="1"/><rect x="375" y="58" width="90" height="2" rx="1" fill="#f472b6" opacity="0.7"/><text x="420" y="93" text-anchor="middle" fill="rgba(244,114,182,0.6)" font-size="18">↗</text><text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Slack + Email</text><text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Every Monday 8AM</text><line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/><rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/><text x="81" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">FULLY AUTOMATED</text><rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/><text x="224" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">ALL DATA SOURCES</text><rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/><text x="367" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">3 HRS SAVED/WEEK</text><text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Revenue Intelligence Digest</text><text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Pull all your data, analyze trends autonomously, and deliver a sharp weekly digest automatically.</text><rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.18)" stroke-width="0.5"/><text x="407" y="257" text-anchor="middle" fill="rgba(244,114,182,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text></svg></div>
                   <div class="funnel-card-name">Revenue Intelligence Digest</div>
+                </div>
+                <div class="pcat-strip-card" data-panel="auto-4">
+                  <div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808"><rect width="480" height="3" fill="#fb923c" opacity="0.85"/><text x="20" y="22" fill="rgba(251,146,60,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · ONBOARDING</text><line x1="20" y1="30" x2="460" y2="30" stroke="rgba(251,146,60,0.1)" stroke-width="0.5"/><text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text><text x="180" y="52" text-anchor="middle" fill="rgba(251,146,60,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text><text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SEQUENCE</text><text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">CONVERT</text><rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">✉</text><text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">New Signup</text><text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Account created</text><line x1="106" y1="90" x2="128" y2="90" stroke="rgba(251,146,60,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="126,86 134,90 126,94" fill="rgba(251,146,60,0.45)"/><rect x="135" y="58" width="90" height="64" rx="8" fill="#100a03" stroke="rgba(251,146,60,0.4)" stroke-width="1.2"/><rect x="135" y="58" width="90" height="2" rx="1" fill="#fb923c"/><circle cx="180" cy="83" r="13" fill="rgba(251,146,60,0.07)" stroke="rgba(251,146,60,0.5)" stroke-width="1"/><text x="180" y="87" text-anchor="middle" fill="#fb923c" font-size="7.5" font-family="monospace" font-weight="700">AI</text><text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Personalize</text><text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Behavior · Plan · Stage</text><line x1="226" y1="90" x2="248" y2="90" stroke="rgba(251,146,60,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="246,86 254,90 246,94" fill="rgba(251,146,60,0.45)"/><rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/><text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">📬</text><text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Email Sequence</text><text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Timed + adaptive</text><line x1="346" y1="90" x2="368" y2="90" stroke="rgba(251,146,60,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="366,86 374,90 366,94" fill="rgba(251,146,60,0.45)"/><rect x="375" y="58" width="90" height="64" rx="8" fill="#0d0803" stroke="rgba(251,146,60,0.3)" stroke-width="1"/><rect x="375" y="58" width="90" height="2" rx="1" fill="#fb923c" opacity="0.7"/><text x="420" y="93" text-anchor="middle" fill="rgba(251,146,60,0.6)" font-size="18">✓</text><text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Activated</text><text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Goal completed</text><line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/><rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(251,146,60,0.06)" stroke="rgba(251,146,60,0.15)" stroke-width="0.5"/><text x="81" y="165" text-anchor="middle" fill="rgba(251,146,60,0.7)" font-size="7.5" font-family="monospace">68% LESS DROP-OFF</text><rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(251,146,60,0.06)" stroke="rgba(251,146,60,0.15)" stroke-width="0.5"/><text x="224" y="165" text-anchor="middle" fill="rgba(251,146,60,0.7)" font-size="7.5" font-family="monospace">ZERO MANUAL CHASE</text><rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(251,146,60,0.06)" stroke="rgba(251,146,60,0.15)" stroke-width="0.5"/><text x="367" y="165" text-anchor="middle" fill="rgba(251,146,60,0.7)" font-size="7.5" font-family="monospace">2× FASTER ACTIVATE</text><text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Email Activation Workflow</text><text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Turn signups into active users automatically. Timed emails, behavior triggers, zero manual follow-up.</text><rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(251,146,60,0.07)" stroke="rgba(251,146,60,0.18)" stroke-width="0.5"/><text x="407" y="257" text-anchor="middle" fill="rgba(251,146,60,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text></svg></div>
+                  <div class="funnel-card-name">Email Activation Workflow</div>
                 </div>
 
               </div>
@@ -2732,8 +3267,12 @@
       });
 
       function watch(active, inactive) {
+        let lastCheck = 0;
         active.addEventListener('timeupdate', function handler() {
           if (!active.duration) return;
+          const now = Date.now();
+          if (now - lastCheck < 250) return;
+          lastCheck = now;
           if (active.duration - active.currentTime <= fadeTime + 0.05) {
             active.removeEventListener('timeupdate', handler);
             inactive.currentTime = 0;
@@ -2751,6 +3290,14 @@
     dualLoop('fluid-process-wrap');
     dualLoop('fluid-portfolio-wrap');
     dualLoop('fluid-bl-wrap');
+
+    // Pause corner glow animations when tab is hidden
+    document.addEventListener('visibilitychange', () => {
+      const state = document.hidden ? 'paused' : 'running';
+      document.querySelectorAll('.corner-glow').forEach(el => {
+        el.style.animationPlayState = state;
+      });
+    });
 
     const blWrap = document.getElementById('fluid-bl-wrap');
     if (blWrap) blWrap.querySelectorAll('video').forEach(v => v.playbackRate = 0.8);
@@ -3018,48 +3565,160 @@
     const panelData = {
       'auto-1': {
         color: '#2dd4bf',
-        client: 'GrowthTech Inc. · B2B SaaS · Manila',
         title: 'Lead Intelligence Pipeline',
-        problem: 'Sales team manually qualifying 200+ leads per week with no ICP scoring and no enrichment. Reps were spending 30% of their time on opportunities that would never close. Fast-moving deals slipped while the team was buried in junk.',
-        solution: 'Agentic AI enriches every inbound lead with company size, industry, buying signals, and ICP fit score — then auto-creates a CRM deal, assigns the right rep, and drafts a personalized first-touch email ready to send. The rep\'s first action is review, not research.',
-        stats: [
-          { val: '3×', label: 'faster lead response time' },
-          { val: '0', label: 'manual data entry per lead' },
-          { val: '4.5hrs', label: 'saved per rep per week' },
-          { val: '68%', label: 'increase in qualified pipeline' }
+        trigger: 'New lead submitted via contact form',
+        description: 'Every new lead gets looked up, rated, and sent to the right person — before your team even opens their inbox. No manual work.',
+        useCases: ['Sales Teams', 'B2B Companies', 'Agencies'],
+        integrations: [
+          { icon: '📋', label: 'Form' },
+          { icon: '🤖', label: 'AI Research' },
+          { icon: '🎯', label: 'Rate' },
+          { icon: '💼', label: 'Contacts' },
+          { icon: '💬', label: 'Slack' }
         ],
-        quote: '"We used to spend the first hour of every Monday qualifying leads from the weekend. Now that list is already scored, enriched, and in the CRM before we even open our laptops."',
-        cite: '— Head of Sales, GrowthTech Inc.'
+        comparison: {
+          before: ['Check form notifications manually', 'Google every lead one by one', 'Copy info to spreadsheet', 'Guess if they\'re a good fit', 'Write first email from scratch'],
+          after:  ['Captured the moment it comes in', 'Researched via LinkedIn + web data', 'Saved to your contact system', 'Rated out of 100 automatically', 'Custom follow-up email ready to send']
+        },
+        metrics: [
+          { before: '45 min', after: '5 sec', label: 'per lead' },
+          { before: 'manual', after: '0 steps', label: 'data entry' },
+          { before: 'next day', after: 'instant', label: 'first reply' }
+        ],
+        outputs: [
+          { icon: '💼', label: 'Contact Record', detail: 'Full profile created automatically' },
+          { icon: '💬', label: 'Team Alert', detail: 'Rating + summary sent to your team' },
+          { icon: '📧', label: 'Email Draft', detail: 'Personalized, ready to send' },
+          { icon: '📊', label: 'Lead Rating', detail: 'Customer fit score out of 100' }
+        ],
+        roiCalc: { label: 'leads/month', minSaved: 44, defaultVal: 50, max: 500 },
+        setup: { timeline: '2–3 weeks', connects: 'HubSpot, Slack, Gmail, Clearbit', model: 'Fully managed' },
+        steps: [
+          { icon: '📋', label: 'Lead captured',    hint: 'Form submission received',    detail: 'Name, email, business type logged',            ms: 800  },
+          { icon: '🔍', label: 'Lead researched',  hint: 'LinkedIn + web lookup',       detail: 'LinkedIn + web data: 12-person agency',        ms: 1800 },
+          { icon: '🎯', label: 'Lead rated',       hint: 'Customer fit calculated',     detail: 'Score: 87/100 — Strong interest',              ms: 2800 },
+          { icon: '💼', label: 'Contact saved',    hint: 'Deal created automatically',  detail: 'Contact created in HubSpot #2847',             ms: 3600 },
+          { icon: '💬', label: 'Team notified',    hint: 'Team alerted instantly',      detail: '#leads: "Hot lead — John Santos, 87pts"',      ms: 4400 },
+          { icon: '📧', label: 'Follow-up queued', hint: 'Personalized email ready',    detail: 'Email scheduled: 2 min — personalized',        ms: 5200 }
+        ],
+        saved: { auto: '5.4s', manual: '~45 min' }
       },
       'auto-2': {
         color: '#818cf8',
-        client: 'NovaBrand Co. · E-commerce · Cebu',
-        title: 'AI Support Deflection',
-        problem: '500+ support tickets per day. 4-hour average response time. Agents burning out copy-pasting the same 10 answers all day while complex issues piled up. Customer satisfaction was dropping and headcount costs were climbing.',
-        solution: 'Agentic AI classifies every incoming ticket by intent, urgency, and sentiment. Simple tickets — shipping status, returns, FAQs — get accurate, on-brand responses instantly. Complex tickets are escalated with a full context summary so the agent can reply in under 60 seconds without reading the thread.',
-        stats: [
-          { val: '72%', label: 'ticket deflection rate' },
-          { val: '<90s', label: 'average response time' },
-          { val: '24/7', label: 'coverage, no overtime' },
-          { val: '$18k', label: 'saved monthly on support costs' }
+        title: 'Automated Support Replies',
+        trigger: 'Customer support email received',
+        description: 'AI reads every support email, finds the right answer from your help articles, and replies instantly — around the clock.',
+        useCases: ['E-commerce', 'Online Businesses', 'Support Teams'],
+        integrations: [
+          { icon: '📨', label: 'Email' },
+          { icon: '🤖', label: 'AI Reads' },
+          { icon: '📚', label: 'Help Articles' },
+          { icon: '✉️', label: 'Auto-reply' },
+          { icon: '✅', label: 'Resolved' }
         ],
-        quote: '"Our agents used to spend all day copy-pasting the same 10 answers. Now they only see the tickets that actually need a human — and they have full context before they even open the thread."',
-        cite: '— Customer Operations Lead, NovaBrand Co.'
+        comparison: {
+          before: ['Someone reads each email by hand', 'Searches help articles manually', 'Writes reply from scratch', 'Logs request to a tracker', 'Follows up tomorrow'],
+          after:  ['AI reads and sorts it instantly', 'Best help article found (91% match)', 'On-brand reply sent automatically', 'Logged and sorted automatically', 'Answered or passed to a person now']
+        },
+        metrics: [
+          { before: '12 min', after: '4 sec', label: 'avg response' },
+          { before: '100%', after: '28%', label: 'need human' },
+          { before: '9–5', after: '24/7', label: 'coverage' }
+        ],
+        outputs: [
+          { icon: '✉️', label: 'Auto-reply', detail: 'On-brand, accurate, instant' },
+          { icon: '📋', label: 'Request Log', detail: 'Sorted and tracked automatically' },
+          { icon: '🚨', label: 'Human Handoff', detail: 'Tricky issues passed on with full context' },
+          { icon: '📈', label: 'Weekly Stats', detail: 'Auto-resolve rate + satisfaction report' }
+        ],
+        roiCalc: { label: 'support emails/month', minSaved: 11, defaultVal: 200, max: 2000 },
+        setup: { timeline: '1–2 weeks', connects: 'Gmail, Zendesk, Notion, Slack', model: 'Fully managed' },
+        steps: [
+          { icon: '📨', label: 'Email received',   hint: 'Support email received',       detail: '"How do I export my dashboard data?"',          ms: 700  },
+          { icon: '🤖', label: 'AI sorted',        hint: 'Topic and urgency identified', detail: 'Category: How-to · Urgency: Low',               ms: 1600 },
+          { icon: '📚', label: 'Answer found',     hint: 'Best help article matched',    detail: '91% match — Article #44: Export Guide',         ms: 2500 },
+          { icon: '✉️', label: 'Reply sent',       hint: 'Answer delivered instantly',   detail: 'Solution email dispatched to customer',        ms: 3400 },
+          { icon: '✅', label: 'Request closed',   hint: 'No human needed',              detail: 'Closed — handled automatically',                ms: 4200 }
+        ],
+        saved: { auto: '4.3s', manual: '~12 min' }
       },
       'auto-3': {
         color: '#f472b6',
-        client: 'Hiraya Construction Supply · Distribution · 3 Branches',
         title: 'Revenue Intelligence Digest',
-        problem: 'One operations manager. Three branches. Every Monday morning started the same way: two hours pulling numbers from separate spreadsheets, chasing reps for updates, manually checking inventory. Stockouts went unnoticed. Slow leads went cold. Decisions were always a week late.',
-        solution: 'Agentic AI pulls live data from their CRM, inventory system, and ad platforms every Monday at 8AM. It identifies anomalies, flags deals at risk, and surfaces low-stock alerts — then generates a formatted digest delivered directly to Slack. No spreadsheets. No chasing. Just decisions.',
-        stats: [
-          { val: '12hrs', label: 'saved per week on reporting' },
-          { val: '0', label: 'stockouts since system launched' },
-          { val: '3×', label: 'faster anomaly detection' },
-          { val: '6wks', label: 'from kickoff to full deployment' }
+        trigger: 'Monday 7:00 AM — runs on a schedule',
+        description: 'Your Monday briefing — numbers pulled from every tool, summarized, and waiting in Slack before you start your week.',
+        useCases: ['Operations', 'Multi-location Businesses', 'Founders'],
+        integrations: [
+          { icon: '💼', label: 'Sales Data' },
+          { icon: '💳', label: 'Stripe' },
+          { icon: '📊', label: 'Analytics' },
+          { icon: '🤖', label: 'AI Summary' },
+          { icon: '💬', label: 'Slack' }
         ],
-        quote: '"Before this, I was pulling data from three spreadsheets every Monday morning just to see last week\'s numbers. Now I open Slack and it\'s already there — with the problems flagged and ready to act on."',
-        cite: '— Operations Manager, Hiraya Construction Supply'
+        comparison: {
+          before: ['Pull data from 3 spreadsheets', 'Chase reps for updates', 'Manually check inventory', 'Write the summary yourself', 'Send email to the team'],
+          after:  ['All sources pulled automatically', 'Live sales data, no chasing', 'Low stock flagged instantly', 'Summary written automatically', 'Delivered to Slack at 7AM']
+        },
+        metrics: [
+          { before: '3 hrs', after: '5 sec', label: 'weekly report' },
+          { before: '3 tabs', after: '0 tabs', label: 'spreadsheets' },
+          { before: 'Monday', after: 'Sunday', label: 'data ready' }
+        ],
+        outputs: [
+          { icon: '📄', label: 'Weekly Digest', detail: 'Auto-written PDF summary' },
+          { icon: '💬', label: 'Slack Post', detail: 'Key highlights sent to your team' },
+          { icon: '🚨', label: 'Problem Alerts', detail: 'Low stock and deal risks flagged' },
+          { icon: '📊', label: 'Trend Charts', detail: 'Week-over-week changes across all numbers' }
+        ],
+        roiCalc: { label: 'reports/month', minSaved: 180, defaultVal: 4, max: 20 },
+        setup: { timeline: '2–4 weeks', connects: 'HubSpot, Stripe, GA4, Slack, Gmail', model: 'Fully managed' },
+        steps: [
+          { icon: '💼', label: 'Data pulled',        hint: 'All tools synced',              detail: 'Sales + Stripe + Analytics — 1,240 records', ms: 900  },
+          { icon: '🤖', label: 'AI analyzed',        hint: 'Patterns and changes found',    detail: 'Week-over-week change calculated',            ms: 2000 },
+          { icon: '💡', label: 'Insights found',     hint: 'Key findings identified',       detail: '3 findings: revenue +12%, churn alert, top product', ms: 3200 },
+          { icon: '📄', label: 'Report built',       hint: 'PDF report and summary built',  detail: 'PDF + Slack summary compiled',               ms: 4300 },
+          { icon: '🚀', label: 'Delivered',          hint: 'Team notified & ready to act',  detail: 'Email sent · #revenue Slack posted',         ms: 5100 }
+        ],
+        saved: { auto: '5.3s', manual: '~3 hrs' }
+      },
+      'auto-4': {
+        color: '#fb923c',
+        title: 'Email Activation Workflow',
+        trigger: 'New user signs up for an account',
+        description: 'Turn every signup into an active user automatically. AI personalizes the emails, tracks who gets started, and flags inactive accounts to your team.',
+        useCases: ['SaaS Products', 'Online Courses', 'Membership Sites'],
+        integrations: [
+          { icon: '📧', label: 'Signup' },
+          { icon: '🤖', label: 'AI Tailor' },
+          { icon: '📬', label: 'Email Series' },
+          { icon: '✅', label: 'Active' },
+          { icon: '🚨', label: 'Alert Team' }
+        ],
+        comparison: {
+          before: ['Same welcome email sent to everyone', 'No follow-up if user goes quiet', 'Manually check who\'s using the product', 'No idea where people stop engaging', 'No alert when an account goes quiet'],
+          after:  ['Welcome email tailored to how they signed up', 'Follow-ups adjust based on what they do', 'Progress tracked automatically', 'Inactivity flagged as it happens', 'Team notified when account goes quiet at 72h']
+        },
+        metrics: [
+          { before: '23%', after: '61%', label: 'activation rate' },
+          { before: '5 days', after: '18 hrs', label: 'time to activate' },
+          { before: 'manual', after: '0 steps', label: 'follow-up effort' }
+        ],
+        outputs: [
+          { icon: '📧', label: 'Welcome Email', detail: 'Tailored to how they signed up' },
+          { icon: '📬', label: 'Email Series', detail: 'Sent based on timing and behavior' },
+          { icon: '✅', label: 'Progress Tag', detail: 'Contact updated when fully set up' },
+          { icon: '🚨', label: 'Inactivity Alert', detail: 'Team notified when account goes quiet' }
+        ],
+        roiCalc: { label: 'signups/month', minSaved: 8, defaultVal: 100, max: 1000 },
+        setup: { timeline: '1–2 weeks', connects: 'Mailchimp, HubSpot, Stripe, Slack', model: 'Fully managed' },
+        steps: [
+          { icon: '📧', label: 'Signup received',   hint: 'Account created and logged',    detail: 'Name, plan, source — logged instantly',        ms: 700  },
+          { icon: '🤖', label: 'Email tailored',    hint: 'Plan and interest identified',  detail: 'Plan: Growth · Source: Ads · Stage: New',      ms: 1600 },
+          { icon: '📬', label: 'Welcome sent',      hint: 'Tailored welcome email sent',   detail: 'Personalized welcome email dispatched',        ms: 2500 },
+          { icon: '📊', label: 'Usage tracked',     hint: 'Activity being watched',        detail: 'Login · Feature use · Setup complete',         ms: 3400 },
+          { icon: '✅', label: 'User active',       hint: 'Account fully set up',          detail: 'Marked active · contact updated · emails paused', ms: 4300 }
+        ],
+        saved: { auto: '3.8s', manual: '~5 days' }
       }
     };
 
@@ -3083,6 +3742,186 @@
       </div>`;
     }
 
+    function renderAutoPanel(data) {
+      const nodesHTML = data.steps.map(step => `
+        <div class="auto-demo-node" data-state="pending">
+          <div class="auto-demo-node-track">
+            <div class="auto-demo-node-icon">${step.icon}</div>
+            <div class="auto-demo-node-line"></div>
+          </div>
+          <div class="auto-demo-node-body">
+            <span class="auto-demo-node-text">${step.label}</span>
+            <span class="auto-demo-node-hint">${step.hint}</span>
+          </div>
+        </div>`).join('');
+
+      const useCaseHTML = data.useCases.map(u => `<div class="auto-use-tag">${u}</div>`).join('');
+
+      const chipsHTML = data.integrations.map((intg, i) =>
+        `<div class="auto-flow-chip">${intg.icon} ${intg.label}</div>${i < data.integrations.length - 1 ? '<div class="auto-flow-arrow">→</div>' : ''}`
+      ).join('');
+
+      const beforeHTML = data.comparison.before.map(t => `<div class="auto-compare-item">${t}</div>`).join('');
+      const afterHTML  = data.comparison.after.map(t  => `<div class="auto-compare-item">${t}</div>`).join('');
+
+      const metricsHTML = data.metrics.map(m => `
+        <div class="auto-metric">
+          <div class="auto-metric-before">${m.before}</div>
+          <div class="auto-metric-arrow">↓</div>
+          <div class="auto-metric-after" style="color:${data.color}">${m.after}</div>
+          <div class="auto-metric-label">${m.label}</div>
+        </div>`).join('');
+
+      const outputsHTML = data.outputs.map(o => `
+        <div class="auto-output">
+          <div class="auto-output-icon">${o.icon}</div>
+          <div><div class="auto-output-label">${o.label}</div><div class="auto-output-detail">${o.detail}</div></div>
+        </div>`).join('');
+
+      const initHrs = (data.roiCalc.defaultVal * data.roiCalc.minSaved / 60).toFixed(1);
+
+      return `<div class="auto-demo-wrap" style="grid-template-columns:42% 58%">
+        <div class="auto-demo-left">
+          <div class="cs-tag" style="color:${data.color};background:${data.color}12;border-color:${data.color}30">Automation Demo</div>
+          <h2 class="cs-headline" style="font-size:clamp(1.1rem,1.8vw,1.6rem);margin-bottom:0.75rem">${data.title}</h2>
+          <div class="auto-demo-trigger-label">Trigger</div>
+          <div class="auto-demo-trigger-val">${data.trigger}</div>
+          <div class="auto-demo-trigger-label" style="margin-top:1rem">Who it's for</div>
+          <div class="auto-use-cases">${useCaseHTML}</div>
+          <div class="auto-demo-flow-label">Workflow</div>
+          <div class="auto-demo-nodes">${nodesHTML}</div>
+          <button class="auto-run-btn" style="background:${data.color};color:#000;margin-top:1.25rem">▶ Run Pipeline</button>
+        </div>
+        <div class="auto-demo-right">
+          <div class="auto-demo-info" style="--section-color:${data.color}">
+            <div class="auto-demo-log-label">What it does</div>
+            <p class="auto-demo-desc">${data.description}</p>
+
+            <div class="auto-demo-section-label">Integrations</div>
+            <div class="auto-flow-chips">${chipsHTML}</div>
+
+            <div class="auto-demo-section-label" style="margin-top:1.5rem">Before / After</div>
+            <div class="auto-compare" style="--node-color:${data.color}">
+              <div class="auto-compare-col auto-compare-before">
+                <div class="auto-compare-head">Without automation</div>${beforeHTML}
+              </div>
+              <div class="auto-compare-col auto-compare-after">
+                <div class="auto-compare-head" style="color:${data.color}">With Hiraya</div>${afterHTML}
+              </div>
+            </div>
+
+            <div class="auto-demo-section-label" style="margin-top:1.5rem">Impact</div>
+            <div class="auto-metrics">${metricsHTML}</div>
+
+            <div class="auto-demo-section-label" style="margin-top:1.5rem">What you get</div>
+            <div class="auto-outputs">${outputsHTML}</div>
+
+            <div class="auto-demo-section-label" style="margin-top:1.5rem">ROI Estimate</div>
+            <div class="auto-roi">
+              <div class="auto-roi-row">
+                <input type="range" class="auto-roi-slider" min="1" max="${data.roiCalc.max}" value="${data.roiCalc.defaultVal}" style="--thumb-color:${data.color}">
+                <div class="auto-roi-qty">${data.roiCalc.defaultVal} ${data.roiCalc.label}</div>
+              </div>
+              <div class="auto-roi-result"><span class="auto-roi-hrs" style="color:${data.color}">${initHrs} hrs</span> saved per month</div>
+            </div>
+
+            <div class="auto-demo-section-label" style="margin-top:1.5rem">Setup</div>
+            <div class="auto-setup">
+              <div class="auto-setup-item"><div class="auto-setup-label">Timeline</div><div class="auto-setup-val">${data.setup.timeline}</div></div>
+              <div class="auto-setup-item"><div class="auto-setup-label">Connects to</div><div class="auto-setup-val">${data.setup.connects}</div></div>
+              <div class="auto-setup-item"><div class="auto-setup-label">Support</div><div class="auto-setup-val">${data.setup.model}</div></div>
+            </div>
+          </div>
+          <div class="auto-demo-log-wrap">
+            <div class="auto-demo-log-label">Live Log</div>
+            <div class="auto-demo-log"></div>
+            <div class="auto-demo-result" style="background:${data.color}12;border:1px solid ${data.color}30;color:${data.color}"></div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function runAutomationDemo(data, panelEl) {
+      const nodes = panelEl.querySelectorAll('.auto-demo-node');
+      const log = panelEl.querySelector('.auto-demo-log');
+      const result = panelEl.querySelector('.auto-demo-result');
+      const btn = panelEl.querySelector('.auto-run-btn');
+      const infoEl = panelEl.querySelector('.auto-demo-info');
+      const logWrap = panelEl.querySelector('.auto-demo-log-wrap');
+
+      log.innerHTML = '';
+      result.style.opacity = '0';
+      result.textContent = '';
+      nodes.forEach((n, i) => {
+        n.dataset.state = 'pending';
+        const icon = n.querySelector('.auto-demo-node-icon');
+        icon.textContent = data.steps[i].icon;
+        icon.style.color = '';
+        icon.style.borderColor = '';
+        icon.style.background = '';
+        icon.style.fontSize = '';
+      });
+      btn.disabled = true;
+      btn.textContent = 'Running…';
+
+      infoEl.style.opacity = '0';
+      infoEl.style.pointerEvents = 'none';
+      setTimeout(() => {
+        infoEl.style.display = 'none';
+        logWrap.style.display = 'flex';
+        requestAnimationFrame(() => { logWrap.style.opacity = '1'; });
+      }, 260);
+
+      data.steps.forEach((step, i) => {
+        setTimeout(() => {
+          nodes[i].dataset.state = 'active';
+          const icon = nodes[i].querySelector('.auto-demo-node-icon');
+          icon.textContent = step.icon;
+          if (i > 0) {
+            nodes[i - 1].dataset.state = 'done';
+            const prev = nodes[i - 1].querySelector('.auto-demo-node-icon');
+            prev.textContent = '✓';
+            prev.style.fontSize = '10px';
+            prev.style.color = data.color;
+            prev.style.borderColor = data.color;
+            prev.style.background = data.color + '18';
+          }
+        }, Math.max(0, step.ms - 300));
+
+        setTimeout(() => {
+          const entry = document.createElement('div');
+          entry.className = 'auto-demo-log-entry';
+          entry.innerHTML = `<span class="log-time">${(step.ms / 1000).toFixed(1)}s</span><span class="log-check" style="color:${data.color}">✓</span><span class="log-content"><strong>${step.label}</strong><span class="log-detail">${step.detail}</span></span>`;
+          log.appendChild(entry);
+          log.scrollTop = log.scrollHeight;
+        }, step.ms);
+      });
+
+      const lastMs = data.steps[data.steps.length - 1].ms;
+      setTimeout(() => {
+        const lastNode = nodes[data.steps.length - 1];
+        lastNode.dataset.state = 'done';
+        const lastIcon = lastNode.querySelector('.auto-demo-node-icon');
+        lastIcon.textContent = '✓';
+        lastIcon.style.fontSize = '10px';
+        lastIcon.style.color = data.color;
+        lastIcon.style.borderColor = data.color;
+        lastIcon.style.background = data.color + '18';
+        result.textContent = `⚡ Done in ${data.saved.auto} — manually this takes ${data.saved.manual}`;
+        result.style.opacity = '1';
+        btn.textContent = '↺ Run Again';
+        btn.disabled = false;
+        btn.onclick = () => {
+          logWrap.style.opacity = '0';
+          logWrap.style.display = 'none';
+          infoEl.style.display = 'flex';
+          infoEl.style.pointerEvents = '';
+          requestAnimationFrame(() => { infoEl.style.opacity = '1'; });
+          setTimeout(() => runAutomationDemo(data, panelEl), 280);
+        };
+      }, lastMs + 500);
+    }
+
     function openLightbox(src, type, cardEl) {
       lbIframe.style.display = 'none';
       lbVideo.style.display = 'none';
@@ -3093,9 +3932,27 @@
         lbVideo.play();
       } else if (type === 'panel') {
         const data = panelData[src];
-        const svgEl = cardEl ? cardEl.querySelector('svg') : null;
-        lbPanel.innerHTML = renderPanel(data, svgEl);
-        lbPanel.style.display = 'block';
+        if (src.startsWith('auto')) {
+          lbPanel.innerHTML = renderAutoPanel(data);
+          lbPanel.style.display = 'block';
+          lbPanel.querySelector('.auto-run-btn').addEventListener('click', () => {
+            runAutomationDemo(data, lbPanel);
+          });
+          const slider = lbPanel.querySelector('.auto-roi-slider');
+          if (slider) {
+            const qtyEl = lbPanel.querySelector('.auto-roi-qty');
+            const hrsEl = lbPanel.querySelector('.auto-roi-hrs');
+            slider.addEventListener('input', () => {
+              const qty = +slider.value;
+              qtyEl.textContent = `${qty} ${data.roiCalc.label}`;
+              hrsEl.textContent = `${(qty * data.roiCalc.minSaved / 60).toFixed(1)} hrs`;
+            });
+          }
+        } else {
+          const svgEl = cardEl ? cardEl.querySelector('svg') : null;
+          lbPanel.innerHTML = renderPanel(data, svgEl);
+          lbPanel.style.display = 'block';
+        }
       } else {
         lbIframe.style.display = 'block';
         lbIframe.src = src;
@@ -3199,63 +4056,7 @@
     });
   })();
 
-  /* ── FUNNEL CARD 3D TILT + MAGNETIC ── */
-  (function () {
-    const wrap    = document.querySelector('.funnel-strip-wrap');
-    const cards   = document.querySelectorAll('.funnel-card');
-    const tilts   = new Map();
-    const hovered = new Set();
-    const magX    = new Map();
-    const magY    = new Map();
-    const magTX   = new Map();
-    const magTY   = new Map();
-
-    cards.forEach(card => {
-      tilts.set(card, 0);
-      magX.set(card, 0);  magY.set(card, 0);
-      magTX.set(card, 0); magTY.set(card, 0);
-
-      card.addEventListener('mouseenter', () => hovered.add(card));
-      card.addEventListener('mouseleave', () => {
-        hovered.delete(card);
-        magTX.set(card, 0);
-        magTY.set(card, 0);
-      });
-      card.addEventListener('mousemove', e => {
-        const r  = card.getBoundingClientRect();
-        const dx = (e.clientX - (r.left + r.width  / 2)) / (r.width  / 2);
-        const dy = (e.clientY - (r.top  + r.height / 2)) / (r.height / 2);
-        magTX.set(card, dx * 7);
-        magTY.set(card, dy * 5);
-      });
-    });
-
-    function tick() {
-      const wr = wrap.getBoundingClientRect();
-      if (wr.width === 0) { requestAnimationFrame(tick); return; }
-      const wc = wr.left + wr.width / 2;
-
-      cards.forEach(card => {
-        const cr   = card.getBoundingClientRect();
-        const cc   = cr.left + cr.width / 2;
-        const norm = (cc - wc) / (wr.width / 2);
-        const tiltTarget = -norm * 15;
-        const tilt = tilts.get(card) + (tiltTarget - tilts.get(card)) * 0.1;
-        tilts.set(card, tilt);
-
-        const mx = magX.get(card) + (magTX.get(card) - magX.get(card)) * 0.12;
-        const my = magY.get(card) + (magTY.get(card) - magY.get(card)) * 0.12;
-        magX.set(card, mx); magY.set(card, my);
-
-        const isHov = hovered.has(card);
-        card.style.transform = `perspective(800px) translateX(${mx}px) translateY(${isHov ? -8 + my : my}px) scale(${isHov ? 1.015 : 1}) rotateY(${tilt}deg)`;
-      });
-
-      requestAnimationFrame(tick);
-    }
-
-    requestAnimationFrame(tick);
-  })();
+  /* ── CARD 3D TILT + MAGNETIC (funnel-card + pcat-strip-card) ── */
 
   /* ── PROCESS STEP SWITCHER ── */
   (function () {
@@ -3265,7 +4066,6 @@
     if (!tabs.length) return;
 
     let current = 0;
-    let paused = false;
     let timer;
 
     function updateIndicator(tab) {
@@ -3282,17 +4082,14 @@
       updateIndicator(tabs[i]);
     }
 
-    function advance() {
-      if (!paused) switchTo((current + 1) % tabs.length);
-    }
-
+    function advance() { switchTo((current + 1) % tabs.length); }
     function startTimer() { timer = setInterval(advance, 3000); }
     function stopTimer()  { clearInterval(timer); }
 
     tabs.forEach((tab, i) => {
       tab.addEventListener('click', () => switchTo(i));
-      tab.addEventListener('mouseenter', () => { paused = true; });
-      tab.addEventListener('mouseleave', () => { paused = false; });
+      tab.addEventListener('mouseenter', stopTimer);
+      tab.addEventListener('mouseleave', startTimer);
     });
 
     requestAnimationFrame(() => updateIndicator(tabs[0]));
@@ -3325,9 +4122,8 @@
     io.observe(el);
   })();
 
-  /* ── PCAT STRIP CARD 3D TILT (all non-funnel tabs) ── */
   (function () {
-    const cards   = document.querySelectorAll('.pcat-strip-card');
+    const cards   = document.querySelectorAll('.funnel-card, .pcat-strip-card');
     const tilts   = new Map();
     const hovered = new Set();
     const magX    = new Map();
@@ -3359,6 +4155,10 @@
 
     function tick() {
       cards.forEach(card => {
+        if (card.closest('.pcat-panel')?.classList.contains('pcat-hidden')) {
+          card.style.transform = '';
+          return;
+        }
         const wrap = wraps.get(card);
         const wr   = wrap ? wrap.getBoundingClientRect() : { width: 0 };
         if (wr.width === 0) { card.style.transform = ''; return; }
@@ -3456,7 +4256,7 @@
       if (e.key === 'Enter') { e.preventDefault(); sendBtn.click(); }
     });
 
-    document.querySelectorAll('.raya-win-chip').forEach(chip => {
+    chipsEl.querySelectorAll('.raya-win-chip').forEach(chip => {
       chip.addEventListener('click', () => send(chip.dataset.q));
     });
   })();
