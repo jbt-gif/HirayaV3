@@ -461,7 +461,6 @@
       border-bottom: 1px solid var(--border);
       padding: 1rem 0;
       background: var(--surface);
-      box-shadow: 0 0 40px rgba(255,255,255,0.06), 0 0 80px rgba(255,255,255,0.03);
     }
     .marquee-track {
       display: flex;
@@ -482,6 +481,7 @@
       text-transform: uppercase;
       color: var(--muted);
       white-space: nowrap;
+      text-shadow: 0 0 12px rgba(255,255,255,0.35), 0 0 28px rgba(255,255,255,0.15);
       display: flex;
       align-items: center;
       gap: 4rem;
@@ -1510,12 +1510,12 @@
       width: 1px; height: 48px; background: rgba(255,255,255,0.12);
     }
     .social-float-icon {
-      color: rgba(255,255,255,0.4); transition: color 0.2s, transform 0.2s, filter 0.2s;
+      color: rgba(255,255,255,0.5); transition: color 0.2s, transform 0.2s;
       display: flex; align-items: center; justify-content: center;
       width: 20px; height: 20px;
-      filter: drop-shadow(0 0 4px rgba(255,255,255,0.15));
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
     }
-    .social-float-icon:hover { color: #2dd4bf; transform: translateX(2px); filter: drop-shadow(0 0 8px rgba(45,212,191,0.6)); }
+    .social-float-icon:hover { color: #2dd4bf; transform: translateX(2px); filter: drop-shadow(0 0 8px rgba(45,212,191,0.7)); }
     @media (max-width: 768px) { .social-float { display: none; } }
 
     /* ── FOOTER ── */
