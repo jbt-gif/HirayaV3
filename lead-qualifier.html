@@ -61,10 +61,13 @@
     .scout-msgs { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
 
     /* Welcome */
-    .scout-welcome { text-align: center; padding: 2.5rem 1rem 1rem; }
-    .scout-welcome-mark { font-size: 2rem; margin-bottom: 0.85rem; opacity: 0.6; }
+    .scout-welcome { text-align: center; padding: 2.5rem 1rem 1rem; transition: padding 0.3s; }
+    .scout-welcome-mark { font-size: 2rem; margin-bottom: 0.85rem; opacity: 0.6; transition: all 0.3s; }
     .scout-welcome h2 { font-family: 'Unbounded', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: 0.04em; }
-    .scout-welcome p { color: var(--body); font-size: 0.83rem; max-width: 340px; margin: 0 auto; line-height: 1.6; }
+    .scout-welcome p { color: var(--body); font-size: 0.83rem; max-width: 340px; margin: 0 auto; line-height: 1.6; transition: opacity 0.2s; }
+    .scout-welcome--compact { padding: 1rem 1rem 0.5rem; }
+    .scout-welcome--compact .scout-welcome-mark { font-size: 1rem; margin-bottom: 0.3rem; }
+    .scout-welcome--compact p { display: none; }
 
     /* Bubbles with slide-in animation */
     @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -233,8 +236,8 @@ function appendMsg(text, role) {
 }
 
 function hideWelcome() {
-  if (welcomeEl && welcomeEl.parentNode) {
-    welcomeEl.remove();
+  if (welcomeEl && !welcomeEl.classList.contains('scout-welcome--compact')) {
+    welcomeEl.classList.add('scout-welcome--compact');
     chipsEl.style.display = 'none';
   }
 }
