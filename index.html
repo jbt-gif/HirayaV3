@@ -1499,6 +1499,23 @@
       color: var(--muted);
     }
 
+    /* ── SOCIAL FLOAT ── */
+    .social-float {
+      position: fixed; left: 1.5rem; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      z-index: 50;
+    }
+    .social-float-line {
+      width: 1px; height: 48px; background: rgba(255,255,255,0.12);
+    }
+    .social-float-icon {
+      color: rgba(255,255,255,0.3); transition: color 0.2s, transform 0.2s;
+      display: flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px;
+    }
+    .social-float-icon:hover { color: #2dd4bf; transform: translateX(2px); }
+    @media (max-width: 768px) { .social-float { display: none; } }
+
     /* ── FOOTER ── */
     footer {
       padding: 2.2rem 3rem;
@@ -3254,6 +3271,21 @@
     <div class="footer-copy">hirayasystems.com</div>
   </footer>
   </div><!-- /.cta-footer-wrap -->
+
+  <!-- FLOATING SOCIAL BAR -->
+  <div class="social-float">
+    <div class="social-float-line"></div>
+    <a href="#" target="_blank" rel="noopener" class="social-float-icon" aria-label="LinkedIn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.59 0 4.25 2.36 4.25 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+    </a>
+    <a href="#" target="_blank" rel="noopener" class="social-float-icon" aria-label="Facebook">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.27h3.32l-.53 3.49h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+    </a>
+    <a href="#" target="_blank" rel="noopener" class="social-float-icon" aria-label="Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12c0-3.2.01-3.58.07-4.85C2.38 3.86 3.9 2.31 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.7.07 7.05.01 8.33 0 8.74 0 12c0 3.26.01 3.67.07 4.95.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24c3.26 0 3.67-.01 4.95-.07 4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95 0-3.26-.01-3.67-.07-4.95C23.73 2.7 21.3.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32A6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>
+    </a>
+    <div class="social-float-line"></div>
+  </div>
 
   <script>
     // Dual-video crossfade loop — no visible cut
