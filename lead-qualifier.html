@@ -321,9 +321,11 @@ if (!SpeechRecognition) {
 } else {
   const recognition = new SpeechRecognition();
   recognition.lang = 'en-US';
-  recognition.interimResults = false;
+  recognition.continuous = true;
+  recognition.interimResults = true;
   recognition.maxAlternatives = 1;
   let listening = false;
+  let finalTranscript = '';
 
   micBtn.addEventListener('click', () => {
     if (listening) { recognition.stop(); return; }
@@ -332,18 +334,21 @@ if (!SpeechRecognition) {
 
   recognition.onstart = () => {
     listening = true;
+    finalTranscript = '';
     micBtn.classList.add('listening');
     micBtn.title = 'Listening… click to stop';
     inputEl.placeholder = 'Listening…';
   };
 
   recognition.onresult = e => {
-    const transcript = e.results[0][0].transcript;
-    inputEl.value = transcript;
-    inputEl.placeholder = 'Tell me about your business...';
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) finalTranscript += e.results[i][0].transcript + ' ';
+      else interim = e.results[i][0].transcript;
+    }
+    inputEl.value = (finalTranscript + interim).trim();
     inputEl.style.height = 'auto';
     inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
-    inputEl.focus();
   };
 
   recognition.onend = () => {
