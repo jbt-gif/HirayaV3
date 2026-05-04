@@ -21,6 +21,25 @@ mockup.html
 mockup2.html
 parallax-bg.html
 projects/
+PROJECT_CONTEXT.md
+claude.md
+session-dropoff-*.md
+session-dropoff-*.pdf
+
+# Debug/analysis tools
+debug-sections.mjs
+pixel-analyze.mjs
+screenshot.mjs
+debug-*.png
+pixel-*.png
+
+# Node
+node_modules/
+package-lock.json
+package.json
+
+# Claude internal
+.claude/
 
 # Env / secrets
 .env

@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drift Store — Premium Lifestyle & Apparel</title>
+    <meta name="description" content="Premium streetwear, essentials, and footwear. Free shipping on orders over $75. New drops every week.">
+    <meta property="og:title" content="Drift Store — Premium Lifestyle & Apparel">
+    <meta property="og:description" content="Curated collections for the modern wardrobe. Shop new arrivals now.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:type" content="website">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'carbon':     '#0F0F0F',
+                        'carbon-mid': '#1A1A1A',
+                        'carbon-light':'#242424',
+                        'red':        '#DC2626',
+                        'red-light':  '#EF4444',
+                        'red-pale':   '#FCA5A5',
+                        'muted':      '#9CA3AF',
+                        'border-c':   '#2A2A2A',
+                        'text-main':  '#F9FAFB',
+                    },
+                    fontFamily: {
+                        'sans':    ['DM Sans', 'sans-serif'],
+                        'heading': ['Bebas Neue', 'sans-serif'],
+                        'body':    ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html  { scroll-behavior:smooth; }
+        body  { background:#0F0F0F; color:#F9FAFB; font-family:'DM Sans',sans-serif; overflow-x:hidden; }
+
+        ::-webkit-scrollbar { width:4px; }
+        ::-webkit-scrollbar-track { background:#0F0F0F; }
+        ::-webkit-scrollbar-thumb { background:#DC2626; border-radius:2px; }
+
+        /* Red gradient text */
+        .red-text {
+            background:linear-gradient(135deg,#DC2626 0%,#EF4444 50%,#DC2626 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+
+        /* Red line */
+        .red-line { width:60px; height:2px; background:linear-gradient(90deg,#DC2626,#EF4444); display:block; }
+
+        /* Navbar */
+        .navbar { transition:background .4s ease, border-color .4s ease; }
+        .navbar.scrolled { background:rgba(15,15,15,.96); backdrop-filter:blur(16px); border-bottom:1px solid rgba(220,38,38,.2); }
+
+        /* ── HERO ── full-screen lifestyle/fashion bg */
+        .hero-bg {
+            background-image:
+                linear-gradient(to right,
+                    rgba(15,15,15,.92) 0%,
+                    rgba(15,15,15,.70) 50%,
+                    rgba(15,15,15,.30) 100%),
+                url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80');
+            background-size:cover; background-position:center; background-attachment:fixed;
+        }
+
+        /* ── PROMO BAND bg ── */
+        .promo-bg {
+            background-image:
+                linear-gradient(to bottom, rgba(15,15,15,.88), rgba(15,15,15,.88)),
+                url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1920&q=80');
+            background-size:cover; background-position:center; background-attachment:fixed;
+        }
+
+        /* ── CTA bg ── */
+        .cta-bg {
+            background-image:
+                linear-gradient(to right,
+                    rgba(15,15,15,.97) 0%,
+                    rgba(15,15,15,.75) 55%,
+                    rgba(15,15,15,.40) 100%),
+                url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1920&q=80');
+            background-size:cover; background-position:center right;
+        }
+
+        /* ── Cart badge ── */
+        .cart-badge {
+            position:absolute; top:-6px; right:-6px;
+            width:18px; height:18px; background:#DC2626;
+            border-radius:50%; font-size:10px; font-weight:700;
+            display:flex; align-items:center; justify-content:center;
+            color:#fff;
+        }
+
+        /* ── Announcement bar ── */
+        .announce-bar { background:linear-gradient(90deg,#DC2626,#EF4444,#DC2626); background-size:200% 100%; animation:slide-bg 4s linear infinite; }
+        @keyframes slide-bg { 0%{background-position:0% 0%} 100%{background-position:200% 0%} }
+
+        /* ── Product cards ── */
+        .product-card { transition:transform .35s ease; }
+        .product-card:hover { transform:translateY(-6px); }
+        .product-card .img-wrap { position:relative; overflow:hidden; }
+        .product-card .img-wrap img { transition:transform .6s ease; display:block; width:100%; height:100%; object-fit:cover; }
+        .product-card:hover .img-wrap img { transform:scale(1.07); }
+
+        /* Quick add button — slides up on hover */
+        .quick-add {
+            position:absolute; bottom:0; left:0; right:0;
+            background:rgba(220,38,38,.92);
+            color:#fff; font-weight:600; font-size:.75rem; letter-spacing:.12em;
+            text-align:center; padding:.75rem;
+            transform:translateY(100%);
+            transition:transform .35s ease;
+        }
+        .product-card:hover .quick-add { transform:translateY(0); }
+
+        /* Wishlist icon */
+        .wishlist-btn {
+            position:absolute; top:12px; right:12px;
+            width:34px; height:34px; background:rgba(15,15,15,.7);
+            border:1px solid rgba(255,255,255,.15);
+            border-radius:50%; display:flex; align-items:center; justify-content:center;
+            opacity:0; transition:opacity .3s ease, background .3s ease;
+            cursor:pointer;
+        }
+        .product-card:hover .wishlist-btn { opacity:1; }
+        .wishlist-btn:hover { background:rgba(220,38,38,.8); border-color:#DC2626; }
+
+        /* Sale badge */
+        .sale-badge { background:#DC2626; color:#fff; font-size:.65rem; font-weight:700; letter-spacing:.1em; padding:2px 8px; }
+
+        /* ── Category cards ── */
+        .cat-card { position:relative; overflow:hidden; cursor:pointer; }
+        .cat-card img { transition:transform .65s ease; display:block; width:100%; height:100%; object-fit:cover; }
+        .cat-card:hover img { transform:scale(1.06); }
+        .cat-card::before {
+            content:''; position:absolute; inset:0;
+            background:linear-gradient(to top, rgba(15,15,15,.82) 0%, rgba(15,15,15,.2) 60%, transparent 100%);
+            z-index:1;
+        }
+        .cat-card .cat-content { position:relative; z-index:2; }
+        .cat-card .cat-line {
+            position:absolute; bottom:0; left:0; height:3px; width:0;
+            background:linear-gradient(90deg,#DC2626,#EF4444); z-index:3;
+            transition:width .45s ease;
+        }
+        .cat-card:hover .cat-line { width:100%; }
+
+        /* ── Buttons ── */
+        .btn-red {
+            background:linear-gradient(135deg,#DC2626,#EF4444);
+            color:#fff; font-weight:600; letter-spacing:.1em;
+            position:relative; overflow:hidden; display:inline-block;
+            transition:box-shadow .3s ease, transform .3s ease;
+        }
+        .btn-red::before {
+            content:''; position:absolute; top:0; left:-100%;
+            width:100%; height:100%;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+            transition:left .5s ease;
+        }
+        .btn-red:hover::before { left:100%; }
+        .btn-red:hover { box-shadow:0 8px 32px rgba(220,38,38,.45); transform:translateY(-2px); }
+
+        .btn-outline-red {
+            border:1px solid rgba(220,38,38,.55); color:#DC2626;
+            letter-spacing:.1em; display:inline-block;
+            transition:background .3s ease, border-color .3s ease;
+        }
+        .btn-outline-red:hover { background:rgba(220,38,38,.1); border-color:#DC2626; }
+
+        .btn-white {
+            background:#F9FAFB; color:#0F0F0F;
+            font-weight:700; letter-spacing:.1em; display:inline-block;
+            transition:box-shadow .3s ease, transform .3s ease;
+        }
+        .btn-white:hover { box-shadow:0 8px 32px rgba(249,250,251,.2); transform:translateY(-2px); }
+
+        /* ── Feature strip ── */
+        .feature-item { border-right:1px solid #2A2A2A; }
+        .feature-item:last-child { border-right:none; }
+
+        /* ── Testimonial ── */
+        .review-card { transition:border-color .3s ease; }
+        .review-card:hover { border-color:rgba(220,38,38,.4) !important; }
+
+        /* ── Newsletter ── */
+        .newsletter-input { background:#1A1A1A; border:1px solid #2A2A2A; color:#F9FAFB; padding:.85rem 1.25rem; outline:none; font-size:.875rem; transition:border-color .3s ease; flex:1; }
+        .newsletter-input:focus { border-color:#DC2626; }
+        .newsletter-input::placeholder { color:#9CA3AF; }
+
+        /* Floating particles */
+        .particle { position:absolute; border-radius:50%; background:rgba(220,38,38,.1); animation:float-p 7s ease-in-out infinite; pointer-events:none; }
+        @keyframes float-p { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+
+        /* GSAP states */
+        .fade-up    { opacity:0; transform:translateY(38px); }
+        .fade-in    { opacity:0; }
+        .fade-left  { opacity:0; transform:translateX(-38px); }
+        .fade-right { opacity:0; transform:translateX(38px); }
+
+        .stat-number { font-family:'Bebas Neue',sans-serif; letter-spacing:.04em; }
+
+        /* ── Grain overlay ── */
+        .grain {
+            position:fixed; inset:0; pointer-events:none; z-index:9998; opacity:0.028;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size:180px;
+        }
+
+        /* ── Skip link ── */
+        .skip-link { position:absolute; top:-100%; left:1rem; background:#DC2626; color:#fff; padding:.5rem 1rem; font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; z-index:10000; transition:top .2s; }
+        .skip-link:focus { top:1rem; }
+
+        /* ── Focus ring ── */
+        :focus-visible { outline:2px solid rgba(220,38,38,.7); outline-offset:3px; }
+
+        /* ── Button active feedback ── */
+        .btn-red:active    { transform:scale(0.97) translateY(0) !important; }
+        .btn-white:active  { transform:scale(0.97) !important; }
+        .btn-outline-red:active { transform:scale(0.97) !important; }
+
+        /* ── Typography quality ── */
+        h1, h2, h3 { text-wrap:balance; }
+        .stat-number { font-variant-numeric:tabular-nums; }
+
+        /* ── Hero dvh fix ── */
+        .hero-section { min-height:100dvh; }
+
+        /* Form */
+        input[type=text], input[type=email], input[type=tel], select, textarea {
+            background:#1A1A1A; border:1px solid #2A2A2A;
+            color:#F9FAFB; padding:.75rem 1rem; font-size:.875rem;
+            width:100%; outline:none; transition:border-color .3s ease;
+            font-family:'DM Sans',sans-serif;
+        }
+        input::placeholder, textarea::placeholder { color:#9CA3AF; }
+        input:focus, select:focus, textarea:focus { border-color:#DC2626; }
+        select option { background:#1A1A1A; }
+    </style>
+</head>
+
+<body>
+
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ANNOUNCEMENT BAR
+    ═══════════════════════════════════════════════════════ -->
+    <div class="announce-bar py-2 text-center">
+        <p class="text-xs text-white font-semibold tracking-widest uppercase">
+            🔥 Summer Sale — Up to 40% Off Sitewide &nbsp;·&nbsp; Free Shipping on Orders $75+ &nbsp;·&nbsp; Use Code: <strong>DRIFT40</strong>
+        </p>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         NAVBAR
+    ═══════════════════════════════════════════════════════ -->
+    <nav id="navbar" class="navbar fixed top-7 inset-x-0 z-50 px-8 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2">
+                <span class="font-heading text-2xl tracking-widest">DRIFT <span class="red-text">STORE</span></span>
+            </a>
+
+            <!-- Center nav -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#categories" class="text-xs text-muted hover:text-red transition-colors tracking-widest uppercase">Shop</a>
+                <a href="#products"   class="text-xs text-muted hover:text-red transition-colors tracking-widest uppercase">New In</a>
+                <a href="#sale"       class="text-xs font-bold text-red tracking-widest uppercase">Sale</a>
+                <a href="#reviews"    class="text-xs text-muted hover:text-red transition-colors tracking-widest uppercase">Reviews</a>
+                <a href="#contact"    class="text-xs text-muted hover:text-red transition-colors tracking-widest uppercase">Contact</a>
+            </div>
+
+            <!-- Right: search + cart -->
+            <div class="hidden md:flex items-center gap-6">
+                <!-- Search -->
+                <button class="text-muted hover:text-red transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </button>
+                <!-- Cart -->
+                <a href="#" class="relative text-muted hover:text-red transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 9H4L5 9z"/>
+                    </svg>
+                    <span class="cart-badge">3</span>
+                </a>
+                <a href="#contact" class="btn-red px-5 py-2 text-xs tracking-widest uppercase">Shop Now</a>
+            </div>
+
+            <!-- Mobile burger -->
+            <button id="mob-btn" class="md:hidden text-red">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mob-menu" class="hidden md:hidden border-t border-border-c mt-4">
+            <div class="flex flex-col gap-4 px-4 pt-4 pb-4">
+                <a href="#categories" class="text-xs text-muted hover:text-red transition-colors tracking-widest uppercase">Shop</a>
+                <a href="#products"   class="text-xs text-muted hover:text-red transition-colors tracking-widest uppercase">New In</a>
+                <a href="#sale"       class="text-xs font-bold text-red tracking-widest uppercase">Sale 🔥</a>
+                <a href="#reviews"    class="text-xs text-muted hover:text-red transition-colors tracking-widest uppercase">Reviews</a>
+                <a href="#contact"    class="btn-red px-6 py-3 text-xs tracking-widest uppercase text-center">Shop Now</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         HERO
+    ═══════════════════════════════════════════════════════ -->
+    <section id="main-content" class="hero-bg hero-section relative flex items-center overflow-hidden pt-16">
+
+        <div class="particle w-2 h-2" style="top:22%;left:72%;animation-delay:0s;"></div>
+        <div class="particle w-1 h-1" style="top:58%;left:80%;animation-delay:3s;"></div>
+        <div class="particle w-3 h-3" style="top:75%;left:65%;animation-delay:5.5s;"></div>
+
+        <div class="max-w-7xl mx-auto px-8 pt-16 pb-20 w-full">
+            <div class="max-w-2xl">
+
+                <div id="hero-tag" class="fade-in inline-flex items-center gap-3 mb-6">
+                    <span class="red-line"></span>
+                    <span class="text-red text-xs tracking-widest uppercase font-semibold">New Summer Collection 2026</span>
+                </div>
+
+                <h1 id="hero-title" class="fade-up font-heading leading-none mb-6 text-7xl md:text-9xl" style="letter-spacing:.02em;">
+                    WEAR WHAT<br>
+                    <span class="red-text">MOVES YOU.</span>
+                </h1>
+
+                <p id="hero-sub" class="fade-up text-muted text-lg max-w-lg mb-10 leading-relaxed">
+                    Premium lifestyle apparel crafted for those who refuse to compromise.
+                    Bold designs. Unmatched quality. Free shipping on every order over $75.
+                </p>
+
+                <div id="hero-cta" class="fade-up flex flex-wrap gap-4 mb-12">
+                    <a href="#products" class="btn-red px-8 py-4 text-sm tracking-widest uppercase">Shop Collection</a>
+                    <a href="#sale"     class="btn-outline-red px-8 py-4 text-sm tracking-widest uppercase">View Sale →</a>
+                </div>
+
+                <!-- Social proof strip -->
+                <div id="hero-social" class="fade-up flex items-center gap-6">
+                    <div class="flex -space-x-3">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=60&h=60&q=80" class="w-9 h-9 rounded-full border-2 border-carbon object-cover" alt="customer"/>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=60&h=60&q=80" class="w-9 h-9 rounded-full border-2 border-carbon object-cover" alt="customer"/>
+                        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=60&h=60&q=80" class="w-9 h-9 rounded-full border-2 border-carbon object-cover" alt="customer"/>
+                        <div class="w-9 h-9 rounded-full border-2 border-carbon bg-carbon-mid flex items-center justify-center text-xs text-muted font-semibold">+2k</div>
+                    </div>
+                    <div>
+                        <div class="text-text-main text-sm font-semibold">2,400+ happy customers</div>
+                        <div class="text-muted text-xs">★★★★★ 4.9 average rating</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+            <span class="text-xs tracking-widest uppercase text-muted">Scroll</span>
+            <div class="w-px h-12 bg-gradient-to-b from-red to-transparent"></div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         FEATURE STRIP
+    ═══════════════════════════════════════════════════════ -->
+    <div class="bg-carbon-mid border-y border-border-c py-5">
+        <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 md:grid-cols-4">
+            <div class="feature-item px-6 py-3 text-center">
+                <div class="text-red mb-2 flex justify-center">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <div class="text-xs text-text-main font-semibold tracking-wide">Free Shipping</div>
+                <div class="text-xs text-muted">On orders over $75</div>
+            </div>
+            <div class="feature-item px-6 py-3 text-center">
+                <div class="text-red mb-2 flex justify-center">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                </div>
+                <div class="text-xs text-text-main font-semibold tracking-wide">Easy Returns</div>
+                <div class="text-xs text-muted">30-day return policy</div>
+            </div>
+            <div class="feature-item px-6 py-3 text-center">
+                <div class="text-red mb-2 flex justify-center">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <div class="text-xs text-text-main font-semibold tracking-wide">Secure Checkout</div>
+                <div class="text-xs text-muted">256-bit SSL encryption</div>
+            </div>
+            <div class="feature-item px-6 py-3 text-center">
+                <div class="text-red mb-2 flex justify-center">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div class="text-xs text-text-main font-semibold tracking-wide">24/7 Support</div>
+                <div class="text-xs text-muted">Live chat & email</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         CATEGORIES
+    ═══════════════════════════════════════════════════════ -->
+    <section id="categories" class="py-24 bg-carbon">
+        <div class="max-w-7xl mx-auto px-8">
+
+            <div class="mb-12">
+                <div class="flex items-center gap-3 mb-4 fade-up">
+                    <span class="red-line"></span>
+                    <span class="text-red text-xs tracking-widest uppercase">Browse by Category</span>
+                </div>
+                <h2 class="font-heading text-6xl md:text-7xl fade-up" style="letter-spacing:.02em;">
+                    SHOP BY <span class="red-text">STYLE</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 fade-up">
+
+                <div class="cat-card h-80 border border-border-c">
+                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&q=80" alt="Streetwear"/>
+                    <div class="cat-content absolute inset-0 p-6 flex flex-col justify-end">
+                        <div class="text-red text-xs tracking-widest uppercase mb-2">01 — Explore</div>
+                        <h3 class="font-heading text-3xl tracking-wide mb-1">STREETWEAR</h3>
+                        <p class="text-muted text-sm">48 products</p>
+                    </div>
+                    <div class="cat-line"></div>
+                </div>
+
+                <div class="cat-card h-80 border border-border-c">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80" alt="Essentials"/>
+                    <div class="cat-content absolute inset-0 p-6 flex flex-col justify-end">
+                        <div class="text-red text-xs tracking-widest uppercase mb-2">02 — Explore</div>
+                        <h3 class="font-heading text-3xl tracking-wide mb-1">ESSENTIALS</h3>
+                        <p class="text-muted text-sm">62 products</p>
+                    </div>
+                    <div class="cat-line"></div>
+                </div>
+
+                <div class="cat-card h-80 border border-border-c">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Footwear"/>
+                    <div class="cat-content absolute inset-0 p-6 flex flex-col justify-end">
+                        <div class="text-red text-xs tracking-widest uppercase mb-2">03 — Explore</div>
+                        <h3 class="font-heading text-3xl tracking-wide mb-1">FOOTWEAR</h3>
+                        <p class="text-muted text-sm">35 products</p>
+                    </div>
+                    <div class="cat-line"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         NEW IN — PRODUCT GRID
+    ═══════════════════════════════════════════════════════ -->
+    <section id="products" class="py-24 bg-carbon-mid">
+        <div class="max-w-7xl mx-auto px-8">
+
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-4 fade-up">
+                        <span class="red-line"></span>
+                        <span class="text-red text-xs tracking-widest uppercase">Just Dropped</span>
+                    </div>
+                    <h2 class="font-heading text-6xl md:text-7xl fade-up" style="letter-spacing:.02em;">
+                        NEW <span class="red-text">IN</span>
+                    </h2>
+                </div>
+                <a href="#" class="btn-outline-red px-6 py-3 text-xs tracking-widest uppercase mt-4 md:mt-0 fade-up">View All →</a>
+            </div>
+
+            <!-- Product grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                <!-- Product 1 -->
+                <div class="product-card fade-up">
+                    <div class="img-wrap h-72 bg-carbon-light border border-border-c relative">
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80" alt="Oversized Tee"/>
+                        <div class="wishlist-btn">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="quick-add tracking-widest uppercase">Quick Add</div>
+                    </div>
+                    <div class="pt-3 pb-1">
+                        <div class="text-xs text-muted tracking-wide uppercase mb-1">Streetwear</div>
+                        <h4 class="text-sm font-semibold text-text-main mb-1">Drift Oversized Tee</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-text-main font-bold">$49</span>
+                        </div>
+                        <div class="flex gap-1 mt-2">
+                            <div class="w-4 h-4 rounded-full bg-gray-900 border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                            <div class="w-4 h-4 rounded-full bg-white border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                            <div class="w-4 h-4 rounded-full bg-red border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 — SALE -->
+                <div class="product-card fade-up" style="animation-delay:.08s;">
+                    <div class="img-wrap h-72 bg-carbon-light border border-border-c relative">
+                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=80" alt="Cargo Pants"/>
+                        <div class="absolute top-3 left-3 z-10"><span class="sale-badge">SALE</span></div>
+                        <div class="wishlist-btn">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="quick-add tracking-widest uppercase">Quick Add</div>
+                    </div>
+                    <div class="pt-3 pb-1">
+                        <div class="text-xs text-muted tracking-wide uppercase mb-1">Bottoms</div>
+                        <h4 class="text-sm font-semibold text-text-main mb-1">Tactical Cargo Pants</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-red font-bold">$69</span>
+                            <span class="text-muted text-xs line-through">$98</span>
+                        </div>
+                        <div class="flex gap-1 mt-2">
+                            <div class="w-4 h-4 rounded-full bg-stone-700 border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                            <div class="w-4 h-4 rounded-full bg-green-900 border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card fade-up" style="animation-delay:.16s;">
+                    <div class="img-wrap h-72 bg-carbon-light border border-border-c relative">
+                        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80" alt="Hoodie"/>
+                        <div class="absolute top-3 left-3 z-10"><span class="bg-blue-600 text-white text-xs font-bold px-2 py-0.5 tracking-wide">NEW</span></div>
+                        <div class="wishlist-btn">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="quick-add tracking-widest uppercase">Quick Add</div>
+                    </div>
+                    <div class="pt-3 pb-1">
+                        <div class="text-xs text-muted tracking-wide uppercase mb-1">Outerwear</div>
+                        <h4 class="text-sm font-semibold text-text-main mb-1">Heavy-Blend Hoodie</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-text-main font-bold">$89</span>
+                        </div>
+                        <div class="flex gap-1 mt-2">
+                            <div class="w-4 h-4 rounded-full bg-gray-900 border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                            <div class="w-4 h-4 rounded-full bg-gray-500 border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                            <div class="w-4 h-4 rounded-full bg-red border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card fade-up" style="animation-delay:.24s;">
+                    <div class="img-wrap h-72 bg-carbon-light border border-border-c relative">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80" alt="Sneakers"/>
+                        <div class="wishlist-btn">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="quick-add tracking-widest uppercase">Quick Add</div>
+                    </div>
+                    <div class="pt-3 pb-1">
+                        <div class="text-xs text-muted tracking-wide uppercase mb-1">Footwear</div>
+                        <h4 class="text-sm font-semibold text-text-main mb-1">Drift Runner Sneakers</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-text-main font-bold">$129</span>
+                        </div>
+                        <div class="flex gap-1 mt-2">
+                            <div class="w-4 h-4 rounded-full bg-white border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                            <div class="w-4 h-4 rounded-full bg-gray-900 border border-border-c cursor-pointer hover:border-muted transition-colors"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card fade-up">
+                    <div class="img-wrap h-72 bg-carbon-light border border-border-c relative">
+                        <img src="https://images.unsplash.com/photo-1614676471928-2ed0ad1061a4?auto=format&fit=crop&w=600&q=80" alt="Cap"/>
+                        <div class="wishlist-btn">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="quick-add tracking-widest uppercase">Quick Add</div>
+                    </div>
+                    <div class="pt-3 pb-1">
+                        <div class="text-xs text-muted tracking-wide uppercase mb-1">Accessories</div>
+                        <h4 class="text-sm font-semibold text-text-main mb-1">Drift Snapback Cap</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-text-main font-bold">$39</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 — SALE -->
+                <div class="product-card fade-up" style="animation-delay:.08s;">
+                    <div class="img-wrap h-72 bg-carbon-light border border-border-c relative">
+                        <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80" alt="Backpack"/>
+                        <div class="absolute top-3 left-3 z-10"><span class="sale-badge">SALE</span></div>
+                        <div class="wishlist-btn">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="quick-add tracking-widest uppercase">Quick Add</div>
+                    </div>
+                    <div class="pt-3 pb-1">
+                        <div class="text-xs text-muted tracking-wide uppercase mb-1">Bags</div>
+                        <h4 class="text-sm font-semibold text-text-main mb-1">Urban Backpack 30L</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-red font-bold">$79</span>
+                            <span class="text-muted text-xs line-through">$119</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card fade-up" style="animation-delay:.16s;">
+                    <div class="img-wrap h-72 bg-carbon-light border border-border-c relative">
+                        <img src="https://images.unsplash.com/photo-1602810316498-ab67cf68c8e1?auto=format&fit=crop&w=600&q=80" alt="Track Jacket"/>
+                        <div class="wishlist-btn">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="quick-add tracking-widest uppercase">Quick Add</div>
+                    </div>
+                    <div class="pt-3 pb-1">
+                        <div class="text-xs text-muted tracking-wide uppercase mb-1">Outerwear</div>
+                        <h4 class="text-sm font-semibold text-text-main mb-1">Retro Track Jacket</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-text-main font-bold">$95</span>
+                        </div>
+                        <div class="flex gap-1 mt-2">
+                            <div class="w-4 h-4 rounded-full bg-red border border-border-c cursor-pointer"></div>
+                            <div class="w-4 h-4 rounded-full bg-blue-800 border border-border-c cursor-pointer"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card fade-up" style="animation-delay:.24s;">
+                    <div class="img-wrap h-72 bg-carbon-light border border-border-c relative">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Shorts"/>
+                        <div class="absolute top-3 left-3 z-10"><span class="bg-blue-600 text-white text-xs font-bold px-2 py-0.5 tracking-wide">NEW</span></div>
+                        <div class="wishlist-btn">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="quick-add tracking-widest uppercase">Quick Add</div>
+                    </div>
+                    <div class="pt-3 pb-1">
+                        <div class="text-xs text-muted tracking-wide uppercase mb-1">Bottoms</div>
+                        <h4 class="text-sm font-semibold text-text-main mb-1">Mesh Athletic Shorts</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-text-main font-bold">$45</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         PROMO BAND
+    ═══════════════════════════════════════════════════════ -->
+    <section id="sale" class="promo-bg py-28">
+        <div class="max-w-7xl mx-auto px-8 text-center fade-up">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <span class="red-line"></span>
+                <span class="text-red text-xs tracking-widest uppercase">Limited Time</span>
+                <span class="red-line"></span>
+            </div>
+            <h2 class="font-heading text-7xl md:text-9xl mb-6" style="letter-spacing:.02em;">
+                UP TO <span class="red-text">40% OFF</span>
+            </h2>
+            <p class="text-muted text-lg max-w-xl mx-auto mb-10">
+                Our biggest sale of the year. Premium pieces at unreal prices.
+                Sale ends when stock runs out — shop fast.
+            </p>
+            <div class="flex justify-center gap-4 flex-wrap">
+                <a href="#products" class="btn-red px-10 py-5 text-sm tracking-widest uppercase font-bold">Shop the Sale</a>
+                <a href="#contact"  class="btn-white px-10 py-5 text-sm tracking-widest uppercase">Get Notified</a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         STATS
+    ═══════════════════════════════════════════════════════ -->
+    <section class="py-20 bg-carbon border-y border-border-c">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="fade-up">
+                    <div class="stat-number text-6xl red-text mb-2" data-target="12000" data-suffix="+">0</div>
+                    <div class="text-xs text-muted tracking-widest uppercase">Orders Shipped</div>
+                </div>
+                <div class="fade-up" style="animation-delay:.08s;">
+                    <div class="stat-number text-6xl red-text mb-2" data-target="2400" data-suffix="+">0</div>
+                    <div class="text-xs text-muted tracking-widest uppercase">Happy Customers</div>
+                </div>
+                <div class="fade-up" style="animation-delay:.16s;">
+                    <div class="stat-number text-6xl red-text mb-2" data-target="145" data-suffix="+">0</div>
+                    <div class="text-xs text-muted tracking-widest uppercase">Products</div>
+                </div>
+                <div class="fade-up" style="animation-delay:.24s;">
+                    <div class="stat-number text-6xl red-text mb-2" data-target="49" data-suffix="★">4.</div>
+                    <div class="text-xs text-muted tracking-widest uppercase">Average Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         CTA BANNER
+    ═══════════════════════════════════════════════════════ -->
+    <section class="cta-bg py-36">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="max-w-2xl fade-up">
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="red-line"></span>
+                    <span class="text-red text-xs tracking-widest uppercase">New Collection Available</span>
+                </div>
+                <h2 class="font-heading text-6xl md:text-8xl mb-6" style="letter-spacing:.02em;">
+                    DEFINE YOUR<br><span class="red-text">OWN STYLE.</span>
+                </h2>
+                <p class="text-muted text-lg mb-10 leading-relaxed">
+                    Join 2,400+ people who upgraded their wardrobe with Drift.
+                    Premium quality, bold design, fast shipping.
+                </p>
+                <a href="#products" class="btn-red px-10 py-5 text-sm tracking-widest uppercase font-bold">
+                    Shop Now →
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         REVIEWS
+    ═══════════════════════════════════════════════════════ -->
+    <section id="reviews" class="py-24 bg-carbon-mid">
+        <div class="max-w-7xl mx-auto px-8">
+
+            <div class="mb-12">
+                <div class="flex items-center gap-3 mb-4 fade-up">
+                    <span class="red-line"></span>
+                    <span class="text-red text-xs tracking-widest uppercase">Customer Reviews</span>
+                </div>
+                <h2 class="font-heading text-6xl md:text-7xl fade-up" style="letter-spacing:.02em;">
+                    WHAT THEY <span class="red-text">SAY</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div class="review-card bg-carbon border border-border-c p-8 fade-up">
+                    <div class="text-red text-xl mb-4">★★★★★</div>
+                    <p class="text-text-main text-sm leading-relaxed mb-6 italic">
+                        "Quality is insane for the price. The oversized tee fits perfectly, fabric is thick
+                        and soft. Already ordered 3 more colors. Nova is my go-to brand now."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=60&h=60&q=80" class="w-10 h-10 rounded-full object-cover" alt=""/>
+                        <div>
+                            <div class="text-sm font-semibold text-text-main">Aisha M.</div>
+                            <div class="text-xs text-muted">Verified Buyer · Streetwear</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-card bg-carbon border border-border-c p-8 fade-up" style="animation-delay:.1s;">
+                    <div class="text-red text-xl mb-4">★★★★★</div>
+                    <p class="text-text-main text-sm leading-relaxed mb-6 italic">
+                        "Ordered the cargo pants and runners together. Both arrived in 2 days, packaged
+                        beautifully. The pants fit true to size and the colorway is fire. Love this brand."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=60&h=60&q=80" class="w-10 h-10 rounded-full object-cover" alt=""/>
+                        <div>
+                            <div class="text-sm font-semibold text-text-main">Jordan T.</div>
+                            <div class="text-xs text-muted">Verified Buyer · Footwear + Bottoms</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-card bg-carbon border border-border-c p-8 fade-up" style="animation-delay:.2s;">
+                    <div class="text-red text-xl mb-4">★★★★★</div>
+                    <p class="text-text-main text-sm leading-relaxed mb-6 italic">
+                        "Bought the hoodie during the sale. Best impulse buy I've made. Super heavy
+                        material, the embroidery is clean. This thing will last for years."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=60&h=60&q=80" class="w-10 h-10 rounded-full object-cover" alt=""/>
+                        <div>
+                            <div class="text-sm font-semibold text-text-main">Marcus W.</div>
+                            <div class="text-xs text-muted">Verified Buyer · Outerwear</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         NEWSLETTER
+    ═══════════════════════════════════════════════════════ -->
+    <section class="py-20 bg-carbon border-y border-border-c">
+        <div class="max-w-3xl mx-auto px-8 text-center fade-up">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <span class="red-line"></span>
+                <span class="text-red text-xs tracking-widest uppercase">Stay in the Loop</span>
+                <span class="red-line"></span>
+            </div>
+            <h2 class="font-heading text-5xl md:text-6xl mb-4" style="letter-spacing:.02em;">
+                GET <span class="red-text">EARLY ACCESS</span>
+            </h2>
+            <p class="text-muted mb-8">
+                Subscribe for exclusive drops, member-only discounts, and 10% off your first order.
+            </p>
+            <form class="flex flex-col sm:flex-row gap-0 max-w-lg mx-auto">
+                <input type="email" class="newsletter-input" placeholder="your@email.com"/>
+                <button type="submit" class="btn-red px-8 py-4 text-sm tracking-widest uppercase font-bold whitespace-nowrap">
+                    Subscribe
+                </button>
+            </form>
+            <p class="text-muted text-xs mt-4">No spam. Unsubscribe anytime.</p>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         CONTACT
+    ═══════════════════════════════════════════════════════ -->
+    <section id="contact" class="py-24 bg-carbon-mid">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+                <div>
+                    <div class="flex items-center gap-3 mb-4 fade-left">
+                        <span class="red-line"></span>
+                        <span class="text-red text-xs tracking-widest uppercase">Get Help</span>
+                    </div>
+                    <h2 class="font-heading text-6xl md:text-7xl mb-6 fade-left" style="letter-spacing:.02em;">
+                        WE'RE HERE <span class="red-text">FOR YOU</span>
+                    </h2>
+                    <p class="text-muted leading-relaxed mb-10 max-w-md fade-left">
+                        Questions about sizing, shipping, returns? Our team responds within 2 hours
+                        on weekdays. We want your Drift experience to be perfect.
+                    </p>
+                    <div class="space-y-5 fade-left">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 border border-red flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-xs text-muted tracking-widest uppercase mb-1">Email</div>
+                                <div class="text-sm text-text-main">hello@driftstore.co</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 border border-red flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-xs text-muted tracking-widest uppercase mb-1">Live Chat</div>
+                                <div class="text-sm text-text-main">Available Mon–Sat · 9am–9pm</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 border border-red flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-xs text-muted tracking-widest uppercase mb-1">Response Time</div>
+                                <div class="text-sm text-text-main">Under 2 hours on weekdays</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fade-right">
+                    <form class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-muted tracking-widest uppercase mb-2 block">First Name</label>
+                                <input type="text" placeholder="John"/>
+                            </div>
+                            <div>
+                                <label class="text-xs text-muted tracking-widest uppercase mb-2 block">Last Name</label>
+                                <input type="text" placeholder="Smith"/>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-muted tracking-widest uppercase mb-2 block">Email</label>
+                            <input type="email" placeholder="your@email.com"/>
+                        </div>
+                        <div>
+                            <label class="text-xs text-muted tracking-widest uppercase mb-2 block">Subject</label>
+                            <select>
+                                <option value="">Select topic...</option>
+                                <option>Order Status / Tracking</option>
+                                <option>Returns & Exchanges</option>
+                                <option>Sizing Help</option>
+                                <option>Product Question</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-muted tracking-widest uppercase mb-2 block">Message</label>
+                            <textarea rows="4" placeholder="How can we help?"></textarea>
+                        </div>
+                        <button type="submit" class="btn-red w-full py-4 text-sm tracking-widest uppercase font-bold text-center">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         FOOTER
+    ═══════════════════════════════════════════════════════ -->
+    <footer class="bg-carbon border-t border-border-c py-12">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+                <div>
+                    <span class="font-heading text-xl tracking-widest block mb-4">DRIFT <span class="red-text">STORE</span></span>
+                    <p class="text-muted text-xs leading-relaxed">Premium lifestyle apparel for those who move with intention.</p>
+                </div>
+                <div>
+                    <div class="text-xs text-text-main font-semibold tracking-widest uppercase mb-4">Shop</div>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-xs text-muted hover:text-red transition-colors">New In</a>
+                        <a href="#" class="block text-xs text-muted hover:text-red transition-colors">Streetwear</a>
+                        <a href="#" class="block text-xs text-muted hover:text-red transition-colors">Essentials</a>
+                        <a href="#" class="block text-xs text-muted hover:text-red transition-colors">Footwear</a>
+                        <a href="#" class="block text-xs text-red font-semibold hover:text-red-light transition-colors">Sale 🔥</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-xs text-text-main font-semibold tracking-widest uppercase mb-4">Help</div>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-xs text-muted hover:text-red transition-colors">Shipping Info</a>
+                        <a href="#" class="block text-xs text-muted hover:text-red transition-colors">Returns</a>
+                        <a href="#" class="block text-xs text-muted hover:text-red transition-colors">Size Guide</a>
+                        <a href="#contact" class="block text-xs text-muted hover:text-red transition-colors">Contact Us</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-xs text-text-main font-semibold tracking-widest uppercase mb-4">Follow Us</div>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-9 h-9 border border-border-c flex items-center justify-center text-muted hover:border-red hover:text-red transition-colors">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 border border-border-c flex items-center justify-center text-muted hover:border-red hover:text-red transition-colors">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.56V6.81a4.85 4.85 0 01-1.07-.12z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-border-c pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="text-xs text-muted">© 2026 DRIFT STORE. ALL RIGHTS RESERVED.</div>
+                <div class="flex gap-6">
+                    <a href="#" class="text-xs text-muted hover:text-red transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-xs text-muted hover:text-red transition-colors">Terms of Service</a>
+                    <a href="#" class="text-xs text-muted hover:text-red transition-colors">Cookie Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         GSAP ANIMATIONS
+    ═══════════════════════════════════════════════════════ -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ── Navbar ────────────────────────────────────────────────
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', scrollY > 50);
+        });
+        document.getElementById('mob-btn').addEventListener('click', () => {
+            document.getElementById('mob-menu').classList.toggle('hidden');
+        });
+
+        // ── Hero entrance ─────────────────────────────────────────
+        gsap.timeline({ delay:0.3 })
+            .to('#hero-tag',    { opacity:1, duration:.7,  ease:'power3.out' })
+            .to('#hero-title',  { opacity:1, y:0, duration:1.1, ease:'power4.out' }, '-=.4')
+            .to('#hero-sub',    { opacity:1, y:0, duration:.9,  ease:'power3.out' }, '-=.55')
+            .to('#hero-cta',    { opacity:1, y:0, duration:.8,  ease:'power3.out' }, '-=.45')
+            .to('#hero-social', { opacity:1, y:0, duration:.8,  ease:'power3.out' }, '-=.4');
+
+        // ── Scroll reveals ────────────────────────────────────────
+        const reveal = (sel, vars) => gsap.utils.toArray(sel).forEach(el => {
+            if (el.id && el.id.startsWith('hero-')) return;
+            gsap.to(el, {
+                scrollTrigger:{ trigger:el, start:'top 88%', toggleActions:'play none none none' },
+                ...vars, delay: parseFloat(el.style.animationDelay) || 0,
+            });
+        });
+
+        reveal('.fade-up',    { opacity:1, y:0, duration:.9,  ease:'power3.out' });
+        reveal('.fade-left',  { opacity:1, x:0, duration:.95, ease:'power3.out' });
+        reveal('.fade-right', { opacity:1, x:0, duration:.95, ease:'power3.out' });
+
+        // ── Red lines draw ────────────────────────────────────────
+        gsap.utils.toArray('.red-line').forEach(el => {
+            gsap.from(el, {
+                scrollTrigger:{ trigger:el, start:'top 90%', toggleActions:'play none none none' },
+                width:0, duration:.7, ease:'power3.out',
+            });
+        });
+
+        // ── Category cards stagger ────────────────────────────────
+        gsap.from('.cat-card', {
+            scrollTrigger:{ trigger:'#categories', start:'top 80%', toggleActions:'play none none none' },
+            opacity:0, y:42, stagger:.11, duration:.85, ease:'power3.out',
+        });
+
+        // ── Product cards stagger ─────────────────────────────────
+        gsap.from('.product-card', {
+            scrollTrigger:{ trigger:'#products', start:'top 78%', toggleActions:'play none none none' },
+            opacity:0, y:35, stagger:.07, duration:.75, ease:'power3.out',
+        });
+
+        // ── Counters ──────────────────────────────────────────────
+        document.querySelectorAll('.stat-number').forEach(el => {
+            const target = +el.dataset.target;
+            const suffix = el.dataset.suffix || '';
+            // Special case for rating
+            if (target === 49) {
+                ScrollTrigger.create({ trigger:el, start:'top 86%', once:true,
+                    onEnter:() => { el.textContent = '4.9★'; }
+                });
+                return;
+            }
+            ScrollTrigger.create({ trigger:el, start:'top 86%', once:true,
+                onEnter:() => gsap.to({ val:0 }, {
+                    val:target, duration:2, ease:'power3.out',
+                    onUpdate() { el.textContent = Math.round(this.targets()[0].val).toLocaleString() + suffix; }
+                })
+            });
+        });
+
+        // ── Review stagger ────────────────────────────────────────
+        gsap.from('.review-card', {
+            scrollTrigger:{ trigger:'#reviews', start:'top 80%', toggleActions:'play none none none' },
+            opacity:0, y:32, stagger:.12, duration:.75, ease:'power3.out',
+        });
+
+        // ── Hero parallax ─────────────────────────────────────────
+        gsap.to('.hero-bg', {
+            scrollTrigger:{ trigger:'.hero-bg', start:'top top', end:'bottom top', scrub:true },
+            backgroundPositionY:'30%', ease:'none',
+        });
+
+        // ── Form glow ─────────────────────────────────────────────
+        document.querySelectorAll('input, select, textarea, .newsletter-input').forEach(el => {
+            el.addEventListener('focus', () => gsap.to(el, { boxShadow:'0 0 0 1px rgba(220,38,38,.45)', duration:.3 }));
+            el.addEventListener('blur',  () => gsap.to(el, { boxShadow:'none', duration:.3 }));
+        });
+
+        // ── Wishlist heart pulse ──────────────────────────────────
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                gsap.to(btn, { scale:1.3, duration:.15, ease:'power2.out', yoyo:true, repeat:1 });
+            });
+        });
+    </script>
+
+</body>
+</html>
