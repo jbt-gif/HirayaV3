@@ -259,6 +259,8 @@ async function send(text) {
     typingEl.style.display = 'none';
     appendMsg(data.reply, 'bot');
     if (data.reply.includes("Here's a quick summary")) {
+      const encodedNotes = encodeURIComponent(data.reply);
+      const calUrl = `https://cal.com/john-bernard-tabanao-ajfryr/hiraya-booking?notes=${encodedNotes}`;
       const wrap = document.createElement('div');
       wrap.className = 'scout-book-wrap';
       wrap.innerHTML = `
@@ -266,7 +268,7 @@ async function send(text) {
           <strong>Ready to move forward?</strong>
           Book a free 30-min discovery call — no commitment.
         </div>
-        <a href="https://cal.com/john-bernard-tabanao-ajfryr/hiraya-booking" target="_blank" rel="noopener" class="scout-book-btn">
+        <a href="${calUrl}" target="_blank" rel="noopener" class="scout-book-btn">
           Book a Discovery Call →
         </a>`;
       msgsEl.insertBefore(wrap, typingEl);
