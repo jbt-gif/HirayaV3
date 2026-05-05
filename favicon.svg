@@ -1,4 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#000"/>
-  <text x="16" y="23" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="20" fill="#f0ede8">H</text>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32">
+  <defs>
+    <filter id="invert">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="-1" intercept="1"/>
+        <feFuncG type="linear" slope="-1" intercept="1"/>
+        <feFuncB type="linear" slope="-1" intercept="1"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <image href="Hiraya_black_logo-removebg-preview.png" width="32" height="32" filter="url(#invert)"/>
 </svg>
