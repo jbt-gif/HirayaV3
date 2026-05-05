@@ -3,7 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hiraya Systems</title>
+  <title>Hiraya Systems — AI Consulting & Build Agency</title>
+  <meta name="description" content="AI consulting agency. We diagnose your operation, then build the systems — automation, chatbots, CRM, websites, funnels, and dashboards — that move it forward." />
+  <meta property="og:title" content="Hiraya Systems — AI Consulting & Build Agency" />
+  <meta property="og:description" content="We diagnose your operation, then build the systems — automation, chatbots, CRM, websites, funnels, and dashboards — that move it forward." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hiraya-v3.vercel.app" />
+  <meta property="og:image" content="https://hiraya-v3.vercel.app/Fluid1%20Trans.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hiraya Systems — AI Consulting & Build Agency" />
+  <meta name="twitter:description" content="AI consulting + builds. Automation, chatbots, CRM, websites, funnels, dashboards." />
+  <meta name="twitter:image" content="https://hiraya-v3.vercel.app/Fluid1%20Trans.png" />
+  <link rel="canonical" href="https://hiraya-v3.vercel.app" />
+  <link rel="icon" type="image/png" sizes="32x32" href="Hiraya_black_logo-removebg-preview.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="Hiraya_black_logo-removebg-preview.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Unbounded:wght@700;800;900&family=Inter:wght@800;900&display=swap" rel="stylesheet" />
@@ -260,11 +273,13 @@
       background: var(--white);
       border-radius: 50%;
       box-shadow: 0 0 8px rgba(255,255,255,0.6);
-      animation: pulse 2s infinite;
+      animation: sonar 2.4s ease-out infinite;
+      position: relative;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
+    @keyframes sonar {
+      0%   { box-shadow: 0 0 0 0 rgba(255,255,255,0.7), 0 0 6px rgba(255,255,255,0.4); opacity: 1; }
+      60%  { box-shadow: 0 0 0 8px rgba(255,255,255,0), 0 0 6px rgba(255,255,255,0.4); opacity: 1; }
+      100% { box-shadow: 0 0 0 8px rgba(255,255,255,0), 0 0 6px rgba(255,255,255,0.4); opacity: 1; }
     }
 
     .hero-headline {
@@ -349,7 +364,7 @@
       color: var(--body);
       line-height: 1.75;
       margin-bottom: 2.5rem;
-      max-width: 400px;
+      max-width: 480px;
     }
 
     .hero-actions { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
@@ -496,7 +511,7 @@
       font-size: var(--fs-label);
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.72);
       margin-bottom: 1.4rem;
       display: flex;
       align-items: center;
@@ -611,8 +626,8 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 0.3rem;
-      padding: 0 0 1.4rem;
+      gap: 0.5rem;
+      padding: 0 0 1.8rem;
       background: none;
       border: none;
       cursor: pointer;
@@ -632,10 +647,10 @@
     }
     .proc-tab-label {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.58rem;
+      font-size: 0.65rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.72);
     }
 
     .proc-tab-indicator {
@@ -703,7 +718,7 @@
     .services-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+      gap: 20px;
       background: transparent;
       border: none;
       border-radius: 0;
@@ -792,6 +807,42 @@
 
     .service-card h3 { font-size: var(--fs-ui); font-weight: 600; margin-bottom: 0.65rem; line-height: 1.3; }
     .service-card p  { font-size: var(--fs-ui); color: var(--body); line-height: 1.65; }
+
+    /* Consulting hero card — full-width, elevated */
+    .service-card--hero {
+      grid-column: 1 / -1;
+      background:
+        radial-gradient(ellipse at top left, rgba(255,255,255,0.06) 0%, transparent 50%),
+        linear-gradient(160deg, #0d0d0d 0%, #000000 60%);
+      border-top-color: rgba(255,255,255,0.55);
+      padding: 2.5rem 2.5rem;
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) 1.4fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .service-card--hero .service-num { color: rgba(255,255,255,0.45); }
+    .service-card--hero h3 { font-size: calc(var(--fs-ui) * 1.35); line-height: 1.2; margin-bottom: 0; }
+    .service-card--hero p  { font-size: var(--fs-ui); }
+    .service-card--hero .hero-card-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: var(--fs-label); letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.55); margin-top: 0.85rem;
+    }
+
+    /* Tier label — eyebrow above each upsell row */
+    .tier-label {
+      grid-column: 1 / -1;
+      display: flex; align-items: center; gap: 1rem;
+      margin: 1.25rem 0 0.85rem;
+      font-size: var(--fs-label);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.72);
+      font-weight: 500;
+    }
+    .tier-label::before { content: ''; width: 24px; height: 1px; background: rgba(255,255,255,0.3); }
+    .tier-label .tier-hint { color: rgba(255,255,255,0.55); font-weight: 400; letter-spacing: 0.06em; text-transform: none; margin-left: auto; font-size: 0.72rem; }
 
     /* ── PORTFOLIO ── */
     #portfolio { background: var(--bg); position: relative; isolation: isolate; }
@@ -1506,15 +1557,18 @@
     /* ── STICKY CTA BAR ── */
     .sticky-cta {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
-      background: rgba(6,6,15,0.88); backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(40px) saturate(180%) brightness(1.1);
+      -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(1.1);
+      border-top: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 -1px 0 rgba(255,255,255,0.08) inset, 0 -12px 40px rgba(0,0,0,0.3);
       padding: 0.85rem 2rem;
       display: flex; align-items: center; justify-content: center; gap: 1.5rem;
       transform: translateY(100%);
       transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
     }
     .sticky-cta.visible { transform: translateY(0); }
-    .sticky-cta-text { font-size: 0.82rem; color: rgba(255,255,255,0.55); letter-spacing: 0.02em; }
+    .sticky-cta-text { font-size: 0.82rem; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; }
     .sticky-cta-btn {
       display: inline-flex; align-items: center; gap: 0.4rem;
       background-image: linear-gradient(to right, #2dd4bf 50%, var(--white) 50%);
@@ -1669,6 +1723,13 @@
         text-shadow: 0 1px 12px rgba(0,0,0,0.98), 0 0 40px rgba(0,0,0,0.95), 0 0 60px rgba(0,0,0,0.7);
       }
 
+      /* Section labels — boost visibility against fluid backgrounds */
+      .section-label {
+        color: rgba(255,255,255,0.72);
+        text-shadow: 0 1px 12px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,0.95);
+      }
+      .section-label::before { background: rgba(255,255,255,0.55); }
+
       /* No shadow on parent headlines */
       .hero-headline, .section-headline, .proc-panel h3, .service-card h3 {
         text-shadow: none;
@@ -1685,8 +1746,9 @@
         text-shadow: 0 1px 20px rgba(0,0,0,1), 0 0 60px rgba(0,0,0,1), 0 0 100px rgba(0,0,0,0.95);
       }
 
-      /* Process fluid — mobile */
-      #fluid-process-wrap { opacity: 0.75; }
+      /* Fluids — reduced on mobile for text legibility */
+      #fluid-process-wrap { opacity: 0.4; }
+      #fluid-portfolio-wrap { opacity: 0.35; }
 
       /* CTA section — fluid is fullscreen on mobile, needs maximum contrast */
       .cta-sub, .cta-secondary {
@@ -1695,8 +1757,8 @@
       }
 
       /* Reduce fluid intensity at source — mobile only */
-      #fluid-bl-wrap { opacity: 0.3; }
-      .fluid-tr { opacity: 0.75; }
+      #fluid-bl-wrap { opacity: 0.2; }
+      .fluid-tr { opacity: 0.38; }
 
       /* Vignette over fluid — mobile only */
       #cta::before {
@@ -1729,7 +1791,8 @@
       .hero-left { padding: 5rem 1.5rem 2rem; }
       .hero-right { display: none; }
       .hero-bottom { grid-template-columns: 1fr; padding: 1.5rem; justify-items: center; }
-      .bottom-left, .bottom-right { display: none; }
+      .bottom-right { display: none; }
+      .bottom-left { font-size: var(--fs-ui); text-shadow: 0 1px 12px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,0.95); }
 
       /* Problem */
       .problem-grid { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -1744,9 +1807,15 @@
       /* Services */
       .services-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
       .services-grid { grid-template-columns: 1fr; }
+      .service-card--hero { grid-template-columns: 1fr; gap: 1.25rem; padding: 2rem; }
+      .service-card--hero h3 { font-size: calc(var(--fs-ui) * 1.15); }
 
       /* Portfolio */
       .portfolio-grid { grid-template-columns: 1fr; }
+      .ptab-divider { display: none; }
+
+      /* Services tier labels — hide hint text on small screens */
+      .tier-label .tier-hint { display: none; }
 
       /* About */
       .stat-row { flex-wrap: wrap; gap: 2rem; }
@@ -1924,6 +1993,24 @@
       color: var(--white);
       border-color: rgba(255,255,255,0.32);
       background: rgba(255,255,255,0.1);
+    }
+    .ptab-divider {
+      display: inline-flex; align-items: center;
+      padding: 0 0.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.32);
+      pointer-events: none;
+      user-select: none;
+    }
+    .ptab-divider::before {
+      content: '';
+      width: 1px; height: 14px;
+      background: rgba(255,255,255,0.16);
+      margin-right: 0.6rem;
     }
     .portfolio-stage { position: relative; }
     .pcat-hidden { display: none !important; }
@@ -2313,9 +2400,15 @@
       to   { transform: scale(1.22) translate(5%,4%); }
     }
     .raya-window {
-      border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14); border-top-color: rgba(255,255,255,0.38); border-radius: 22px; overflow: hidden;
       display: flex; flex-direction: column; height: 480px;
       position: relative; isolation: isolate;
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.18) inset,
+        0 -1px 0 rgba(255,255,255,0.04) inset,
+        0 10px 0 rgba(0,0,0,0.95),
+        0 20px 40px rgba(0,0,0,0.8),
+        0 40px 80px rgba(0,0,0,0.5);
     }
     .raya-window::before {
       content: ''; position: absolute; inset: 0; pointer-events: none; z-index: -1;
@@ -2385,7 +2478,8 @@
       flex: 1; background: none; border: none; outline: none; color: var(--white);
       font-family: 'Space Grotesk', sans-serif; font-size: 0.855rem;
     }
-    .raya-win-input::placeholder { color: var(--muted); }
+    .raya-win-input::placeholder { color: rgba(255,255,255,0.55); }
+    .raya-win-input:focus { outline: none; box-shadow: none; }
     .raya-win-send {
       width: 30px; height: 30px; border: none;
       background: linear-gradient(135deg, #c4b5fd 0%, #818cf8 100%);
@@ -2469,7 +2563,7 @@
               <span style="white-space:nowrap">Your competitor<span class="glitch-letter" data-text="s">s</span></span><br>aren't <span class="glitch-letter glitch-letter--2" data-text="w">w</span>aiting.<br><em><span class="glitch-letter glitch-letter--4" data-text="n">n</span>either should you.</em>
             </h1>
             <p class="hero-sub">
-              Most businesses know they should be using AI. Few know where to start. That's exactly what we fix.
+              Most businesses know they should be using AI. Few know where to start. We consult, then build what moves the needle — automations, chatbots, CRM, and the sites, funnels, and dashboards that hold it all together.
             </p>
           </div>
           <div class="hero-actions">
@@ -2524,16 +2618,16 @@
             The hours your team spends on repetitive work? Those belong somewhere better.
           </h2>
           <div class="section-body fade-up delay-2">
-            <p>Manual reporting. Repetitive client emails. Sales data scattered across five platforms. Leads slipping through because no one followed up in time.</p>
-            <p>None of that is unavoidable. It's just unautomated.</p>
-            <p>We identify exactly where your operation is leaking — and build the systems that seal it.</p>
+            <p>Manual reporting. Leads slipping through because no one followed up in time. A website that looks fine but doesn't convert. Sales data scattered across five platforms with no single source of truth.</p>
+            <p>None of that is unavoidable. It's just unbuilt.</p>
+            <p>We identify exactly where your operation is leaking — and build the systems, flows, and assets that seal it.</p>
           </div>
         </div>
         <ul class="pain-list fade-up delay-2">
           <li class="pain-item"><div class="pain-dot"></div>Manual reporting eating hours every week</li>
           <li class="pain-item"><div class="pain-dot"></div>Leads slipping through with no follow-up system</li>
-          <li class="pain-item"><div class="pain-dot"></div>Sales data scattered across five platforms</li>
-          <li class="pain-item"><div class="pain-dot"></div>Repetitive client emails your team writes from scratch</li>
+          <li class="pain-item"><div class="pain-dot"></div>A website or funnel that doesn't turn visitors into leads</li>
+          <li class="pain-item"><div class="pain-dot"></div>Sales data scattered across five platforms — no single source of truth</li>
         </ul>
       </div>
     </div>
@@ -2583,7 +2677,7 @@
           <div class="proc-panel active" data-step="0">
             <div class="proc-panel-tag">Diagnosis</div>
             <h3>Discovery</h3>
-            <p>We audit your current operations and map your entire workflow. We identify the highest-leverage points where automation creates the biggest impact.</p>
+            <p>We audit your current operations and map your entire workflow. We identify the highest-leverage points — where systems, automation, or new builds create the biggest impact.</p>
           </div>
           <div class="proc-panel" data-step="1">
             <div class="proc-panel-tag">System Design</div>
@@ -2612,42 +2706,60 @@
         <div>
           <div class="section-label fade-up">Services</div>
           <h2 id="hl-services" class="section-headline" style="margin-bottom:0;">
-            <span class="svc-l1">Six systems.</span><br><span class="svc-l2">One integrated operation.</span>
+            <span class="svc-l1">Consulting first.</span><br><span class="svc-l2">Build what compounds.</span>
           </h2>
         </div>
         <a href="lead-qualifier.html" class="btn-primary fade-up delay-2" style="flex-shrink:0;">Start with Discovery →</a>
       </div>
 
       <div class="services-grid fade-up">
+
+        <!-- Consulting hero card -->
+        <div class="service-card service-card--hero">
+          <div>
+            <div class="service-num">00 · Where we start</div>
+            <h3>AI Consulting &amp; Discovery</h3>
+            <div class="hero-card-cta">Free 30-min call →</div>
+          </div>
+          <p>Every engagement starts here. We map your operation, identify the highest-leverage opportunities, and decide together what's worth building. You leave the call with a clear plan — whether or not you hire us next.</p>
+        </div>
+
+        <!-- Operate tier -->
+        <div class="tier-label">Operate <span class="tier-hint">Systems that run your business while you sleep</span></div>
+
         <div class="service-card">
           <div class="service-num">01</div>
-          <h3>Agentic AI Chatbots & Assistants</h3>
-          <p>Powered by Claude AI, our chatbots go beyond FAQs. They query live business data, capture leads, book appointments, triage inboxes, and send proactive alerts — all autonomously. Sales, HR, inventory, CRM: answered in seconds via natural language.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-num">02</div>
           <h3>Workflow Automation</h3>
           <p>We map the manual work in your operation and replace it with automated flows. Typical scope: CRM updates, onboarding sequences, reporting, client communication.</p>
         </div>
         <div class="service-card">
-          <div class="service-num">03</div>
-          <h3>Sales Funnels</h3>
-          <p>Landing pages and email sequences built to convert. Includes copywriting, design, and integration with your CRM and email tools.</p>
+          <div class="service-num">02</div>
+          <h3>Agentic AI Chatbots &amp; Assistants</h3>
+          <p>Powered by Claude AI, our chatbots go beyond FAQs. They query live business data, capture leads, book appointments, triage inboxes, and send proactive alerts — all autonomously. Sales, HR, inventory, CRM: answered in seconds via natural language.</p>
         </div>
+        <div class="service-card">
+          <div class="service-num">03</div>
+          <h3>CRM Setup &amp; Integration</h3>
+          <p>We configure, migrate, and automate your CRM. GoHighLevel, HubSpot, or Notion-based depending on your team size and budget.</p>
+        </div>
+
+        <!-- Creatives tier -->
+        <div class="tier-label">Creatives <span class="tier-hint">The builds your customer actually sees</span></div>
+
         <div class="service-card">
           <div class="service-num">04</div>
           <h3>Website Design</h3>
-          <p>Clean, fast websites built in plain HTML/CSS or WordPress, depending on what your team needs to maintain. No unnecessary complexity.</p>
+          <p>Clean, fast websites built in plain HTML/CSS or WordPress, depending on what your team needs to maintain. No unnecessary complexity. Designed to convert, not just to look good.</p>
         </div>
         <div class="service-card">
           <div class="service-num">05</div>
-          <h3>Business Dashboards</h3>
-          <p>We pull your data from CRM, ad platforms, and spreadsheets into a single live dashboard. Retool, Looker Studio, or custom-built.</p>
+          <h3>Sales Funnels</h3>
+          <p>Landing pages and email sequences built to convert. Includes copywriting, design, and integration with your CRM and email tools — so every lead lands somewhere that follows up.</p>
         </div>
         <div class="service-card">
           <div class="service-num">06</div>
-          <h3>CRM Setup & Integration</h3>
-          <p>We configure, migrate, and automate your CRM. GoHighLevel, HubSpot, or Notion-based depending on your team size and budget.</p>
+          <h3>Business Dashboards</h3>
+          <p>We pull your data from CRM, ad platforms, and spreadsheets into a single live dashboard. Retool, Looker Studio, or custom-built — so you stop guessing and start deciding.</p>
         </div>
       </div>
     </div>
@@ -2667,26 +2779,27 @@
       <div class="section-label fade-up">Our Work</div>
       <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
         <h2 id="hl-portfolio" class="section-headline" style="margin-bottom:0;">What we've built.</h2>
-        <p class="fade-up delay-2" style="color:var(--muted); font-size:0.8rem; max-width:260px; text-align:right; line-height:1.5;">Case studies and outcomes added as projects complete.</p>
+        <p class="fade-up delay-2" style="color:rgba(255,255,255,0.6); font-size:0.8rem; max-width:260px; text-align:right; line-height:1.5;">Case studies and outcomes added as projects complete.</p>
       </div>
       <!-- PORTFOLIO TABS + STAGE -->
       <div class="funnel-strips fade-up delay-2">
         <div class="portfolio-tabs">
-          <button class="ptab active" data-cat="funnels">Website Funnels</button>
-          <button class="ptab" data-cat="dashboard">Dashboards</button>
+          <button class="ptab active" data-cat="automation">Automation</button>
           <button class="ptab" data-cat="ai">AI Assistant</button>
+          <span class="ptab-divider">Creatives</span>
           <button class="ptab" data-cat="sites">Site Builds</button>
-          <button class="ptab" data-cat="automation">Automation</button>
+          <button class="ptab" data-cat="funnels">Website Funnels</button>
+          <button class="ptab" data-cat="dashboard">Dashboards</button>
         </div>
         <div class="portfolio-stage">
 
           <!-- Funnels panel -->
-          <div class="pcat-panel" data-cat="funnels">
+          <div class="pcat-panel pcat-hidden" data-cat="funnels">
             <div class="funnel-strip-wrap">
               <div class="funnel-strip-track">
-                <div class="funnel-card" data-funnel="Funnels/Bodoir-funnel (1).html">
-                  <div class="funnel-card-preview"><img src="Funnels/thumb-bodoir.png" alt="Boudoir Funnel" /></div>
-                  <div class="funnel-card-name">Boudoir</div>
+                <div class="funnel-card" data-funnel="Funnels/nexashop-funnel-embedded (4).html">
+                  <div class="funnel-card-preview"><img src="Funnels/thumb-bodoir.png" alt="Nexashop Funnel" /></div>
+                  <div class="funnel-card-name">Bodoir</div>
                 </div>
                 <div class="funnel-card" data-funnel="Funnels/Hira construction fun.html">
                   <div class="funnel-card-preview"><img src="Funnels/thumb-hiraya.png" alt="Hiraya Construction Funnel" /></div>
@@ -2696,9 +2809,9 @@
                   <div class="funnel-card-preview"><img src="Funnels/thumb-limitless.png" alt="Limitless Funnel" /></div>
                   <div class="funnel-card-name">Limitless</div>
                 </div>
-                <div class="funnel-card" data-funnel="Funnels/Bodoir-funnel (1).html">
-                  <div class="funnel-card-preview"><img src="Funnels/thumb-bodoir.png" alt="Boudoir Funnel" /></div>
-                  <div class="funnel-card-name">Boudoir</div>
+                <div class="funnel-card" data-funnel="Funnels/nexashop-funnel-embedded (4).html">
+                  <div class="funnel-card-preview"><img src="Funnels/thumb-bodoir.png" alt="Nexashop Funnel" /></div>
+                  <div class="funnel-card-name">Bodoir</div>
                 </div>
                 <div class="funnel-card" data-funnel="Funnels/Hira construction fun.html">
                   <div class="funnel-card-preview"><img src="Funnels/thumb-hiraya.png" alt="Hiraya Construction Funnel" /></div>
@@ -2961,7 +3074,7 @@
 
 
           <!-- Automation panel -->
-          <div class="pcat-panel pcat-hidden" data-cat="automation">
+          <div class="pcat-panel" data-cat="automation">
             <div class="funnel-strip-wrap">
               <div class="funnel-strip-track">
 
@@ -3209,10 +3322,10 @@
           <div class="section-label fade-up">About Hiraya</div>
           <h2 id="hl-about" class="section-headline">We're a small team that builds big systems.</h2>
           <div class="section-body fade-up delay-2">
-            <p>Hiraya Systems is a technical AI agency founded in 2024. We're a small team — which means when you work with us, you work directly with the people building your systems, not an account manager routing requests.</p>
-            <p>We build with agentic AI — systems that reason, take independent actions, and operate continuously across your business. Our tools don't just answer questions. They manage pipelines, monitor operations, and surface insights without being asked.</p>
+            <p>Hiraya Systems is a specialist AI agency. We're a small team — which means when you work with us, you work directly with the people building your systems, not an account manager routing requests.</p>
+            <p>We consult first, then build. Agentic AI for the systems that reason and run autonomously — pipelines, monitoring, insights without being asked. And the websites, funnels, and dashboards that make those systems visible to your customers and your team.</p>
             <p style="margin-top:1.5rem; font-style:italic; color:rgba(255,255,255,0.45); font-family:'Instrument Serif', serif; font-size:1.05rem;">
-              Hiraya — an ancient word for the fruit of one's hopes and aspirations. That's exactly what automation is: infrastructure that makes your real goals achievable.
+              Hiraya — an ancient word for the fruit of one's hopes and aspirations. That's exactly what good systems are: infrastructure — the kind you operate on, the kind you build, the kind your customers see — that makes your real goals achievable.
             </p>
           </div>
           <div class="stat-row fade-up delay-3">
@@ -3283,9 +3396,9 @@
   <section id="cta">
     <div class="container" style="position:relative;">
       <div class="section-label fade-up">Get Started</div>
-      <h2 id="hl-cta" class="cta-headline">Ready to stop running on manual?</h2>
+      <h2 id="hl-cta" class="cta-headline">Ready to systemize what's slowing you down?</h2>
       <p class="cta-sub fade-up delay-2">
-        Book a free discovery call. We'll map your operation, identify your highest-leverage automation opportunities, and tell you exactly what we'd build — before you commit to anything.
+        Book a free discovery call. We'll map your operation, identify your highest-leverage opportunities — automation, builds, or both — and tell you exactly what we'd build before you commit to anything.
       </p>
       <a href="lead-qualifier.html" class="btn-primary fade-up delay-3" style="font-size:0.9rem; padding:0.9rem 2.2rem;">
         Book a Discovery Call →
@@ -3303,7 +3416,7 @@
 
   <!-- STICKY CTA BAR -->
   <div class="sticky-cta" id="stickyCta">
-    <span class="sticky-cta-text">Stop losing hours to manual work.</span>
+    <span class="sticky-cta-text">Systemize what's slowing you down.</span>
     <a href="lead-qualifier.html" class="sticky-cta-btn">Book a Free Discovery Call →</a>
   </div>
 

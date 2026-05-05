@@ -22,7 +22,7 @@
   function buildSystemPrompt() {
     const cfg    = (typeof getWhiteLabelConfig === 'function') ? getWhiteLabelConfig() : {};
     const company = cfg.companyName || 'Hiraya Supply Corp';
-    const today  = new Date().toLocaleDateString('en-PH', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    const today  = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
     const user   = (typeof _currentUser !== 'undefined' && _currentUser) ? `${_currentUser.displayName} (${_currentUser.role})` : 'Admin';
 
     // Sales snapshot
@@ -77,7 +77,7 @@ RESPONSE FORMAT RULES (follow exactly):
 - Use ACTION: prefix for recommended next steps (e.g. ACTION: Follow up with Lopez Builders on unpaid invoice)
 - Always end responses with a ## What's Next section listing 2-4 ACTION: items
 - Be concise. Skip filler phrases. Lead with the most important number or finding.
-- Currency: US Dollar ($). All raw amounts from tools are in PHP — divide by ${PHP_TO_USD} to convert. Always display as $ (e.g. $1,234). Date format: Month DD, YYYY.
+- Currency: US Dollar ONLY. NEVER use ₱ or PHP. All raw amounts from data are internal units — divide by ${PHP_TO_USD} to convert. Always display as $ (e.g. $1,234). Date format: Month DD, YYYY.
 - When adding records, confirm with: DONE: [what was added/changed]`;
   }
 
@@ -140,7 +140,7 @@ RESPONSE FORMAT RULES (follow exactly):
           person:   { type: 'string' },
           type:     { type: 'string', description: 'Contractor, Developer, Retailer, Engineer' },
           mobile:   { type: 'string' },
-          value:    { type: 'number', description: 'Estimated deal value in PHP' },
+          value:    { type: 'number', description: 'Estimated deal value in USD' },
           status:   { type: 'string', description: 'Hot, Warm, Cold, Prospect' },
           assigned: { type: 'string', description: 'Staff name to assign this lead to' }
         },
