@@ -8,5 +8,5 @@
       </feComponentTransfer>
     </filter>
   </defs>
-  <image href="Hiraya_black_logo-removebg-preview.png" width="32" height="32" filter="url(#invert)"/>
+  <image href="Hiraya_black_logo-removebg-preview.png" x="-8" y="-8" width="48" height="48" filter="url(#invert)"/>
 </svg>
