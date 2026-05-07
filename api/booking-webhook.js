@@ -15,7 +15,10 @@ export default async function handler(req, res) {
     const name       = attendee?.name || 'there';
     const email      = attendee?.email;
     const startTime  = new Date(payload.startTime);
-    const meetingUrl = payload.location || payload.videoCallData?.url || '';
+    const locationRaw = payload.location || '';
+    const meetingUrl = locationRaw.startsWith('http')
+      ? locationRaw
+      : (payload.metadata?.videoCallUrl || payload.videoCallData?.url || '');
     const notes      = payload.additionalNotes || payload.notes || '';
 
     if (!email) return res.status(400).json({ error: 'No attendee email' });
