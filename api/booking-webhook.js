@@ -85,7 +85,7 @@ export default async function handler(req, res) {
         </div>
       </div>`;
 
-    const FROM = 'John - Hiraya Systems <onboarding@resend.dev>';
+    const FROM = 'John - Hiraya Systems <raya.teams@hirayasystems.tech>';
 
     const [conf, remind] = await Promise.all([
       fetch('https://api.resend.com/emails', {
