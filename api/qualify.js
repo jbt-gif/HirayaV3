@@ -39,13 +39,24 @@ CONTACT:
 Email: hello@hirayasystems.com
 Discovery Call: free, 30 minutes, no commitment.`;
 
+const ALLOWED_ORIGINS = [
+  'https://hirayasystems.tech',
+  'https://www.hirayasystems.tech',
+  'https://hiraya-v3.vercel.app',
+];
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (origin && !ALLOWED_ORIGINS.includes(origin)) return res.status(403).json({ error: 'Forbidden' });
 
   const { message, history } = req.body;
   if (!message) return res.status(400).json({ error: 'message required' });
