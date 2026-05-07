@@ -265,7 +265,7 @@ async function send(text) {
     appendMsg(data.reply, 'bot');
     if (data.reply.includes("Here's a quick summary")) {
       const encodedNotes = encodeURIComponent(data.reply);
-      const calUrl = `https://cal.com/john-bernard-tabanao-ajfryr/hiraya-booking?notes=${encodedNotes}`;
+      const calUrl = `https://cal.com/hiraya-systems-ajfryr/hiraya-booking?notes=${encodedNotes}`;
       const wrap = document.createElement('div');
       wrap.className = 'scout-book-wrap';
       wrap.innerHTML = `
