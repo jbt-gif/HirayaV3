@@ -24,7 +24,7 @@ Goal: [what they want to achieve]
 Timeline: [when they need it]
 Budget: [range they indicated]
 Best fit: [recommended Hiraya service — one line]
-Next step: Book a free Discovery Call — hello@hirayasystems.com
+Next step: Book a free Discovery Call — raya.teams@hirayasystems.tech
 
 After the summary, offer to answer any remaining questions.
 
@@ -36,7 +36,7 @@ Website Development — conversion-focused sites built to generate inquiries. Be
 AI Automation Consulting — strategic roadmap for businesses that want to modernize but don't know where to start.
 
 CONTACT:
-Email: hello@hirayasystems.com
+Email: raya.teams@hirayasystems.tech
 Discovery Call: free, 30 minutes, no commitment.`;
 
 const ALLOWED_ORIGINS = [

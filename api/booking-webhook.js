@@ -52,10 +52,10 @@ export default async function handler(req, res) {
         </div>` : ''}
 
         <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 4px;">See you then.</p>
-        <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 32px;">— John<br><span style="color:rgba(255,255,255,0.4);">Hiraya Systems · hello@hirayasystems.com</span></p>
+        <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 32px;">— John<br><span style="color:rgba(255,255,255,0.4);">Hiraya Systems · raya.teams@hirayasystems.tech</span></p>
 
         <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:20px;font-size:11px;color:rgba(255,255,255,0.25);">
-          You're receiving this because you booked a call at hirayasystems.com
+          You're receiving this because you booked a call at hirayasystems.tech
         </div>
       </div>`;
 
@@ -78,10 +78,10 @@ export default async function handler(req, res) {
         <p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.7;margin:0 0 32px;">We'll be covering the situation you described — no prep needed on your end. See you shortly.</p>
 
         <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 4px;">— John</p>
-        <p style="font-size:14px;color:rgba(255,255,255,0.4);margin:0 0 32px;">Hiraya Systems · hello@hirayasystems.com</p>
+        <p style="font-size:14px;color:rgba(255,255,255,0.4);margin:0 0 32px;">Hiraya Systems · raya.teams@hirayasystems.tech</p>
 
         <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:20px;font-size:11px;color:rgba(255,255,255,0.25);">
-          You're receiving this because you booked a call at hirayasystems.com
+          You're receiving this because you booked a call at hirayasystems.tech
         </div>
       </div>`;
 

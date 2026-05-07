@@ -36,7 +36,7 @@ WHAT MAKES HIRAYA DIFFERENT:
 Small team by design — you work directly with the builders. No long onboarding. No retainer until you've approved the full plan. Average Discovery + Architecture takes one week.
 
 CONTACT:
-Email: hello@hirayasystems.com
+Email: raya.teams@hirayasystems.tech
 To start: book a free Discovery Call — 30 minutes, no commitment.`;
 
 const ALLOWED_ORIGINS = [
