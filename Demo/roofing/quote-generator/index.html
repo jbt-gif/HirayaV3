@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Roof Quote Generator — Lone Star Roofing</title>
+  <meta name="description" content="Instant material breakdown + price range for any residential roof. Built by Hiraya Systems for roofing contractors." />
+  <meta property="og:title" content="AI Roof Quote Generator — Lone Star Roofing" />
+  <meta property="og:description" content="Live tool — type roof specs, get instant material breakdown + price." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000000;
+      --card: #0f0f0f;
+      --card-2: #111111;
+      --white: #f0ede8;
+      --body: rgba(240, 237, 232, 0.78);
+      --muted: rgba(240, 237, 232, 0.58);
+      --border: rgba(240, 237, 232, 0.07);
+      --border-h: rgba(240, 237, 232, 0.14);
+      --red: #C9A84C;
+      --red-mid: rgba(201, 168, 76, 0.22);
+      --red-dim: rgba(201, 168, 76, 0.10);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 1.6; overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, h4 { text-wrap: balance; }
+    button { cursor: pointer; }
+
+    /* Noise */
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028;
+    }
+    /* Corner glows */
+    .corner-glow-wrap { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 3; }
+    .corner-glow {
+      position: absolute; border-radius: 50%;
+      filter: blur(130px); opacity: 0.13;
+      animation: cornerPulse 12s ease-in-out infinite alternate;
+    }
+    .corner-glow.tl { top: -120px; left: -120px; width: 400px; height: 400px;
+      background: conic-gradient(from 0deg,#ff0080,#ff6600,#ffff00,#00ff88,#0088ff,#8800ff,#ff0080); }
+    .corner-glow.br { bottom: -120px; right: -120px; width: 340px; height: 340px;
+      background: conic-gradient(from 180deg,#00ffcc,#0066ff,#cc00ff,#ff0066,#ff8800,#00ffcc);
+      animation-delay: -6s; }
+    @keyframes cornerPulse {
+      0% { opacity: .13; transform: scale(1) rotate(0); }
+      100% { opacity: .22; transform: scale(1.1) rotate(20deg); }
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px; padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.82rem; font-weight: 900;
+      letter-spacing: -0.01em; color: var(--white);
+    }
+    .nav-logo span { color: var(--red); }
+    .nav-back {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem; font-weight: 500; color: var(--muted);
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--white); }
+
+    /* Layout */
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+    .section { padding: 80px 0; }
+
+    /* Hero */
+    .hero {
+      padding: 140px 0 64px;
+      text-align: left;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 24px;
+    }
+    .eyebrow-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--red);
+      animation: dotPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .4; transform: scale(.7); }
+    }
+    h1.hero-h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+      font-weight: 900; letter-spacing: -0.025em;
+      line-height: 1.02; margin-bottom: 20px;
+    }
+    h1.hero-h1 em {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic; font-weight: 400;
+      color: var(--red);
+    }
+    .hero-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.02rem; color: var(--body);
+      line-height: 1.65; max-width: 620px;
+    }
+
+    /* Calculator */
+    .calc {
+      display: grid; grid-template-columns: 1fr 380px;
+      gap: 48px; margin-top: 24px;
+      align-items: start;
+    }
+    .calc-form {
+      display: flex; flex-direction: column; gap: 26px;
+    }
+    .field-group { display: flex; flex-direction: column; gap: 10px; }
+    .field-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .field-value {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2rem; color: var(--white); line-height: 1;
+    }
+    .field-value em { color: var(--red); font-style: italic; }
+    input[type="range"] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 4px;
+      background: var(--card); border-radius: 2px;
+      outline: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--red); cursor: pointer;
+      box-shadow: 0 0 0 6px rgba(201,168,76,0.18);
+      transition: box-shadow .2s, transform .15s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 0 8px rgba(201,168,76,0.28);
+      transform: scale(1.1);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--red); cursor: pointer; border: none;
+      box-shadow: 0 0 0 6px rgba(201,168,76,0.18);
+    }
+    .seg-group {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .seg-btn {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--body);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 12px 8px; border-radius: 8px;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .seg-btn:hover { border-color: var(--border-h); color: var(--white); }
+    .seg-btn.active {
+      background: var(--red-dim);
+      border-color: var(--red);
+      color: var(--red);
+    }
+    .seg-btn small {
+      display: block; margin-top: 2px;
+      font-size: 0.66rem; color: var(--muted);
+      font-weight: 400; letter-spacing: 0.02em;
+    }
+    .seg-btn.active small { color: rgba(201,168,76,0.8); }
+
+    /* Result panel */
+    .result {
+      position: sticky; top: 90px;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 28px 26px;
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .result-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--red);
+    }
+    .result-price {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 2.4rem; font-weight: 900;
+      line-height: 1; letter-spacing: -0.02em;
+      color: var(--white);
+    }
+    .result-price small {
+      display: block; margin-top: 6px;
+      font-family: 'Instrument Serif', serif;
+      font-style: italic; font-size: 0.85rem;
+      font-weight: 400; color: var(--muted);
+      letter-spacing: 0;
+    }
+    .result-divider {
+      height: 1px; background: var(--border);
+      margin: 4px 0;
+    }
+    .result-breakdown { display: flex; flex-direction: column; gap: 10px; }
+    .result-row {
+      display: flex; justify-content: space-between;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.84rem; color: var(--body);
+    }
+    .result-row strong { color: var(--white); font-weight: 600; }
+    .result-row .num {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      color: var(--white);
+    }
+    .result-note {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.74rem; color: var(--muted);
+      padding: 12px 14px;
+      background: var(--red-dim);
+      border-radius: 8px;
+      border: 1px solid var(--red-mid);
+      line-height: 1.5;
+    }
+    .result-cta {
+      display: block; width: 100%; text-align: center;
+      background: var(--red); color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.86rem; font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 14px; border-radius: 10px;
+      border: none; transition: opacity .2s, transform .15s;
+    }
+    .result-cta:hover { opacity: .9; }
+    .result-cta:active { transform: scale(0.98); }
+
+    /* How it works */
+    .how {
+      margin-top: 80px;
+      padding-top: 56px;
+      border-top: 1px solid var(--border);
+    }
+    .how-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 14px;
+    }
+    .how-h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      line-height: 1.1; margin-bottom: 40px;
+    }
+    .how-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 36px;
+    }
+    .how-step-num {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.6rem; color: var(--red);
+      line-height: 1; margin-bottom: 14px;
+    }
+    .how-step-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.02rem; font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .how-step-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; color: var(--body); line-height: 1.65;
+    }
+
+    /* Lead form */
+    .lead-section { padding: 64px 0 40px; }
+    .lead-wrap {
+      background: var(--card-2);
+      border-radius: 18px;
+      padding: 44px 40px;
+      max-width: 640px; margin: 0 auto;
+    }
+    .lead-wrap h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      text-align: center; margin-bottom: 8px;
+    }
+    .lead-wrap p {
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem; color: var(--body);
+      max-width: 460px; margin: 0 auto 28px;
+    }
+    .lead-fields { display: flex; flex-direction: column; gap: 12px; }
+    .field {
+      background: rgba(240,237,232,0.05);
+      border: 1px solid var(--border-h);
+      border-radius: 10px;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .field:focus { border-color: var(--red); }
+    .field::placeholder { color: var(--muted); }
+    .submit-btn {
+      width: 100%; margin-top: 8px;
+      background: var(--red); color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 14px; border: none; border-radius: 10px;
+      transition: opacity .2s, transform .15s;
+    }
+    .submit-btn:hover { opacity: .9; }
+    .submit-btn:active { transform: scale(0.98); }
+    .submit-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .lead-success { display: none; text-align: center; padding: 12px 0; }
+    .lead-success h3 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.4rem; margin-bottom: 8px;
+    }
+    .lead-success p { margin-bottom: 18px; }
+    .lead-success a {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--red); color: var(--white);
+      padding: 12px 22px; border-radius: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.86rem; font-weight: 700;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 28px;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--red); }
+
+    /* Reveal */
+    .fade-up { opacity: 0; transform: translateY(20px); transition: opacity .8s ease, transform .8s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: .1s; }
+    .delay-2 { transition-delay: .2s; }
+    .delay-3 { transition-delay: .3s; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .calc { grid-template-columns: 1fr; }
+      .result { position: static; }
+      .how-grid { grid-template-columns: 1fr; gap: 28px; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding: 110px 0 48px; }
+      .lead-wrap { padding: 32px 24px; }
+      .section { padding: 56px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="corner-glow-wrap" aria-hidden="true">
+    <div class="corner-glow tl"></div>
+    <div class="corner-glow br"></div>
+  </div>
+
+  <nav>
+    <a href="../index.html" class="nav-logo" onclick="if(history.length>1){history.back();return false;}">LONE STAR <span>ROOFING</span></a>
+    <a href="../index.html" class="nav-back" onclick="if(history.length>1){history.back();return false;}">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6H2M2 6l4-4M2 6l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Back to demo
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>Live tool — Lone Star Roofing</div>
+      <h1 class="hero-h1">Instant <em>roof quote</em><br>in 8 seconds.</h1>
+      <p class="hero-sub">Enter the basics — square footage, material, complexity. Get a real material breakdown and price range your crew can quote with. No more 30-minute spreadsheet math after every site visit.</p>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <div class="container">
+    <section style="padding-bottom: 24px;">
+      <div class="calc">
+
+        <!-- FORM -->
+        <div class="calc-form">
+
+          <div class="field-group">
+            <div class="field-label">Roof square footage</div>
+            <div class="field-value"><em id="sqftVal">2,200</em> sq ft</div>
+            <input type="range" id="sqftSlider" min="800" max="6000" step="100" value="2200" />
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Material</div>
+            <div class="seg-group" id="materialGroup">
+              <button type="button" class="seg-btn active" data-mat="shingle">Shingle<small>asphalt/arch</small></button>
+              <button type="button" class="seg-btn" data-mat="metal">Metal<small>standing seam</small></button>
+              <button type="button" class="seg-btn" data-mat="tile">Tile<small>concrete/clay</small></button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Roof complexity</div>
+            <div class="seg-group" id="complexGroup">
+              <button type="button" class="seg-btn active" data-cx="simple">Simple<small>1-2 peaks</small></button>
+              <button type="button" class="seg-btn" data-cx="cutup">Cut-up<small>3-5 peaks</small></button>
+              <button type="button" class="seg-btn" data-cx="complex">Complex<small>dormers/valleys</small></button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Stories</div>
+            <div class="seg-group" id="storyGroup" style="grid-template-columns: repeat(2, 1fr);">
+              <button type="button" class="seg-btn active" data-st="1">1 story</button>
+              <button type="button" class="seg-btn" data-st="2">2+ stories</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Pitch (slope)</div>
+            <div class="seg-group" id="pitchGroup">
+              <button type="button" class="seg-btn active" data-pi="low">Low<small>3:12 – 6:12</small></button>
+              <button type="button" class="seg-btn" data-pi="steep">Steep<small>7:12 – 9:12</small></button>
+              <button type="button" class="seg-btn" data-pi="vsteep">Very Steep<small>10:12+</small></button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RESULT -->
+        <aside class="result">
+          <div class="result-label">Estimated total</div>
+          <div class="result-price">
+            <span id="priceLow">$8,400</span> – <span id="priceHigh">$12,600</span>
+            <small>materials + labor, taxes excluded</small>
+          </div>
+
+          <div class="result-divider"></div>
+
+          <div class="result-label" style="color: var(--muted);">Materials needed</div>
+          <div class="result-breakdown" id="breakdown">
+            <!-- filled by JS -->
+          </div>
+
+          <div class="result-divider"></div>
+
+          <div class="result-note">
+            <strong style="color: var(--white);">Range, not a bid.</strong> Final price depends on tear-off layers, access, and inspection. Book a free site visit to lock it in.
+          </div>
+
+          <a href="#lead" class="result-cta">Get an exact quote →</a>
+        </aside>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="container">
+    <section class="how">
+      <div class="how-label fade-up">How this works in production</div>
+      <h2 class="how-h2 fade-up">Hiraya builds this branded for your business</h2>
+      <div class="how-grid">
+        <div class="fade-up delay-1">
+          <div class="how-step-num">01</div>
+          <div class="how-step-title">Embedded on your site</div>
+          <div class="how-step-body">Customers get instant ballpark numbers without calling. Cuts time-wasters and pre-qualifies serious leads before they hit your inbox.</div>
+        </div>
+        <div class="fade-up delay-2">
+          <div class="how-step-num">02</div>
+          <div class="how-step-title">Tuned to your pricing</div>
+          <div class="how-step-body">We plug in your real material costs, labor rates, and regional multipliers. You stay in control of the ranges — we just make the math instant.</div>
+        </div>
+        <div class="fade-up delay-3">
+          <div class="how-step-num">03</div>
+          <div class="how-step-title">Routes to your calendar</div>
+          <div class="how-step-body">Every quote captures the lead with name + phone. Auto-books a site visit on your Cal.com or Google Calendar. No more chasing.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- LEAD CAPTURE -->
+  <div class="container">
+    <section class="section lead-section" id="lead">
+      <div class="lead-wrap">
+        <div id="leadFormState">
+          <h2>Want this on your site?</h2>
+          <p>30-min call — we'll show you exactly how it'd work tuned to your pricing and crew.</p>
+          <form id="leadForm" class="lead-fields">
+            <input type="hidden" name="_subject" value="AI Quote Generator Demo Lead — Hiraya Systems" />
+            <input type="hidden" name="quoted_range" id="hiddenRange" value="" />
+            <input type="hidden" name="quoted_specs" id="hiddenSpecs" value="" />
+            <input type="hidden" name="_autoresponse" value="Thanks for trying the AI Quote Generator! Want this set up for your business? Book a free 30-min call: https://cal.com/hiraya-systems-ajfryr/hiraya-booking" />
+            <input class="field" type="text"  name="name"          placeholder="Your name"                 required />
+            <input class="field" type="tel"   name="phone"         placeholder="Phone number"              required />
+            <input class="field" type="email" name="email"         placeholder="Email address"             required />
+            <input class="field" type="text"  name="business_name" placeholder="Business name (optional)"        />
+            <button type="submit" class="submit-btn" id="submitBtn">Get This Set Up →</button>
+          </form>
+        </div>
+        <div class="lead-success" id="leadSuccess">
+          <h3>You're in.</h3>
+          <p>We'll reach out within 24 hours with a tailored proposal.</p>
+          <a href="https://cal.com/hiraya-systems-ajfryr/hiraya-booking" target="_blank" rel="noopener">
+            Book your 30-min call now
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>Built by <a href="https://hirayasystems.tech" target="_blank">Hiraya Systems</a> · <a href="../index.html">See full demo →</a></p>
+    <p style="margin-top: 8px;"><a href="mailto:raya.teams@hirayasystems.tech">raya.teams@hirayasystems.tech</a></p>
+  </footer>
+
+  <script>
+    // ─── State
+    const state = { sqft: 2200, material: 'shingle', complex: 'simple', stories: '1', pitch: 'low' };
+
+    // Pricing per sq (100 sq ft), [low, high]
+    const PRICE_PER_SQ = {
+      shingle: [320, 480],
+      metal:   [900, 1400],
+      tile:    [800, 1200],
+    };
+    // Multipliers
+    const CX_MULT  = { simple: 1.0,  cutup: 1.15, complex: 1.30 };
+    const ST_MULT  = { '1': 1.0, '2': 1.10 };
+    const PI_MULT  = { low: 1.0, steep: 1.15, vsteep: 1.30 };
+
+    // ─── Helpers
+    const money = n => '$' + Math.round(n).toLocaleString();
+    const moneyK = n => n >= 10000 ? '$' + (Math.round(n/100)/10).toFixed(1) + 'K' : '$' + Math.round(n).toLocaleString();
+
+    // ─── Calculate
+    function calculate() {
+      const sq = state.sqft / 100;
+      const [low, high] = PRICE_PER_SQ[state.material];
+      const mult = CX_MULT[state.complex] * ST_MULT[state.stories] * PI_MULT[state.pitch];
+      const totalLow  = sq * low  * mult;
+      const totalHigh = sq * high * mult;
+
+      document.getElementById('priceLow').textContent  = moneyK(totalLow);
+      document.getElementById('priceHigh').textContent = moneyK(totalHigh);
+
+      // Hidden form fields
+      document.getElementById('hiddenRange').value = `${moneyK(totalLow)} – ${moneyK(totalHigh)}`;
+      document.getElementById('hiddenSpecs').value = `${state.sqft} sq ft, ${state.material}, ${state.complex}, ${state.stories} story, ${state.pitch} pitch`;
+
+      // Material breakdown
+      let items = [];
+      if (state.material === 'shingle') {
+        items = [
+          { name: 'Shingles', detail: `${Math.ceil(sq * 3)} bundles (3/sq)` },
+          { name: 'Underlayment', detail: `${Math.ceil(sq / 4)} rolls (synthetic)` },
+          { name: 'Drip edge', detail: `${Math.ceil(sq * 0.7)} ft` },
+          { name: 'Starter strip', detail: `${Math.ceil(sq * 0.3)} bundles` },
+          { name: 'Ridge cap', detail: `${Math.ceil(sq * 0.15)} bundles` },
+          { name: 'Coil nails', detail: `${Math.ceil(sq)} lbs` },
+          { name: 'Ice & water shield', detail: `${Math.ceil(sq * 0.2)} rolls` },
+          { name: 'Dump fee', detail: `${Math.ceil(sq / 25)} ton estimate` },
+        ];
+      } else if (state.material === 'metal') {
+        items = [
+          { name: 'Standing seam panels', detail: `${Math.ceil(sq)} sq covered` },
+          { name: 'Underlayment', detail: `${Math.ceil(sq / 4)} rolls (high-temp)` },
+          { name: 'Drip edge', detail: `${Math.ceil(sq * 0.7)} ft` },
+          { name: 'Ridge cap (metal)', detail: `${Math.ceil(sq * 0.15)} pieces` },
+          { name: 'Closure strips', detail: `${Math.ceil(sq * 0.4)} pieces` },
+          { name: 'Screws (color-matched)', detail: `${Math.ceil(sq * 80)} count` },
+          { name: 'Sealant tubes', detail: `${Math.ceil(sq * 0.6)} tubes` },
+          { name: 'Dump fee', detail: `${Math.ceil(sq / 25)} ton estimate` },
+        ];
+      } else {
+        items = [
+          { name: 'Concrete/clay tiles', detail: `${Math.ceil(sq * 90)} tiles` },
+          { name: 'Battens', detail: `${Math.ceil(sq * 1.5)} pieces` },
+          { name: 'Underlayment', detail: `${Math.ceil(sq / 4)} rolls (heavyweight)` },
+          { name: 'Ridge/hip tiles', detail: `${Math.ceil(sq * 0.25)} pieces` },
+          { name: 'Tile nails', detail: `${Math.ceil(sq * 1.5)} lbs` },
+          { name: 'Mortar bags', detail: `${Math.ceil(sq * 0.4)} bags` },
+          { name: 'Flashing kit', detail: `1 set` },
+          { name: 'Dump fee', detail: `${Math.ceil(sq / 18)} ton estimate` },
+        ];
+      }
+
+      document.getElementById('breakdown').innerHTML = items.map(i => `
+        <div class="result-row">
+          <span><strong>${i.name}</strong></span>
+          <span class="num">${i.detail}</span>
+        </div>
+      `).join('');
+    }
+
+    // ─── Bindings
+    const sqftSlider = document.getElementById('sqftSlider');
+    const sqftVal    = document.getElementById('sqftVal');
+    sqftSlider.addEventListener('input', () => {
+      state.sqft = +sqftSlider.value;
+      sqftVal.textContent = state.sqft.toLocaleString();
+      calculate();
+    });
+
+    function bindSegGroup(groupId, key) {
+      const group = document.getElementById(groupId);
+      group.addEventListener('click', e => {
+        const btn = e.target.closest('.seg-btn');
+        if (!btn) return;
+        group.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const dataKey = 'data-' + ({ material: 'mat', complex: 'cx', stories: 'st', pitch: 'pi' }[key]);
+        state[key] = btn.getAttribute(dataKey);
+        calculate();
+      });
+    }
+    bindSegGroup('materialGroup', 'material');
+    bindSegGroup('complexGroup',  'complex');
+    bindSegGroup('storyGroup',    'stories');
+    bindSegGroup('pitchGroup',    'pitch');
+
+    // Initial calc
+    calculate();
+
+    // ─── Fade-up observer
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+    // ─── Lead form submit
+    document.getElementById('leadForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const res = await fetch('https://formspree.io/f/mrejokod', {
+          method: 'POST',
+          body: new FormData(e.target),
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          document.getElementById('leadFormState').style.display = 'none';
+          document.getElementById('leadSuccess').style.display = 'block';
+        } else { throw new Error(); }
+      } catch {
+        btn.disabled = false;
+        btn.textContent = 'Try again';
+      }
+    });
+  </script>
+</body>
+</html>

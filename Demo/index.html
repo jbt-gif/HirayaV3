@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hiraya Systems — Live Demos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #000000;
+      --card: #0f0f0f;
+      --white: #f0ede8;
+      --body: rgba(240,237,232,0.72);
+      --muted: rgba(240,237,232,0.45);
+      --border: rgba(240,237,232,0.07);
+      --border-hi: rgba(240,237,232,0.38);
+      --red: #e8352a;
+      --red-dim: rgba(232,53,42,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 56px 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Noise */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Corner chromatic glows */
+    .corner-glow-wrap { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 3; }
+    .corner-glow { position: absolute; border-radius: 50%; filter: blur(130px); animation: cornerPulse 10s ease-in-out infinite alternate; }
+    .corner-glow.tl { top: -120px; left: -120px; width: 420px; height: 420px; opacity: 0.22; background: conic-gradient(from 0deg,#ff0080,#ff6600,#ffff00,#00ff88,#0088ff,#8800ff,#ff0080); }
+    .corner-glow.br { bottom: -120px; right: -120px; width: 360px; height: 360px; opacity: 0.18; background: conic-gradient(from 180deg,#00ffcc,#0066ff,#cc00ff,#ff0066,#ff8800,#00ffcc); animation-delay: -5s; }
+    @keyframes cornerPulse { 0% { opacity: 0.28; transform: scale(1) rotate(0deg); } 100% { opacity: 0.42; transform: scale(1.1) rotate(22deg); } }
+
+    /* Fluid visual asset */
+    .fluid-wrap {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.38;
+      animation: floatFluid 8s ease-in-out infinite alternate;
+    }
+
+    .fluid-wrap img { width: 100%; height: 100%; object-fit: contain; }
+
+    @keyframes floatFluid {
+      0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) scale(1.08) rotate(6deg); }
+    }
+
+    /* Content z-index above fluid */
+    .logo, .eyebrow, h1, .sub, .demos, footer { position: relative; z-index: 10; }
+
+    /* Logo */
+    .logo { margin-bottom: 40px; }
+    .logo img { height: 120px; width: auto; filter: brightness(0) invert(1); display: block; }
+
+    /* Eyebrow */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid var(--border);
+      background: rgba(240,237,232,0.03);
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    .eyebrow-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.7); } }
+
+    /* Headline */
+    h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.08;
+      margin-bottom: 6px;
+    }
+
+    h1 em {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      color: var(--red);
+    }
+
+    .sub {
+      color: var(--body);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 400px;
+      margin: 0 auto 52px;
+      line-height: 1.6;
+    }
+
+    /* Demo cards grid */
+    .demos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      width: 100%;
+      max-width: 740px;
+    }
+
+    /* Service card — exact main site spec */
+    .demo-card {
+      position: relative;
+      background: linear-gradient(160deg, #0a0a0a 0%, #000000 50%);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-top-color: var(--border-hi);
+      border-radius: 22px;
+      padding: 36px 30px;
+      text-decoration: none;
+      color: var(--white);
+      overflow: hidden;
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.06) inset,
+        0 1px 0 rgba(0,0,0,0.9),
+        0 6px 0 rgba(0,0,0,0.9),
+        0 12px 30px rgba(0,0,0,0.7),
+        0 24px 60px rgba(0,0,0,0.4);
+      transform: translateY(0) scale(1);
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s, border-color 0.35s;
+    }
+
+    .demo-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 22px;
+      background: linear-gradient(155deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 30%, transparent 55%, rgba(0,0,0,0.15) 100%);
+      pointer-events: none;
+    }
+
+    .demo-card::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 40%;
+      border-radius: 0 0 22px 22px;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3));
+      pointer-events: none;
+    }
+
+    .demo-card > * { position: relative; z-index: 1; }
+
+    .demo-card:hover {
+      transform: translateY(-10px) scale(1.025);
+      border-top-color: rgba(255,255,255,0.65);
+      border-color: rgba(255,255,255,0.22);
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.22) inset,
+        0 1px 0 rgba(0,0,0,0.9),
+        0 6px 0 rgba(0,0,0,0.9),
+        0 20px 50px rgba(0,0,0,0.8),
+        0 40px 80px rgba(0,0,0,0.5);
+    }
+
+    .demo-card.coming-soon {
+      opacity: 0.42;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* Live badge with pulse */
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      background: var(--red-dim);
+      border: 1px solid rgba(232,53,42,0.2);
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+    }
+
+    .card-tag .live-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: pulse 1.5s infinite;
+    }
+
+    .card-tag.soon {
+      color: var(--muted);
+      background: rgba(240,237,232,0.04);
+      border-color: var(--border);
+    }
+
+    .demo-card h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .demo-card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: var(--body);
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    .card-cta {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 52px;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--body); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--white); }
+
+    /* Divider */
+    .divider {
+      width: 1px;
+      height: 14px;
+      background: var(--border);
+      display: inline-block;
+      margin: 0 12px;
+      vertical-align: middle;
+    }
+
+    /* ── HOLOGRAPHIC THEME ── */
+
+    /* Animated rainbow border on active card */
+    @property --holo-angle {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
+    }
+
+    @keyframes holoSpin { to { --holo-angle: 360deg; } }
+    @keyframes holoShimmer {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes holoText {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* Holographic border glow on hover */
+    .demo-card:not(.coming-soon)::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 23px;
+      background: conic-gradient(from var(--holo-angle),
+        #ff0080, #ff6600, #ffff00, #00ff88, #0088ff, #8800ff, #ff0080
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      padding: 1px;
+      opacity: 0;
+      transition: opacity 0.4s;
+      animation: holoSpin 3s linear infinite;
+      z-index: 0;
+    }
+
+    .demo-card:not(.coming-soon):hover::before {
+      opacity: 1;
+    }
+
+    /* Headline italic accent — clean red */
+    h1 em {
+      color: var(--red);
+      font-style: italic;
+    }
+
+    /* Holographic sheen on card surface — subtle */
+    .demo-card:not(.coming-soon) .holo-sheen {
+      position: absolute;
+      inset: 0;
+      border-radius: 22px;
+      background: linear-gradient(
+        135deg,
+        rgba(255,0,128,0) 0%,
+        rgba(255,102,0,0.04) 25%,
+        rgba(0,255,136,0.06) 50%,
+        rgba(0,136,255,0.04) 75%,
+        rgba(136,0,255,0) 100%
+      );
+      background-size: 300% 300%;
+      animation: holoShimmer 6s ease infinite;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .demo-card:not(.coming-soon):hover .holo-sheen {
+      opacity: 1;
+    }
+
+    /* Mobile */
+    @media (max-width: 620px) {
+      .demos { grid-template-columns: 1fr; }
+      h1 { font-size: 1.9rem; }
+      .fluid-wrap { width: 400px; height: 400px; }
+      .logo img { height: 90px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Back nav -->
+  <a href="https://hirayasystems.tech" class="back-nav">← Hiraya Systems</a>
+  <style>
+    .back-nav {
+      position: fixed; top: 22px; left: 22px; z-index: 99;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.06em;
+      color: rgba(240,237,232,0.55);
+      text-decoration: none;
+      transition: color 0.2s;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      padding: 6px 12px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .back-nav:hover { color: rgba(240,237,232,0.95); }
+  </style>
+
+  <div class="corner-glow-wrap">
+    <div class="corner-glow tl"></div>
+    <div class="corner-glow br"></div>
+  </div>
+
+  <div class="logo">
+    <img src="roofing/Hiraya_black_logo-removebg-preview.png" alt="Hiraya Systems" />
+  </div>
+
+  <div class="eyebrow">
+    <span class="eyebrow-dot"></span>
+    Live Interactive Demos
+  </div>
+
+  <h1>See our AI tools<br><em>in action</em></h1>
+  <p class="sub">Real working demos built for specific industries. Try them — no signup required.</p>
+
+  <div class="demos">
+    <a href="./roofing/" class="demo-card">
+      <div class="holo-sheen"></div>
+      <div class="card-tag"><span class="live-dot"></span>Live</div>
+      <h2>Roofing & Home Services</h2>
+      <p>Missed-call revenue calculator + AI chatbot for roofing companies in FL & TX.</p>
+      <div class="card-cta">
+        Try the demo
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+    </a>
+
+    <div class="demo-card coming-soon">
+      <div class="card-tag soon">Coming Soon</div>
+      <h2>Med Spas & Aesthetic Clinics</h2>
+      <p>AI booking assistant + missed-appointment recovery for med spa owners.</p>
+      <div class="card-cta" style="color:var(--muted);">In development</div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="https://hirayasystems.tech" target="_blank">Hiraya Systems</a>
+    <span class="divider"></span>
+    <a href="mailto:raya.teams@hirayasystems.tech">raya.teams@hirayasystems.tech</a>
+  </footer>
+
+</body>
+</html>

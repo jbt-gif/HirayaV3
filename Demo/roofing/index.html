@@ -1,0 +1,3041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lone Star Roofing — Houston's Most Trusted Roofer</title>
+  <meta name="description" content="Houston's most trusted residential roofer. Storm damage repair, roof replacement, free inspections. Same-week scheduling. Serving Harris County since 2008." />
+  <meta property="og:title" content="Lone Star Roofing — Houston, TX" />
+  <meta property="og:description" content="Storm damage, roof replacement, free inspections. 18 years in Houston. A+ BBB." />
+  <meta property="og:image" content="../hero-aerial.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+
+  <style>
+    /* ═══════════════════════════════
+       TOKENS
+    ═══════════════════════════════ */
+    :root {
+      --bg:          #0D0A07;
+      --card:        #1A1510;
+      --card-2:      #201A0E;
+      --white:       #F5F1E8;
+      --body:        rgba(245,241,232,0.75);
+      --muted:       rgba(245,241,232,0.42);
+      --border:      rgba(245,241,232,0.07);
+      --border-h:    rgba(245,241,232,0.13);
+      --accent:      #C9A84C;
+      --accent-dim:  rgba(201,168,76,0.10);
+      --accent-mid:  rgba(201,168,76,0.22);
+      --accent-glow: 0 0 80px rgba(201,168,76,0.15);
+    }
+
+    /* ═══════════════════════════════
+       RESET
+    ═══════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+    .section, .hero-section { scroll-snap-align: start; scroll-snap-stop: normal; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; }
+    h1, h2, h3, h4 { text-wrap: balance; }
+    button { cursor: pointer; }
+
+    /* ═══════════════════════════════
+       ACCESSIBILITY
+    ═══════════════════════════════ */
+    .skip-link {
+      position: absolute; top: -100%; left: 1rem;
+      background: var(--accent); color: var(--white);
+      padding: .5rem 1rem; border-radius: .25rem;
+      font-weight: 700; z-index: 9999; transition: top .2s;
+    }
+    .skip-link:focus { top: 1rem; }
+    :focus-visible { outline: 2px solid rgba(196,87,26,.7); outline-offset: 3px; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    /* ═══════════════════════════════
+       NOISE + CORNER GLOWS
+    ═══════════════════════════════ */
+    .grain {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9998; opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+    .corner-glow-wrap {
+      position: fixed; inset: 0;
+      overflow: hidden; pointer-events: none; z-index: 3;
+    }
+    .corner-glow {
+      position: absolute; border-radius: 50%;
+      filter: blur(140px); opacity: 0.13;
+      animation: cornerPulse 12s ease-in-out infinite alternate;
+    }
+    .corner-glow.tl {
+      top: -140px; left: -140px;
+      width: 360px; height: 360px;
+      background: conic-gradient(from 0deg,#ff6b2b,#c44d1a,#7a2200,#ff6b2b);
+    }
+    .corner-glow.br {
+      bottom: -120px; right: -120px;
+      width: 280px; height: 280px;
+      background: conic-gradient(from 180deg,#ffb347,#c44d1a,#6a1e00,#ffb347);
+      animation-delay: -6s;
+    }
+    @keyframes cornerPulse {
+      0%   { opacity: .13; transform: scale(1)   rotate(0deg); }
+      100% { opacity: .20; transform: scale(1.1) rotate(20deg); }
+    }
+
+    /* ═══════════════════════════════
+       NAV
+    ═══════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100; padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+      border-bottom: 1px solid transparent;
+      transition: background .3s, border-color .3s, backdrop-filter .3s;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.90);
+      border-color: var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.88rem; font-weight: 900;
+      letter-spacing: -0.01em; color: var(--white);
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--body);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 10px 20px; border-radius: 6px;
+      transition: opacity .2s, transform .15s;
+    }
+    .nav-cta:hover   { opacity: .9; }
+    .nav-cta:active  { transform: scale(0.97); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; padding: 8px;
+      min-width: 44px; min-height: 44px;
+      align-items: center; justify-content: center;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--white); border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .mobile-menu {
+      display: none;
+      position: fixed; top: 72px; inset: 0;
+      background: rgba(8,8,8,0.97); z-index: 999;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 36px; backdrop-filter: blur(8px);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.4rem; font-weight: 700; color: var(--white);
+      padding: 8px 16px;
+    }
+    .mob-cta {
+      background: var(--accent) !important;
+      padding: 14px 32px !important; border-radius: 8px;
+      font-size: 1rem !important;
+    }
+
+    /* Dropdown menu */
+    .nav-dropdown {
+      position: relative; padding: 12px 0;
+    }
+    .dropdown-toggle {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--body);
+      background: none; border: none; padding: 8px 0;
+      cursor: pointer; transition: color .2s;
+    }
+    .dropdown-toggle:hover { color: var(--white); }
+    .dropdown-menu {
+      display: none; position: absolute; top: 100%; left: 0;
+      list-style: none; background: rgba(8,8,8,0.95);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 4px 0; margin-top: 2px; min-width: 160px;
+      backdrop-filter: blur(8px); z-index: 1000;
+    }
+    .nav-dropdown:hover .dropdown-menu { display: block; }
+    .dropdown-menu li a {
+      display: block; padding: 10px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem; color: var(--body);
+      transition: color .2s;
+    }
+    .dropdown-menu li a:hover { color: var(--white); }
+
+    /* Mobile dropdown */
+    .mob-dropdown-toggle {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.4rem; font-weight: 700; color: var(--white);
+      background: none; border: none; padding: 8px 16px;
+      cursor: pointer;
+    }
+    .mob-dropdown-menu {
+      display: none; flex-direction: column; gap: 12px;
+    }
+    .mob-dropdown-menu.open { display: flex; }
+    .mob-dropdown-menu a {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.2rem; font-weight: 600;
+      color: var(--body); padding: 8px 16px;
+      transition: color .2s;
+    }
+    .mob-dropdown-menu a:hover { color: var(--white); }
+
+    /* ═══════════════════════════════
+       HERO
+    ═══════════════════════════════ */
+    .hero-section {
+      min-height: 100dvh;
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      align-items: end;
+      padding: 0 32px 80px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-bg-img {
+      position: absolute; inset: 0;
+      background-image: url('../hero-aerial.jpg');
+      background-size: cover;
+      background-position: center 35%;
+      transform-origin: center 40%;
+      animation: kenBurns 18s ease-out forwards;
+      will-change: transform;
+      z-index: 1;
+    }
+    @keyframes kenBurns {
+      0%   { transform: scale(1.06); }
+      100% { transform: scale(1.14); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg-img { animation: none; transform: scale(1.06); }
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(100deg, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.65) 45%, rgba(8,8,8,0.30) 100%),
+        linear-gradient(to bottom, rgba(8,8,8,0.20) 0%, rgba(8,8,8,0.60) 65%, rgba(8,8,8,1.0) 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      padding-top: 140px;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 28px;
+    }
+    .eyebrow-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent);
+      animation: dotPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .4; transform: scale(.7); }
+    }
+    .hero-h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+      font-weight: 900; line-height: 1.06;
+      letter-spacing: -0.02em; margin-bottom: 28px;
+    }
+    .hero-h1 em {
+      font-style: italic;
+      font-family: 'Instrument Serif', serif;
+      color: var(--accent);
+    }
+    .hero-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      color: var(--body); max-width: 480px;
+      margin-bottom: 48px; line-height: 1.65;
+    }
+    .hero-actions {
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      padding: 14px 28px; border-radius: 6px;
+      border: none; min-height: 48px;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn-primary:hover  { opacity: .9; }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--body); font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; min-height: 48px; padding: 4px 0;
+      border-bottom: 1px solid var(--border-h);
+      transition: color .2s, border-color .2s;
+    }
+    .btn-ghost:hover { color: var(--white); border-color: rgba(240,237,232,.28); }
+
+    /* Hero right: trust card */
+    .hero-trust {
+      position: relative; z-index: 1;
+      padding-left: 48px; align-self: end;
+    }
+    .trust-card {
+      border-radius: 18px; overflow: hidden;
+      background: transparent;
+    }
+    .trust-item {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 16px;
+      transition: background .25s;
+    }
+    .trust-item:last-child { border-bottom: none; }
+    .trust-item:hover { background: rgba(240,237,232,0.03); }
+    .trust-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.9rem; color: var(--accent);
+      line-height: 1; flex-shrink: 0; min-width: 60px;
+    }
+    .trust-text strong {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .trust-text span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; color: var(--muted);
+    }
+
+    /* ═══════════════════════════════
+       MARQUEE
+    ═══════════════════════════════ */
+    .marquee-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0; overflow: hidden;
+      -webkit-mask: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+      mask: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+    }
+    .marquee-track {
+      display: flex; gap: 52px; white-space: nowrap;
+      will-change: transform;
+    }
+    .marquee-item {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.76rem; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--muted); flex-shrink: 0;
+    }
+    .marquee-item b { color: var(--accent); font-weight: 600; margin-right: 14px; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ═══════════════════════════════
+       LAYOUT
+    ═══════════════════════════════ */
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+    .section   { padding: 96px 0; scroll-margin-top: 80px; }
+    .section-alt { background: var(--bg); }
+    #services  { background: var(--bg); }
+    #testimonials { background: var(--bg); }
+    .cta-section { position: relative; }
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 16px;
+    }
+    .section-h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.3rem);
+      font-weight: 700; line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .divider {
+      height: 1px;
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+    }
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -30%;
+      width: 30%; height: 100%;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .divider.gleam::after {
+      animation: dividerSweep 1.6s cubic-bezier(0.22,1,0.36,1) forwards;
+      opacity: 1;
+    }
+    @keyframes dividerSweep {
+      0%   { left: -30%; opacity: 0; }
+      30%  { opacity: 0.9; }
+      100% { left: 100%; opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .divider.gleam::after { animation: none; opacity: 0; }
+    }
+
+    /* ═══════════════════════════════
+       SERVICES
+    ═══════════════════════════════ */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      margin-top: 56px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 16px 48px rgba(0,0,0,0.4);
+    }
+    .svc-featured {
+      grid-row: span 2;
+      position: relative;
+      min-height: 500px;
+      overflow: hidden;
+    }
+    .svc-featured-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+      transition: transform .6s ease;
+    }
+    .svc-featured:hover .svc-featured-img { transform: scale(1.03); }
+    .svc-featured-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(8,8,8,.96) 0%,
+        rgba(8,8,8,.55) 50%,
+        rgba(8,8,8,.15) 100%
+      );
+    }
+    .svc-featured-content {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 36px 32px;
+    }
+    .svc-tag {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-mid);
+      padding: 4px 10px; border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .svc-featured-content h3 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.35rem; font-weight: 700;
+      line-height: 1.2; margin-bottom: 10px;
+    }
+    .svc-featured-content p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; color: var(--body);
+      line-height: 1.65; max-width: 280px;
+    }
+    .svc-card {
+      background: var(--card);
+      padding: 32px 28px;
+      position: relative;
+      transition: background .3s;
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+    .svc-card:hover { background: #111; }
+    .svc-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 0.85rem; color: var(--accent);
+      font-style: italic; margin-bottom: 16px;
+    }
+    .svc-card h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;
+    }
+    .svc-card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem; color: var(--body); line-height: 1.6;
+    }
+    .svc-price {
+      margin-top: 14px;
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.05rem; color: var(--muted); font-style: italic;
+    }
+
+    /* ═══════════════════════════════
+       TESTIMONIALS
+    ═══════════════════════════════ */
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 56px;
+    }
+    .test-card {
+      position: relative;
+      background: transparent;
+      border-radius: 18px;
+      padding: 28px 26px;
+      display: flex; flex-direction: column;
+      gap: 18px;
+      transition: transform .35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .test-card:hover {
+      background: transparent;
+      transform: translateY(-4px);
+    }
+    .test-stars {
+      display: flex; gap: 3px;
+      color: #fbbf24;
+    }
+    .test-stars svg { width: 16px; height: 16px; fill: currentColor; }
+    .test-quote {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: var(--white);
+      line-height: 1.65;
+      flex: 1;
+      font-weight: 400;
+    }
+    .test-quote::before {
+      content: '"';
+      font-family: 'Instrument Serif', serif;
+      font-size: 2.4rem;
+      color: var(--accent);
+      line-height: 0;
+      margin-right: 4px;
+      vertical-align: -16px;
+    }
+    .test-author {
+      display: flex; align-items: center; gap: 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .test-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid var(--border-h);
+    }
+    .test-author-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .test-author-info strong {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    .test-author-info span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+    .test-verified {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-mid);
+      padding: 3px 8px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .test-verified svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* ═══════════════════════════════
+       PORTFOLIO — BEFORE/AFTER SLIDER
+    ═══════════════════════════════ */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 36px;
+      margin-top: 56px;
+    }
+    .portfolio-item { width: 100%; }
+    .ba-slider {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: ew-resize;
+      user-select: none;
+      touch-action: pan-y;
+      background: transparent;
+    }
+    .ba-before, .ba-after {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .ba-after { clip-path: inset(0 0 0 50%); }
+    .ba-handle {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: var(--accent);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 3;
+      box-shadow: 0 0 14px rgba(196,87,26,0.7);
+    }
+    .ba-grip {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+    .ba-grip svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .ba-label {
+      position: absolute;
+      bottom: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      padding: 5px 10px;
+      border-radius: 4px;
+      background: rgba(8,8,8,0.85);
+      color: var(--white);
+      text-transform: uppercase;
+      z-index: 2;
+      pointer-events: none;
+      backdrop-filter: blur(6px);
+    }
+    .ba-label-before { left: 14px; }
+    .ba-label-after  { right: 14px; }
+    .ba-caption {
+      margin-top: 14px;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .ba-caption strong {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .ba-caption span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ═══════════════════════════════
+       PROCESS
+    ═══════════════════════════════ */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 56px;
+      position: relative;
+    }
+    .process-grid::before {
+      content: '';
+      position: absolute;
+      top: 56px;
+      left: 12%; right: 12%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-h), var(--border-h), transparent);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .process-step {
+      position: relative;
+      z-index: 1;
+      padding: 24px 22px 26px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 16px;
+      transition: border-color .3s ease, background .3s ease, transform .3s cubic-bezier(0.22,1,0.36,1);
+    }
+    .process-step:hover {
+      border-color: var(--accent-mid);
+      background: var(--bg);
+      transform: translateY(-4px);
+    }
+    .process-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--border-h);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.05rem;
+      color: var(--accent);
+      font-style: italic;
+      margin-bottom: 22px;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .process-step:hover .process-num {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-dim);
+    }
+    .process-icon {
+      width: 28px; height: 28px;
+      margin-bottom: 14px;
+      color: var(--accent);
+    }
+    .process-icon svg {
+      width: 100%; height: 100%;
+      stroke: currentColor;
+      stroke-width: 1.4;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .process-step h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .process-step p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: var(--body);
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════
+       WHY US
+    ═══════════════════════════════ */
+    .why-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 64px;
+      align-items: start;
+      margin-top: 64px;
+    }
+    .why-intro .section-h2 {
+      font-size: clamp(1.5rem, 2.8vw, 2rem);
+    }
+    .why-intro p {
+      margin-top: 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem; color: var(--body); line-height: 1.75;
+    }
+    .big-stat {
+      display: block;
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(4rem, 8vw, 5.5rem);
+      color: var(--accent); line-height: 1;
+      margin-top: 32px;
+    }
+    .big-stat-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem; color: var(--muted);
+      letter-spacing: 0.06em; margin-top: 6px;
+    }
+    .why-img-wrap {
+      margin-top: 36px;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+    }
+    .why-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      transition: transform .6s ease;
+    }
+    .why-img-wrap:hover img { transform: scale(1.03); }
+    .why-list { display: flex; flex-direction: column; }
+    .why-item {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 20px; align-items: start;
+    }
+    .why-item:first-child { border-top: 1px solid var(--border); }
+    .why-n {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.05rem; color: var(--muted);
+      font-style: italic; padding-top: 2px;
+    }
+    .why-item h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.93rem; font-weight: 600; margin-bottom: 6px;
+    }
+    .why-item p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; color: var(--body); line-height: 1.65;
+    }
+
+    /* ═══════════════════════════════
+       FAQ
+    ═══════════════════════════════ */
+    .faq-intro { max-width: 580px; margin-bottom: 48px; }
+    .faq-intro p {
+      margin-top: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem; color: var(--body); line-height: 1.7;
+    }
+    .faq-list {
+      display: flex; flex-direction: column;
+      gap: 12px;
+    }
+    .faq-item {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color .3s, background .3s;
+    }
+    .faq-item[open] { border-color: var(--border-h); background: #111; }
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; font-weight: 600;
+      color: var(--white);
+      transition: color .2s;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary:hover { color: var(--accent); }
+    .faq-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border-h);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform .35s cubic-bezier(0.22,1,0.36,1), border-color .3s, background .3s;
+    }
+    .faq-icon svg {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2; stroke-linecap: round;
+    }
+    .faq-item[open] .faq-icon {
+      transform: rotate(45deg);
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .faq-body {
+      padding: 0 24px 22px 24px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.86rem; color: var(--body);
+      line-height: 1.7;
+      max-width: 720px;
+    }
+
+    /* ═══════════════════════════════
+       CHAT SECTION
+    ═══════════════════════════════ */
+    .chat-intro { max-width: 560px; margin-bottom: 56px; }
+    .chat-intro p {
+      margin-top: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem; color: var(--body); line-height: 1.7;
+    }
+    .chat-embed {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 48px;
+      align-items: start;
+    }
+    .chat-topics { display: flex; flex-direction: column; gap: 10px; }
+    .chat-topics-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .chat-topic-btn {
+      background: rgba(240,237,232,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 15px 18px;
+      text-align: left;
+      transition: border-color .2s, background .2s;
+      color: var(--white); width: 100%;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px;
+      min-height: 64px;
+    }
+    .chat-topic-btn:hover {
+      border-color: var(--border-h);
+      background: rgba(240,237,232,0.05);
+    }
+    .chat-topic-btn:active { transform: scale(0.99); }
+    .chat-topic-text strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem; font-weight: 600; margin-bottom: 2px;
+    }
+    .chat-topic-text span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.76rem; color: var(--muted);
+    }
+    .topic-arrow {
+      color: var(--muted); flex-shrink: 0;
+      margin-top: 2px; transition: color .2s, transform .2s;
+    }
+    .chat-topic-btn:hover .topic-arrow { color: var(--accent); transform: translateX(3px); }
+
+    /* Chat window shared */
+    .chat-window {
+      background: var(--card);
+      border: 1px solid var(--border-h);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      height: 520px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+    }
+    .chat-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.02);
+      flex-shrink: 0;
+    }
+    .chat-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.75rem; font-weight: 900; color: var(--white);
+      flex-shrink: 0;
+    }
+    .chat-header-info strong {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; font-weight: 600;
+    }
+    .chat-header-info span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .status-dot {
+      display: inline-block; width: 6px; height: 6px;
+      border-radius: 50%; background: #22c55e;
+      margin-right: 4px; animation: dotPulse 2.5s infinite;
+    }
+    .chat-messages {
+      flex: 1; overflow-y: auto;
+      padding: 18px; display: flex; flex-direction: column; gap: 14px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 3px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 3px; }
+    .msg { max-width: 85%; display: flex; flex-direction: column; }
+    .msg.scout { align-self: flex-start; }
+    .msg.user  { align-self: flex-end; }
+    .msg-bubble {
+      padding: 10px 14px; border-radius: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; line-height: 1.6;
+    }
+    .msg.scout .msg-bubble {
+      background: rgba(240,237,232,0.07);
+      border-radius: 4px 14px 14px 14px;
+      color: var(--white);
+    }
+    .msg.user .msg-bubble {
+      background: var(--accent);
+      border-radius: 14px 4px 14px 14px;
+      color: var(--white);
+    }
+    .msg-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem; color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .typing-indicator {
+      align-self: flex-start;
+      display: none; margin: 0 0 4px 0;
+    }
+    .typing-indicator.active { display: flex; }
+    .typing-bubble {
+      padding: 10px 14px;
+      background: rgba(240,237,232,0.07);
+      border-radius: 4px 14px 14px 14px;
+      display: flex; gap: 5px; align-items: center;
+    }
+    .typing-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--muted);
+      animation: typingBounce .9s ease-in-out infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: .15s; }
+    .typing-dot:nth-child(3) { animation-delay: .30s; }
+    @keyframes typingBounce {
+      0%,80%,100% { transform: translateY(0); }
+      40%          { transform: translateY(-6px); }
+    }
+    .chat-input-area {
+      padding: 14px; border-top: 1px solid var(--border);
+      display: flex; gap: 10px; align-items: flex-end;
+      flex-shrink: 0;
+    }
+    .chat-input {
+      flex: 1;
+      background: rgba(240,237,232,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem;
+      resize: none; max-height: 100px;
+      outline: none; line-height: 1.5;
+      transition: border-color .2s;
+      min-height: 44px;
+    }
+    .chat-input:focus { border-color: var(--border-h); }
+    .chat-input::placeholder { color: var(--muted); }
+    .chat-send {
+      width: 44px; height: 44px;
+      background: var(--accent); border: none; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: opacity .2s, transform .15s;
+    }
+    .chat-send:hover { opacity: .9; }
+    .chat-send:active { transform: scale(0.94); }
+    .chat-send svg { width: 16px; height: 16px; stroke: white; }
+    .chat-send:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ═══════════════════════════════
+       FINAL CTA
+    ═══════════════════════════════ */
+    .cta-section {
+      text-align: center;
+      padding: 120px 32px;
+      position: relative; overflow: hidden;
+    }
+    .cta-bg {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(
+        rgba(8,8,8,0.78) 0%,
+        rgba(8,8,8,0.40) 45%,
+        rgba(8,8,8,0.55) 70%,
+        rgba(8,8,8,0.92) 100%
+      ), url('../cta-storm.jpg');
+      background-size: cover;
+      background-position: center 40%;
+      z-index: 0;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(196,87,26,0.18) 0%, transparent 70%);
+      z-index: 1;
+    }
+    .cta-section > *:not(.cta-bg) { position: relative; z-index: 2; }
+    .cta-h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 900; line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin: 16px auto 24px; max-width: 760px;
+    }
+    .cta-h2 em {
+      font-style: italic;
+      font-family: 'Instrument Serif', serif;
+      color: var(--accent);
+    }
+    .cta-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem; color: var(--body);
+      max-width: 440px; margin: 0 auto 48px;
+      line-height: 1.65;
+    }
+    .cta-guarantee {
+      margin-top: 22px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem; color: var(--muted);
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    /* ═══════════════════════════════
+       FOOTER
+    ═══════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 32px;
+    }
+    .footer-inner { max-width: 1120px; margin: 0 auto; }
+    .footer-row1 {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .footer-logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 0.88rem; font-weight: 900; color: var(--white);
+    }
+    .footer-logo span { color: var(--accent); }
+    .footer-links {
+      display: flex; gap: 24px; list-style: none;
+    }
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem; color: var(--muted);
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--body); }
+    .footer-row2 {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem; color: var(--muted);
+    }
+    .footer-socials { display: flex; gap: 16px; }
+    .footer-socials a {
+      color: var(--muted); transition: color .2s;
+      min-width: 44px; min-height: 44px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .footer-socials a:hover { color: var(--white); }
+    .footer-license {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; color: var(--muted);
+    }
+
+    /* ═══════════════════════════════
+       STORM ALERT SECTION
+    ═══════════════════════════════ */
+    .storm-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 56px;
+      align-items: start;
+      margin-top: 48px;
+    }
+    .storm-input-row {
+      display: flex; gap: 10px; margin-top: 28px;
+    }
+    .storm-zip {
+      flex: 1; max-width: 220px;
+      background: rgba(240,237,232,0.05);
+      border: 1px solid var(--border-h);
+      border-radius: 8px; color: var(--white);
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem;
+      padding: 10px 14px; outline: none;
+      transition: border-color .2s;
+    }
+    .storm-zip:focus { border-color: var(--accent); }
+    .storm-zip::placeholder { color: var(--muted); }
+    .storm-run-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: var(--bg);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 10px 20px; border: none; border-radius: 8px;
+      cursor: pointer; transition: opacity .2s, transform .15s;
+      white-space: nowrap;
+    }
+    .storm-run-btn:hover  { opacity: .88; }
+    .storm-run-btn:active { transform: scale(0.97); }
+    .storm-run-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .storm-flow { display: flex; flex-direction: column; margin-top: 28px; max-width: 480px; }
+    .storm-node {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 24px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color .35s, background .35s;
+    }
+    .storm-node.active {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .storm-connector {
+      width: 2px; height: 28px; margin-left: 43px;
+      background: var(--border); position: relative; overflow: hidden;
+    }
+    .storm-connector::after {
+      content: ''; position: absolute; inset: 0;
+      background: var(--accent);
+      transform: scaleY(0); transform-origin: top;
+      transition: transform .45s ease;
+    }
+    .storm-connector.active::after { transform: scaleY(1); }
+    .storm-node-icon {
+      width: 38px; height: 38px; border-radius: 8px;
+      background: rgba(201,168,76,0.08);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background .35s;
+    }
+    .storm-node-icon svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-linecap: round; stroke-width: 1.8; }
+    .storm-node.active .storm-node-icon { background: var(--accent-mid); }
+    .storm-node-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.86rem; font-weight: 600; color: var(--white);
+    }
+    .storm-node-status {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; color: var(--muted); margin-top: 2px;
+      transition: color .35s;
+    }
+    .storm-node.active .storm-node-status { color: var(--accent); }
+    .storm-result {
+      margin-top: 20px; padding: 14px 18px;
+      background: var(--accent-dim); border: 1px solid var(--accent-mid);
+      border-radius: 8px;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity .4s, transform .4s;
+      pointer-events: none;
+    }
+    .storm-result.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .storm-result-headline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem; font-weight: 600; color: var(--accent);
+    }
+    .storm-result-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.76rem; color: var(--body); margin-top: 4px;
+    }
+    .storm-lead-form {
+      margin-top: 20px; padding: 20px;
+      background: var(--card-2); border: 1px solid var(--border-h);
+      border-radius: 10px;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity .5s .15s, transform .5s .15s;
+      pointer-events: none;
+    }
+    .storm-lead-form.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .storm-lead-form-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem; font-weight: 600; color: var(--white);
+      margin-bottom: 14px;
+    }
+    .storm-fields { display: flex; flex-direction: column; gap: 10px; }
+    .storm-field {
+      background: rgba(240,237,232,0.05);
+      border: 1px solid var(--border-h); border-radius: 8px;
+      color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.84rem;
+      padding: 10px 14px; outline: none; width: 100%;
+      transition: border-color .2s;
+    }
+    .storm-field:focus { border-color: var(--accent); }
+    .storm-field::placeholder { color: var(--muted); }
+    .storm-submit {
+      width: 100%; margin-top: 4px;
+      background: var(--accent); color: var(--bg);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.84rem; font-weight: 700; letter-spacing: 0.04em;
+      padding: 12px; border: none; border-radius: 8px;
+      cursor: pointer; transition: opacity .2s, transform .15s;
+    }
+    .storm-submit:hover  { opacity: .88; }
+    .storm-submit:active { transform: scale(0.98); }
+    .storm-submit:disabled { opacity: .45; cursor: not-allowed; }
+    .storm-form-success {
+      display: none; text-align: center;
+      font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      color: var(--accent); padding: 16px 0;
+    }
+    .storm-phone-wrap { display: flex; flex-direction: column; align-items: center; }
+    .storm-phone {
+      width: 260px; height: 460px;
+      background: #1c1c1e; border-radius: 44px;
+      border: 8px solid #2c2c2e;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+      overflow: hidden; display: flex; flex-direction: column;
+      position: relative;
+    }
+    .phone-notch {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 100px; height: 26px;
+      background: #1c1c1e; border-radius: 0 0 20px 20px; z-index: 2;
+    }
+    .phone-statusbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 20px 4px;
+      font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+      color: rgba(255,255,255,0.7); flex-shrink: 0;
+    }
+    .phone-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 14px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+    }
+    .phone-contact-dot {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--accent); color: var(--bg);
+      font-family: 'Unbounded', sans-serif; font-size: 0.6rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .phone-contact-name {
+      font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+      color: rgba(255,255,255,0.9);
+    }
+    .phone-contact-sub { font-size: 0.6rem; color: rgba(255,255,255,0.4); margin-top: 1px; }
+    .phone-messages {
+      flex: 1; overflow-y: auto; padding: 12px 12px 8px;
+      display: flex; flex-direction: column; gap: 10px;
+      scrollbar-width: none;
+    }
+    .phone-messages::-webkit-scrollbar { display: none; }
+    .sms-bubble {
+      max-width: 88%;
+      background: #3a3a3c; border-radius: 18px 18px 18px 4px;
+      padding: 8px 12px; align-self: flex-start;
+      font-family: 'Inter', sans-serif; font-size: 0.72rem;
+      color: rgba(255,255,255,0.9); line-height: 1.5;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity .35s, transform .35s;
+    }
+    .sms-bubble.visible { opacity: 1; transform: translateY(0); }
+    .sms-sender {
+      font-size: 0.6rem; font-weight: 600; color: var(--accent);
+      margin-bottom: 3px; display: block;
+    }
+    .phone-caption {
+      text-align: center; font-family: 'Inter', sans-serif;
+      font-size: 0.69rem; color: var(--muted); margin-top: 10px;
+    }
+    .storm-explainer {
+      margin-top: 72px;
+      padding-top: 56px;
+      border-top: 1px solid var(--border);
+    }
+    .storm-explainer-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 36px;
+    }
+    .storm-explainer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 44px;
+    }
+    .storm-step-num {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.6rem; color: var(--accent);
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+    .storm-step-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 600; color: var(--white);
+      margin-bottom: 10px;
+    }
+    .storm-step-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.86rem; color: var(--body); line-height: 1.65;
+    }
+    .storm-stack {
+      margin-top: 44px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem; color: var(--muted);
+      letter-spacing: 0.02em;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .storm-stack-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0;
+      animation: dotPulse 2.5s ease-in-out infinite;
+    }
+    @media (max-width: 900px) {
+      .storm-layout { grid-template-columns: 1fr; gap: 40px; }
+      .storm-explainer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .storm-explainer { margin-top: 56px; padding-top: 40px; }
+    }
+    @media (max-width: 768px) {
+      .storm-phone { width: 240px; height: 420px; }
+      .storm-input-row { flex-wrap: wrap; }
+      .storm-zip { max-width: 100%; flex-basis: 100%; }
+    }
+
+    /* ═══════════════════════════════
+       MORE TOOLS SECTION
+    ═══════════════════════════════ */
+    .tools-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin-top: 48px;
+    }
+    .tool-card {
+      display: flex; flex-direction: column;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px 24px;
+      transition: border-color .25s, background .25s, transform .3s cubic-bezier(0.22,1,0.36,1);
+      position: relative;
+    }
+    .tool-card:hover {
+      border-color: var(--accent-mid);
+      background: #110d05;
+      transform: translateY(-3px);
+    }
+    .tool-card-icon {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      background: var(--accent-dim);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+    }
+    .tool-card-icon svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .tool-card-tag {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.66rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .tool-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.04rem; font-weight: 600;
+      color: var(--white);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .tool-card-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.84rem;
+      color: var(--body);
+      line-height: 1.6;
+      margin-bottom: 22px;
+      flex: 1;
+    }
+    .tool-card-link {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--accent);
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: gap .2s;
+    }
+    .tool-card:hover .tool-card-link { gap: 10px; }
+    .tool-card.live::after {
+      content: 'LIVE';
+      position: absolute;
+      top: 16px; right: 18px;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-mid);
+      color: var(--accent);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 3px 7px; border-radius: 3px;
+    }
+    @media (max-width: 900px) {
+      .tools-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .tools-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ═══════════════════════════════
+       FLOATING CHAT WIDGET
+    ═══════════════════════════════ */
+    .chat-fab {
+      position: fixed; bottom: 24px; right: 24px;
+      width: 56px; height: 56px;
+      background: var(--accent); border-radius: 50%; border: none;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(196,87,26,0.40), 0 2px 8px rgba(0,0,0,0.55);
+      z-index: 1000;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .chat-fab:hover {
+      transform: scale(1.08);
+      box-shadow: 0 12px 32px rgba(196,87,26,0.50), 0 4px 12px rgba(0,0,0,0.55);
+    }
+    .chat-fab:active { transform: scale(0.95); }
+    .chat-fab svg { width: 24px; height: 24px; stroke: white; }
+    .chat-fab .fab-close { display: none; }
+    .chat-fab.open .fab-chat { display: none; }
+    .chat-fab.open .fab-close { display: block; }
+    .fab-badge {
+      position: absolute; top: -2px; right: -2px;
+      width: 14px; height: 14px;
+      background: #22c55e; border-radius: 50%;
+      border: 2px solid var(--bg);
+    }
+    .chat-float {
+      position: fixed; bottom: 92px; right: 24px;
+      width: 360px;
+      background: var(--card);
+      border: 1px solid var(--border-h);
+      border-radius: 20px; overflow: hidden;
+      display: flex; flex-direction: column;
+      height: 480px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.03);
+      z-index: 999;
+      transform: translateY(20px) scale(0.96);
+      opacity: 0; pointer-events: none;
+      transition: transform .25s cubic-bezier(0.22,1,0.36,1), opacity .2s;
+    }
+    .chat-float.open {
+      transform: translateY(0) scale(1);
+      opacity: 1; pointer-events: all;
+    }
+    .chat-float .chat-header   { padding: 13px 16px; }
+    .chat-float .chat-messages { padding: 14px; }
+    .chat-float .chat-input-area { padding: 12px; }
+    .chat-float .chat-avatar { width: 34px; height: 34px; font-size: 0.7rem; }
+
+    /* ═══════════════════════════════
+       FADE-UP ANIMATIONS
+    ═══════════════════════════════ */
+    .fade-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: .10s; }
+    .delay-2 { transition-delay: .20s; }
+    .delay-3 { transition-delay: .30s; }
+    .delay-4 { transition-delay: .40s; }
+
+    /* ═══════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════ */
+    @media (max-width: 1024px) {
+      .why-layout { grid-template-columns: 1fr; gap: 48px; }
+      .chat-embed  { grid-template-columns: 1fr; }
+      .chat-window { height: 440px; }
+      .process-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-grid::before { display: none; }
+      .test-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      .hero-section { grid-template-columns: 1fr; padding: 0 24px 56px; }
+      .hero-trust { padding-left: 0; margin-top: 48px; }
+      .services-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .svc-featured { grid-row: span 1; min-height: 320px; }
+      .svc-card { border-left: none; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .test-grid { grid-template-columns: 1fr; }
+      .ba-grip { width: 38px; height: 38px; }
+      .ba-grip svg { width: 14px; height: 14px; }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+      .section    { padding: 64px 0; }
+      .hero-section { padding: 0 20px 48px; }
+      .hero-h1 { font-size: 2.2rem; }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      nav { padding: 0 20px; }
+      .nav-cta { display: none; }
+      .chat-float { width: calc(100vw - 32px); right: 16px; }
+      .chat-fab   { bottom: 16px; right: 16px; }
+      .chat-float { bottom: 84px; }
+      .footer-row1 { flex-direction: column; gap: 16px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+      .footer-row2 { flex-direction: column; gap: 12px; text-align: center; }
+      .cta-section { padding: 80px 24px; }
+      .process-grid { grid-template-columns: 1fr; gap: 12px; }
+      .portfolio-grid { gap: 28px; }
+      .ba-slider { aspect-ratio: 4 / 3; }
+      .faq-item summary { padding: 16px 18px; font-size: 0.88rem; }
+      .faq-body { padding: 0 18px 18px 18px; font-size: 0.82rem; }
+      .test-card { padding: 22px 20px; }
+      .test-verified { display: none; }
+    }
+  </style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+<div class="corner-glow-wrap" aria-hidden="true">
+  <div class="corner-glow tl"></div>
+  <div class="corner-glow br"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="Lone Star Roofing home">LONE STAR <span>ROOFING</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why-us">Why Us</a></li>
+    <li><a href="#storm-alert">Storm Alert</a></li>
+    <li><a href="#ask-scout">Ask Scout</a></li>
+    <li class="nav-dropdown">
+      <button class="dropdown-toggle">Tools</button>
+      <ul class="dropdown-menu">
+        <li><a href="./calculator/">Revenue Calc</a></li>
+        <li><a href="./damage-analyzer/">Damage Check</a></li>
+        <li><a href="./quote-generator/">Get Quote</a></li>
+      </ul>
+    </li>
+  </ul>
+  <a href="https://hirayasystems.tech" class="nav-link">← Hiraya</a>
+  <a href="https://cal.com/hiraya-systems-ajfryr/hiraya-booking" target="_blank" rel="noopener" class="nav-cta">
+    Free Inspection
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+  <a href="#services"   class="mob-link">Services</a>
+  <a href="#why-us"     class="mob-link">Why Us</a>
+  <a href="#storm-alert" class="mob-link">Storm Alert</a>
+  <a href="#ask-scout"  class="mob-link">Ask Scout</a>
+  <button class="mob-dropdown-toggle">Tools</button>
+  <div class="mob-dropdown-menu">
+    <a href="./calculator/" class="mob-link">Revenue Calc</a>
+    <a href="./damage-analyzer/" class="mob-link">Damage Check</a>
+    <a href="./quote-generator/" class="mob-link">Get Quote</a>
+  </div>
+  <a href="https://cal.com/hiraya-systems-ajfryr/hiraya-booking" target="_blank" rel="noopener" class="mob-cta">
+    Book Free Inspection →
+  </a>
+</div>
+
+<!-- HERO -->
+<section class="hero-section" id="main-content" aria-labelledby="hero-heading">
+  <div class="hero-bg" role="img" aria-label="Aerial view of Houston residential neighborhood">
+    <div class="hero-bg-img" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow" aria-hidden="true">
+      <span class="eyebrow-dot"></span>
+      Houston, TX · Licensed &amp; Insured
+    </div>
+    <h1 class="hero-h1" id="hero-heading">
+      Your roof.<br>
+      Our <em>guarantee.</em><br>
+      Done right.
+    </h1>
+    <p class="hero-sub">
+      Storm damage, full replacement, or a quick inspection —
+      Houston homeowners have trusted us for 18 years.
+      No pressure. No runaround. Just straight answers.
+    </p>
+    <div class="hero-actions">
+      <a href="https://cal.com/hiraya-systems-ajfryr/hiraya-booking" target="_blank" rel="noopener" class="btn-primary">
+        Get Free Inspection
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+      <a href="#ask-scout" class="btn-ghost">
+        Ask Scout, our AI
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 2v8M2 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <aside class="hero-trust" aria-label="Trust indicators">
+    <div class="trust-card">
+      <div class="trust-item">
+        <span class="trust-num" data-counter="18">0</span>
+        <div class="trust-text">
+          <strong>Years in Houston</strong>
+          <span>Serving Harris County since 2008</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num" data-counter="4200" data-counter-suffix="+" data-counter-format="comma">0</span>
+        <div class="trust-text">
+          <strong>Roofs replaced</strong>
+          <span>Residential, across greater Houston</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num" data-counter="25" data-counter-suffix="yr">0</span>
+        <div class="trust-text">
+          <strong>Workmanship warranty</strong>
+          <span>Not just manufacturer — us too</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">A+</span>
+        <div class="trust-text">
+          <strong>BBB Accredited</strong>
+          <span>Zero unresolved complaints</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item"><b>★</b>Storm Damage Repair</span>
+    <span class="marquee-item"><b>★</b>Shingle Replacement</span>
+    <span class="marquee-item"><b>★</b>Free Inspections</span>
+    <span class="marquee-item"><b>★</b>Metal Roofing</span>
+    <span class="marquee-item"><b>★</b>Insurance Claims Help</span>
+    <span class="marquee-item"><b>★</b>Tile Roofing</span>
+    <span class="marquee-item"><b>★</b>Same-Week Scheduling</span>
+    <span class="marquee-item"><b>★</b>Harris County Licensed</span>
+    <span class="marquee-item"><b>★</b>Storm Damage Repair</span>
+    <span class="marquee-item"><b>★</b>Shingle Replacement</span>
+    <span class="marquee-item"><b>★</b>Free Inspections</span>
+    <span class="marquee-item"><b>★</b>Metal Roofing</span>
+    <span class="marquee-item"><b>★</b>Insurance Claims Help</span>
+    <span class="marquee-item"><b>★</b>Tile Roofing</span>
+    <span class="marquee-item"><b>★</b>Same-Week Scheduling</span>
+    <span class="marquee-item"><b>★</b>Harris County Licensed</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="container">
+  <section class="section" id="services" aria-labelledby="services-heading">
+    <div class="section-label fade-up">What We Do</div>
+    <h2 class="section-h2 fade-up delay-1" id="services-heading">
+      Every job, every roof type,<br>handled by us — not a sub.
+    </h2>
+
+    <div class="services-grid" role="list">
+      <!-- Featured: Storm Damage -->
+      <div class="svc-featured" role="listitem">
+        <img class="svc-featured-img"
+             src="../services-roofer.jpg"
+             alt="Roofer working on a residential roof in Houston" />
+        <div class="svc-featured-overlay" aria-hidden="true"></div>
+        <div class="svc-featured-content">
+          <div class="svc-tag">Most Requested</div>
+          <h3>Storm &amp; Hail Damage Repair</h3>
+          <p>Houston gets hit. We move fast — same-week inspections, insurance claim assistance, and repairs done before the next storm season.</p>
+        </div>
+      </div>
+
+      <div class="svc-card fade-up delay-1" role="listitem">
+        <div class="svc-num">01 —</div>
+        <h3>Shingle Roof Replacement</h3>
+        <p>Full tear-off and replacement. GAF or Owens Corning materials. Most Houston homes (2,000–2,500 sq ft) are done in 1–2 days.</p>
+        <div class="svc-price">$8,000 – $15,000</div>
+      </div>
+
+      <div class="svc-card fade-up delay-2" role="listitem">
+        <div class="svc-num">02 —</div>
+        <h3>Metal &amp; Tile Roofing</h3>
+        <p>Metal lasts 40–70 years in Houston's heat and storm seasons. Tile runs longer and handles the Texas sun well. Both beat shingles on longevity.</p>
+        <div class="svc-price">$15,000 – $30,000</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- PROCESS -->
+<div class="container">
+  <section class="section section-alt" id="process" aria-labelledby="process-heading">
+    <div class="section-label" data-reveal>How It Works</div>
+    <h2 class="section-h2" data-reveal id="process-heading">
+      Free inspection to finished roof —<br>here's how it goes.
+    </h2>
+
+    <div class="process-grid" role="list">
+      <div class="process-step" data-reveal role="listitem">
+        <div class="process-num">01</div>
+        <div class="process-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+        </div>
+        <h3>Free Inspection</h3>
+        <p>We climb up, take photos, and give you the honest read. Same-week scheduling, no sales pitch on the roof.</p>
+      </div>
+
+      <div class="process-step" data-reveal role="listitem">
+        <div class="process-num">02</div>
+        <div class="process-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+        </div>
+        <h3>Honest Quote</h3>
+        <p>Written estimate within 24 hours. Line-item breakdown, no hidden fees, no high-pressure timer.</p>
+      </div>
+
+      <div class="process-step" data-reveal role="listitem">
+        <div class="process-num">03</div>
+        <div class="process-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 001 1h12a1 1 0 001-1V10"/><path d="M9 21V14h6v7"/></svg>
+        </div>
+        <h3>Crew Install</h3>
+        <p>Most Houston homes done in 1–2 days. Our crew — never a sub. Daily cleanup, magnetic nail sweep included.</p>
+      </div>
+
+      <div class="process-step" data-reveal role="listitem">
+        <div class="process-num">04</div>
+        <div class="process-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3>25-Year Warranty</h3>
+        <p>Workmanship and manufacturer warranties in writing. If anything fails, we're a phone call away — for decades.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- PORTFOLIO — BEFORE/AFTER SLIDERS -->
+<div class="container">
+  <section class="section" id="portfolio" aria-labelledby="portfolio-heading">
+    <div class="section-label" data-reveal>Real Jobs</div>
+    <h2 class="section-h2" data-reveal id="portfolio-heading">
+      See the difference.<br>Drag to compare.
+    </h2>
+
+    <div class="portfolio-grid">
+      <div class="portfolio-item" data-reveal>
+        <div class="ba-slider" data-ba-slider role="group" aria-label="Before and after — hail damage repair">
+          <img class="ba-before" src="../portfolio-1-before.jpg" alt="Before: hail-damaged shingles" loading="lazy">
+          <img class="ba-after"  src="../portfolio-1-after.jpg"  alt="After: new charcoal architectural shingles" loading="lazy">
+          <div class="ba-label ba-label-before" aria-hidden="true">Before</div>
+          <div class="ba-label ba-label-after"  aria-hidden="true">After</div>
+          <div class="ba-handle" aria-hidden="true">
+            <div class="ba-grip"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></div>
+          </div>
+        </div>
+        <div class="ba-caption">
+          <strong>Hail damage repair</strong>
+          <span>Spring, TX · Insurance-covered · 2 days</span>
+        </div>
+      </div>
+
+      <div class="portfolio-item" data-reveal>
+        <div class="ba-slider" data-ba-slider role="group" aria-label="Before and after — full shingle replacement">
+          <img class="ba-before" src="../portfolio-2-before.jpg" alt="Before: worn aerial view of old shingle roof" loading="lazy">
+          <img class="ba-after"  src="../portfolio-2-after.jpg"  alt="After: new architectural shingle roof" loading="lazy">
+          <div class="ba-label ba-label-before" aria-hidden="true">Before</div>
+          <div class="ba-label ba-label-after"  aria-hidden="true">After</div>
+          <div class="ba-handle" aria-hidden="true">
+            <div class="ba-grip"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></div>
+          </div>
+        </div>
+        <div class="ba-caption">
+          <strong>Full shingle replacement</strong>
+          <span>Katy, TX · GAF Timberline HDZ · 1.5 days</span>
+        </div>
+      </div>
+
+      <div class="portfolio-item" data-reveal>
+        <div class="ba-slider" data-ba-slider role="group" aria-label="Before and after — metal roof install">
+          <img class="ba-before" src="../portfolio-3-before.jpg" alt="Before: old asphalt shingle on a Texas home" loading="lazy">
+          <img class="ba-after"  src="../portfolio-3-after.jpg"  alt="After: standing-seam dark gray metal roof" loading="lazy">
+          <div class="ba-label ba-label-before" aria-hidden="true">Before</div>
+          <div class="ba-label ba-label-after"  aria-hidden="true">After</div>
+          <div class="ba-handle" aria-hidden="true">
+            <div class="ba-grip"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></div>
+          </div>
+        </div>
+        <div class="ba-caption">
+          <strong>Standing-seam metal install</strong>
+          <span>The Heights, TX · 50-yr lifespan · 3 days</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<div class="container">
+  <section class="section" id="testimonials" aria-labelledby="testimonials-heading">
+    <div class="section-label" data-reveal>What Homeowners Say</div>
+    <h2 class="section-h2" data-reveal id="testimonials-heading">
+      Houston homeowners<br>say it best.
+    </h2>
+
+    <div class="test-grid">
+      <article class="test-card" data-reveal>
+        <div class="test-stars" aria-label="5 out of 5 stars">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+        </div>
+        <p class="test-quote">Hail hit our neighborhood in April and Lone Star was on the roof the same week. Walked us through the insurance claim, handled the adjuster directly, and had us in a new roof in two days. Zero stress.</p>
+        <div class="test-author">
+          <img class="test-avatar" src="../testimonial-mike.jpg" alt="Mike R." loading="lazy">
+          <div class="test-author-info">
+            <strong>Mike R.</strong>
+            <span>Spring, TX · Hail damage · Apr 2024</span>
+          </div>
+          <span class="test-verified">
+            <svg viewBox="0 0 12 12" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-7"/></svg>
+            Verified
+          </span>
+        </div>
+      </article>
+
+      <article class="test-card" data-reveal>
+        <div class="test-stars" aria-label="5 out of 5 stars">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+        </div>
+        <p class="test-quote">Three other roofers tried to sell us a full replacement. Lone Star came out, climbed up, took photos, and told us we had at least 5 more years. They've got our business when the time actually comes.</p>
+        <div class="test-author">
+          <img class="test-avatar" src="../testimonial-linda.jpg" alt="Linda C." loading="lazy">
+          <div class="test-author-info">
+            <strong>Linda C.</strong>
+            <span>Memorial, TX · Inspection · Jun 2024</span>
+          </div>
+          <span class="test-verified">
+            <svg viewBox="0 0 12 12" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-7"/></svg>
+            Verified
+          </span>
+        </div>
+      </article>
+
+      <article class="test-card" data-reveal>
+        <div class="test-stars" aria-label="5 out of 5 stars">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><polygon points="10,1 12.6,7.5 19.5,8 14.2,12.6 15.8,19.4 10,15.9 4.2,19.4 5.8,12.6 0.5,8 7.4,7.5"/></svg>
+        </div>
+        <p class="test-quote">Went with the metal roof and worth every dollar. Crew showed up when they said they would, kept the yard clean every night, and the finish is sharp. Heat bills dropped too. Highly recommend.</p>
+        <div class="test-author">
+          <img class="test-avatar" src="../testimonial-marcus.jpg" alt="Marcus T." loading="lazy">
+          <div class="test-author-info">
+            <strong>Marcus T.</strong>
+            <span>The Heights, TX · Metal install · Aug 2024</span>
+          </div>
+          <span class="test-verified">
+            <svg viewBox="0 0 12 12" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-7"/></svg>
+            Verified
+          </span>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- WHY US -->
+<div class="container">
+  <section class="section section-alt" id="why-us" aria-labelledby="why-heading">
+    <div class="section-label fade-up">Why Lone Star</div>
+
+    <div class="why-layout">
+      <div class="why-intro fade-up">
+        <h2 class="section-h2" id="why-heading">
+          We work for you,<br>not the insurance company.
+        </h2>
+        <p>A lot of roofers in Houston show up after a storm, promise the world, then disappear. We've been here 18 years because we do the opposite.</p>
+        <span class="big-stat" aria-label="100 percent" data-counter="100" data-counter-suffix="%">0</span>
+        <div class="big-stat-label">of new business comes from referrals and repeat customers.</div>
+        <div class="why-img-wrap">
+          <img src="../why-us-house.jpg" alt="Completed roof replacement on Houston home" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="why-list" role="list">
+        <div class="why-item fade-up" role="listitem">
+          <span class="why-n" aria-hidden="true">01.</span>
+          <div>
+            <h4>We handle the insurance fight</h4>
+            <p>Storm damage claim getting lowballed? We've worked with every major carrier in Texas. We know what to document and what to push back on — and we handle it so you don't have to.</p>
+          </div>
+        </div>
+        <div class="why-item fade-up delay-1" role="listitem">
+          <span class="why-n" aria-hidden="true">02.</span>
+          <div>
+            <h4>No subs. Our crew, your roof.</h4>
+            <p>We don't pass your job to someone we found last week. Same crew that answers your call does the work. That's how we back a 25-year workmanship warranty.</p>
+          </div>
+        </div>
+        <div class="why-item fade-up delay-2" role="listitem">
+          <span class="why-n" aria-hidden="true">03.</span>
+          <div>
+            <h4>Straight talk, no pressure</h4>
+            <p>If your roof doesn't need replacing, we'll tell you. We'd rather earn your trust now than chase a sale we haven't deserved.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<div class="container">
+  <section class="section section-alt" id="faq" aria-labelledby="faq-heading">
+    <div class="faq-intro" data-reveal>
+      <div class="section-label">Common Questions</div>
+      <h2 class="section-h2" id="faq-heading">Questions homeowners always ask.</h2>
+      <p>Straight answers to what we hear most. Don't see yours? Ask Scout below or book a free inspection.</p>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item" data-reveal>
+        <summary>
+          <span>How much does a full roof replacement cost?</span>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10"/></svg></span>
+        </summary>
+        <div class="faq-body">Houston shingle replacements typically run $8,000–$15,000 for 2,000–2,500 sq ft homes. Metal runs $15,000–$25,000 and lasts 40–70 years. Tile runs $20,000–$30,000. Final price depends on slope, decking condition, and material choice — we give a written line-item quote after a free inspection.</div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary>
+          <span>Will my insurance cover storm or hail damage?</span>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10"/></svg></span>
+        </summary>
+        <div class="faq-body">Most Texas homeowner policies cover storm and hail damage if filed within the deadline. We document the damage with photos, write the scope, and work directly with your adjuster — we've handled claims with every major carrier in Texas. You pay your deductible; we handle the rest.</div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary>
+          <span>How long does a roof replacement take?</span>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10"/></svg></span>
+        </summary>
+        <div class="faq-body">Most Houston homes (2,000–2,500 sq ft) take 1–2 days from tear-off to cleanup. Complex roofs or weather delays can push it to 3 days. We start early, work efficiently, and do magnetic nail sweeps every evening so your yard stays safe.</div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary>
+          <span>What does your 25-year warranty cover?</span>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10"/></svg></span>
+        </summary>
+        <div class="faq-body">Two warranties in writing: a 25-year workmanship warranty from us (covers any install defect we caused) plus the manufacturer's material warranty (typically 30–50 years on premium shingles). Both transfer if you sell the home. One call, one of us picks up.</div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary>
+          <span>Are inspections really free?</span>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10"/></svg></span>
+        </summary>
+        <div class="faq-body">Yes — no charge, no obligation. We climb up, take photos, document everything, and email you a report. If you don't need a roof, we'll tell you. We'd rather earn trust now than chase a sale we haven't deserved.</div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary>
+          <span>What materials do you use?</span>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10"/></svg></span>
+        </summary>
+        <div class="faq-body">GAF and Owens Corning architectural shingles for most jobs (they hold up in Houston heat and storms). Standing-seam metal from premium TX suppliers when going metal. Synthetic underlayment, ice-and-water shield at valleys, and proper ridge vent — never the cheap stuff.</div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary>
+          <span>Are you licensed and insured in Texas?</span>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10"/></svg></span>
+        </summary>
+        <div class="faq-body">Fully licensed (TX License #ROO-024517), bonded, and carry $2M general liability plus workers' comp on every crew member. Certificates available on request — never hire a roofer who can't show you both.</div>
+      </details>
+
+      <details class="faq-item" data-reveal>
+        <summary>
+          <span>How fast can you get out for an inspection?</span>
+          <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10"/></svg></span>
+        </summary>
+        <div class="faq-body">Same-week, usually within 2–3 business days. If you just had a storm or active leak, we'll prioritize you — call or book online and we'll work you in as fast as we can.</div>
+      </details>
+    </div>
+  </section>
+</div>
+
+<div class="divider" aria-hidden="true"></div>
+
+<!-- STORM ALERT DEMO -->
+<div class="container">
+  <section class="section section-alt" id="storm-alert" aria-labelledby="storm-heading">
+
+    <div class="section-label fade-up">Live Demo</div>
+    <h2 class="section-h2 fade-up delay-1" id="storm-heading">
+      What fires when hail<br>hits your neighborhood.
+    </h2>
+
+    <div class="storm-layout">
+
+      <!-- LEFT: controls + workflow + lead form -->
+      <div class="fade-up delay-2">
+        <p style="color:var(--body);font-family:'Inter',sans-serif;font-size:0.92rem;line-height:1.7;max-width:500px;">
+          This is the exact automation Hiraya builds for roofing contractors. NOAA hail + wind feeds, your past customer list, and personalized SMS — fires the moment a storm hits a zip you serve. Most contractors learn about damage on the 6am news. Yours will already have 12 inspections booked.
+        </p>
+        <p style="color:var(--muted);font-family:'Inter',sans-serif;font-size:0.82rem;line-height:1.6;max-width:500px;margin-top:12px;">
+          Try it below. Type any 5-digit zip, hit Run, and watch the workflow execute in real time on the phone to the right.
+        </p>
+
+        <div class="storm-input-row">
+          <input
+            class="storm-zip" id="stormZip" type="text" inputmode="numeric"
+            maxlength="5" placeholder="Any zip — e.g. 77002"
+            aria-label="Enter zip code"
+          />
+          <button class="storm-run-btn" id="stormRunBtn" onclick="runStormDemo()">
+            Run Demo →
+          </button>
+        </div>
+
+        <!-- Workflow nodes -->
+        <div class="storm-flow" id="stormFlow" aria-live="polite" aria-label="Storm alert workflow steps">
+
+          <div class="storm-node" id="stormNode1">
+            <div class="storm-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M13 16l3-5H13l1-4-5 7h3l-1 4 4-2z"/><path d="M6 19a4 4 0 0 1-.667-7.938 5.5 5.5 0 0 1 10.334 0A4 4 0 0 1 18 19"/></svg>
+            </div>
+            <div>
+              <div class="storm-node-label">Weather Trigger</div>
+              <div class="storm-node-status" id="stormStatus1">Waiting for zip code…</div>
+            </div>
+          </div>
+
+          <div class="storm-connector" id="stormConn1" aria-hidden="true"></div>
+
+          <div class="storm-node" id="stormNode2">
+            <div class="storm-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <div class="storm-node-label">Pull Customer List</div>
+              <div class="storm-node-status" id="stormStatus2">Waiting…</div>
+            </div>
+          </div>
+
+          <div class="storm-connector" id="stormConn2" aria-hidden="true"></div>
+
+          <div class="storm-node" id="stormNode3">
+            <div class="storm-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div>
+              <div class="storm-node-label">SMS Alerts Sent</div>
+              <div class="storm-node-status" id="stormStatus3">Waiting…</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Result badge -->
+        <div class="storm-result" id="stormResult" aria-live="polite">
+          <div class="storm-result-headline">✓ 4 past customers notified in 11 seconds</div>
+          <div class="storm-result-sub">Runs automatically. Nobody touches a phone.</div>
+        </div>
+
+        <!-- Lead form -->
+        <div class="storm-lead-form" id="stormLeadForm">
+          <div class="storm-lead-form-heading">Want this running for your business?</div>
+          <form id="stormForm" class="storm-fields">
+            <input type="hidden" name="_subject" value="Storm Alert Demo Lead — Hiraya Systems" />
+            <input type="hidden" name="demo_zip" id="stormZipHidden" value="" />
+            <input type="hidden" name="_autoresponse" value="Thanks for trying the Storm Alert demo! Ready to get this set up for your roofing business? Book a free 30-min call: https://cal.com/hiraya-systems-ajfryr/hiraya-booking" />
+            <input class="storm-field" type="text"  name="name"          placeholder="Your name"                  required />
+            <input class="storm-field" type="tel"   name="phone"         placeholder="Phone number"               required />
+            <input class="storm-field" type="email" name="email"         placeholder="Email address"              required />
+            <input class="storm-field" type="text"  name="business_name" placeholder="Business name (optional)"          />
+            <button class="storm-submit" type="submit" id="stormSubmitBtn">Get This Set Up →</button>
+          </form>
+          <div class="storm-form-success" id="stormFormSuccess">
+            You're in. We'll reach out within 24 hours. —
+            <a href="https://cal.com/hiraya-systems-ajfryr/hiraya-booking" target="_blank" rel="noopener"
+               style="color:var(--accent);text-decoration:underline;">or book now</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: phone mockup -->
+      <div class="storm-phone-wrap fade-up delay-3" aria-hidden="true">
+        <div class="storm-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-statusbar">
+            <span>9:41</span>
+            <span>●●●</span>
+          </div>
+          <div class="phone-header">
+            <div class="phone-contact-dot">LSR</div>
+            <div>
+              <div class="phone-contact-name">Lone Star Roofing</div>
+              <div class="phone-contact-sub">text message</div>
+            </div>
+          </div>
+          <div class="phone-messages" id="phoneMessages"></div>
+        </div>
+        <p class="phone-caption">Simulated — your real customer list gets these</p>
+      </div>
+
+    </div>
+
+    <!-- How this runs in production -->
+    <div class="storm-explainer fade-up">
+      <div class="storm-explainer-label">How this runs in production</div>
+      <div class="storm-explainer-grid">
+        <div class="storm-step">
+          <div class="storm-step-num">01</div>
+          <div class="storm-step-title">Watches your zone 24/7</div>
+          <div class="storm-step-body">NOAA hail and wind feeds monitor every zip code you serve. Triggers fire on threshold — 1" hail, 60mph gusts, tornado watch. Nobody checks a dashboard.</div>
+        </div>
+        <div class="storm-step">
+          <div class="storm-step-num">02</div>
+          <div class="storm-step-title">Personalizes from your CRM</div>
+          <div class="storm-step-body">Pulls past customers within 5 miles of the alert. Each SMS uses their name, last service date, and a one-tap reply link. Not a blast.</div>
+        </div>
+        <div class="storm-step">
+          <div class="storm-step-num">03</div>
+          <div class="storm-step-title">Routes replies to your inbox</div>
+          <div class="storm-step-body">YES replies get tagged "storm_response" and queued. One click to schedule. Free inspections booked before sunrise — while competitors still answer the phone.</div>
+        </div>
+      </div>
+      <div class="storm-stack">
+        <span class="storm-stack-dot"></span>
+        Built on n8n · Twilio SMS · Google Sheets or your existing CRM · Goes live in 1 week
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- CHATBOT SECTION -->
+<div class="container">
+  <section class="section" id="ask-scout" aria-labelledby="scout-heading">
+    <div class="chat-intro fade-up">
+      <div class="section-label">Ask Scout</div>
+      <h2 class="section-h2" id="scout-heading">Got questions? Scout's got answers.</h2>
+      <p>Scout is our AI, trained on everything about roofing in Houston. Ask about cost, materials, storm damage, timelines, or insurance — real answers, 24/7.</p>
+    </div>
+
+    <div class="chat-embed">
+      <!-- Quick-start topics -->
+      <div class="chat-topics fade-up delay-1" aria-label="Common questions">
+        <p class="chat-topics-label">Common questions — click to ask</p>
+
+        <button class="chat-topic-btn" onclick="sendToEmbed('Hail just hit my neighborhood. What should I do first?')">
+          <div class="chat-topic-text">
+            <strong>Hail just hit my neighborhood</strong>
+            <span>What to do, how fast to act</span>
+          </div>
+          <svg class="topic-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <button class="chat-topic-btn" onclick="sendToEmbed('How much does a full roof replacement cost in Houston?')">
+          <div class="chat-topic-text">
+            <strong>Cost of roof replacement</strong>
+            <span>Rough ranges by material and home size</span>
+          </div>
+          <svg class="topic-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <button class="chat-topic-btn" onclick="sendToEmbed('How long does a roof replacement take from inspection to done?')">
+          <div class="chat-topic-text">
+            <strong>How long does it take?</strong>
+            <span>Timeline from inspection to completion</span>
+          </div>
+          <svg class="topic-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <button class="chat-topic-btn" onclick="sendToEmbed('Do you help with insurance claims for storm damage?')">
+          <div class="chat-topic-text">
+            <strong>Insurance claim help</strong>
+            <span>What we handle on your behalf</span>
+          </div>
+          <svg class="topic-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <button class="chat-topic-btn" onclick="sendToEmbed('What\\'s the difference between shingle, metal, and tile roofing?')">
+          <div class="chat-topic-text">
+            <strong>Shingle vs metal vs tile</strong>
+            <span>Material comparison for Houston homes</span>
+          </div>
+          <svg class="topic-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Embedded chat window -->
+      <div class="chat-window fade-up delay-2" role="region" aria-label="Chat with Scout">
+        <div class="chat-header">
+          <div class="chat-avatar" aria-hidden="true">S</div>
+          <div class="chat-header-info">
+            <strong>Scout</strong>
+            <span><span class="status-dot" aria-hidden="true"></span>Online · Lone Star Roofing</span>
+          </div>
+        </div>
+        <div class="chat-messages" id="embedMessages" aria-live="polite" aria-label="Chat messages">
+          <div class="msg scout">
+            <div class="msg-name">Scout</div>
+            <div class="msg-bubble">Hey! I'm Scout — Lone Star Roofing's AI. Ask me anything about your roof: cost estimates, materials, storm damage, or how to book a free inspection. What's going on?</div>
+          </div>
+        </div>
+        <div class="typing-indicator" id="embedTyping" aria-label="Scout is typing">
+          <div class="typing-bubble" aria-hidden="true">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <label for="embedInput" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Message Scout</label>
+          <textarea class="chat-input" id="embedInput" placeholder="Ask about your roof…" rows="1" aria-label="Message Scout"></textarea>
+          <button class="chat-send" id="embedSend" aria-label="Send message">
+            <svg fill="none" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- MORE TOOLS -->
+<div class="container">
+  <section class="section" id="more-tools" aria-labelledby="tools-heading">
+    <div class="section-label fade-up">Built for roofers</div>
+    <h2 class="section-h2 fade-up delay-1" id="tools-heading">
+      Every tool above —<br>plus more we ship.
+    </h2>
+    <p style="font-family:'Inter',sans-serif;color:var(--body);font-size:0.92rem;line-height:1.7;max-width:580px;margin-top:16px;" class="fade-up delay-2">
+      Each is a real production tool Hiraya builds for roofing contractors. Try them live.
+    </p>
+
+    <div class="tools-grid">
+
+      <a href="roofing/" class="tool-card live fade-up delay-2">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 9V5a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v4M3 9h18v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/><path d="M8 13h8M8 17h5"/></svg>
+        </div>
+        <div class="tool-card-tag">Calculator</div>
+        <div class="tool-card-title">Missed-Call Revenue Calculator</div>
+        <div class="tool-card-body">Enter avg job value + missed calls/week → annual revenue lost. The wake-up call most contractors need.</div>
+        <span class="tool-card-link">Try demo <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </a>
+
+      <a href="roofing/quote-generator/" class="tool-card live fade-up delay-3">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 3h18v6H3zM3 11h18v6H3z"/><path d="M7 5v2M7 13v2M13 5h4M13 13h4M13 19h8"/></svg>
+        </div>
+        <div class="tool-card-tag">Estimator</div>
+        <div class="tool-card-title">AI Roof Quote Generator</div>
+        <div class="tool-card-body">Instant material breakdown + price range from sq ft, material, complexity. Saves 30min per estimate.</div>
+        <span class="tool-card-link">Try demo <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </a>
+
+      <a href="roofing/damage-analyzer/" class="tool-card live fade-up delay-4">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35M8 11l2 2 4-4"/></svg>
+        </div>
+        <div class="tool-card-tag">AI Vision</div>
+        <div class="tool-card-title">AI Hail Damage Analyzer</div>
+        <div class="tool-card-body">Upload roof photo. AI flags hail strikes, missing shingles, soft spots. Generates insurance-ready report.</div>
+        <span class="tool-card-link">Try demo <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </a>
+
+      <a href="#storm-alert" class="tool-card fade-up delay-2">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 16l3-5H13l1-4-5 7h3l-1 4 4-2z"/><path d="M6 19a4 4 0 0 1-.667-7.938 5.5 5.5 0 0 1 10.334 0A4 4 0 0 1 18 19"/></svg>
+        </div>
+        <div class="tool-card-tag">Automation</div>
+        <div class="tool-card-title">Storm Alert Automation</div>
+        <div class="tool-card-body">Hail hits a zip → SMS fires to past customers in 60 seconds. NOAA + Twilio + your CRM.</div>
+        <span class="tool-card-link">See above ↑</span>
+      </a>
+
+      <a href="#ask-scout" class="tool-card fade-up delay-3">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="tool-card-tag">AI Chatbot</div>
+        <div class="tool-card-title">24/7 AI Chatbot (Scout)</div>
+        <div class="tool-card-body">Answers homeowner questions, books inspections, escalates urgent leads. Trained on your business.</div>
+        <span class="tool-card-link">See above ↑</span>
+      </a>
+
+      <div class="tool-card fade-up delay-4" style="cursor: default;">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <div class="tool-card-tag">Custom build</div>
+        <div class="tool-card-title">Need something else?</div>
+        <div class="tool-card-body">CRM integrations, route optimizers, review automations, crew dashboards. If a roofer needs it, we build it.</div>
+        <a href="https://cal.com/hiraya-systems-ajfryr/hiraya-booking" target="_blank" rel="noopener" class="tool-card-link">Book a 30-min call →</a>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- FINAL CTA -->
+<section class="cta-section" aria-labelledby="cta-heading">
+  <div class="cta-bg" aria-hidden="true"></div>
+  <div class="section-label fade-up">Ready to Start</div>
+  <h2 class="cta-h2 fade-up delay-1" id="cta-heading">
+    Book your free<br><em>inspection today.</em>
+  </h2>
+  <p class="cta-sub fade-up delay-2">
+    Same-week scheduling. No sales pitch on the roof. Just an honest look at what you've got — and what, if anything, it needs.
+  </p>
+  <a href="https://cal.com/hiraya-systems-ajfryr/hiraya-booking" target="_blank" rel="noopener"
+     class="btn-primary fade-up delay-3"
+     style="display:inline-flex; font-size:1rem; padding:16px 36px;">
+    Book Free Inspection
+    <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+      <path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </a>
+  <p class="cta-guarantee fade-up delay-4">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Licensed &amp; insured in Texas · Zero-pressure guarantee · Responds within 1 business day
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-row1">
+      <div class="footer-logo">LONE STAR <span>ROOFING</span></div>
+      <ul class="footer-links" aria-label="Footer navigation">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#why-us">Why Us</a></li>
+        <li><a href="#ask-scout">Ask Scout</a></li>
+        <li><a href="https://cal.com/hiraya-systems-ajfryr/hiraya-booking" target="_blank" rel="noopener">Book Inspection</a></li>
+      </ul>
+    </div>
+    <div class="footer-row2">
+      <span class="footer-copy">© 2024 Lone Star Roofing · Houston, TX · (713) 555-0194</span>
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </a>
+      </div>
+      <span class="footer-license">TX License #ROO-024517</span>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING CHAT FAB -->
+<button class="chat-fab" id="chatFab" aria-label="Open chat with Scout" aria-expanded="false">
+  <div class="fab-badge" aria-hidden="true"></div>
+  <svg class="fab-chat" fill="none" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+  </svg>
+  <svg class="fab-close" fill="none" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
+
+<!-- FLOATING CHAT WINDOW -->
+<div class="chat-float" id="chatFloat" role="dialog" aria-label="Chat with Scout" aria-modal="false">
+  <div class="chat-header">
+    <div class="chat-avatar" aria-hidden="true">S</div>
+    <div class="chat-header-info">
+      <strong>Scout</strong>
+      <span><span class="status-dot" aria-hidden="true"></span>Online · Lone Star Roofing</span>
+    </div>
+  </div>
+  <div class="chat-messages" id="floatMessages" aria-live="polite" aria-label="Chat messages">
+    <div class="msg scout">
+      <div class="msg-name">Scout</div>
+      <div class="msg-bubble">Hey! I'm Scout. Ask me anything about your roof — costs, storm damage, materials, or how to book. What's going on?</div>
+    </div>
+  </div>
+  <div class="typing-indicator" id="floatTyping" aria-label="Scout is typing">
+    <div class="typing-bubble" aria-hidden="true">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  </div>
+  <div class="chat-input-area">
+    <label for="floatInput" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Message Scout</label>
+    <textarea class="chat-input" id="floatInput" placeholder="Ask about your roof…" rows="1" aria-label="Message Scout"></textarea>
+    <button class="chat-send" id="floatSend" aria-label="Send message">
+      <svg fill="none" stroke-width="1.8" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  /* ─── SCOUT SYSTEM PROMPT (passed to API for context) ─── */
+  const SCOUT_HISTORY_SEED = [];
+
+  /* ─── NAV SCROLL ─── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* ─── HAMBURGER ─── */
+  const hamburger   = document.getElementById('hamburger');
+  const mobileMenu  = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const isOpen = hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* Mobile dropdown toggle */
+  const mobDropdownToggle = document.querySelector('.mob-dropdown-toggle');
+  const mobDropdownMenu = document.querySelector('.mob-dropdown-menu');
+  if (mobDropdownToggle) {
+    mobDropdownToggle.addEventListener('click', () => {
+      mobDropdownMenu.classList.toggle('open');
+    });
+    mobDropdownMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobDropdownMenu.classList.remove('open');
+      });
+    });
+  }
+
+  /* ─── FADE-UP OBSERVER ─── */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+  /* ─── REDUCED MOTION CHECK ─── */
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ─── LENIS SMOOTH SCROLL + GSAP COORDINATION ─── */
+  let lenis = null;
+  window.addEventListener('load', () => {
+    if (typeof gsap === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Init Lenis (skip if reduced motion)
+    if (!prefersReducedMotion && typeof Lenis !== 'undefined') {
+      lenis = new Lenis({
+        duration: 0.6,
+        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        smoothTouch: false,
+      });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(time => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    // Hero entrance timeline (skip if reduced motion)
+    if (!prefersReducedMotion) {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      tl.from('.hero-eyebrow', { opacity: 0, y: 20, duration: .7, delay: .3 })
+        .from('.hero-h1',      { opacity: 0, y: 30, duration: .8 }, '-=.4')
+        .from('.hero-sub',     { opacity: 0, y: 20, duration: .7 }, '-=.5')
+        .from('.hero-actions', { opacity: 0, y: 16, duration: .6 }, '-=.4')
+        .from('.hero-trust',   { opacity: 0, x: 30, duration: .8 }, '-=.6');
+    }
+
+    // Batched scroll-triggered stagger on cards/items (skip if reduced motion)
+    if (!prefersReducedMotion) {
+      ScrollTrigger.batch('[data-reveal]', {
+        onEnter: batch => gsap.from(batch, {
+          opacity: 0, y: 40, duration: .7, stagger: 0.08, ease: 'power3.out', overwrite: true
+        }),
+        start: 'top 85%',
+        once: true,
+      });
+    }
+
+    // Hero parallax — bg translates slower than scroll
+    if (!prefersReducedMotion) {
+      gsap.to('.hero-bg-img', {
+        yPercent: 22,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero-section',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.4,
+        },
+      });
+    }
+
+    // Counter animations
+    const formatNum = (val, format) =>
+      format === 'comma' ? Math.floor(val).toLocaleString() : Math.floor(val).toString();
+
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      const target = parseFloat(el.dataset.counter);
+      const suffix = el.dataset.counterSuffix || '';
+      const format = el.dataset.counterFormat || '';
+      if (prefersReducedMotion) {
+        el.textContent = formatNum(target, format) + suffix;
+        return;
+      }
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 88%',
+        once: true,
+        onEnter: () => {
+          const obj = { val: 0 };
+          gsap.to(obj, {
+            val: target,
+            duration: 1.6,
+            ease: 'power2.out',
+            onUpdate: () => { el.textContent = formatNum(obj.val, format) + suffix; },
+            onComplete: () => { el.textContent = formatNum(target, format) + suffix; },
+          });
+        },
+      });
+    });
+
+    // Before/after sliders
+    document.querySelectorAll('[data-ba-slider]').forEach(slider => {
+      const after  = slider.querySelector('.ba-after');
+      const handle = slider.querySelector('.ba-handle');
+      if (!after || !handle) return;
+      let active = false;
+
+      const setPos = clientX => {
+        const rect = slider.getBoundingClientRect();
+        let pos = ((clientX - rect.left) / rect.width) * 100;
+        pos = Math.max(0, Math.min(100, pos));
+        after.style.clipPath = `inset(0 0 0 ${pos}%)`;
+        handle.style.left = pos + '%';
+      };
+
+      slider.addEventListener('pointerdown', e => {
+        active = true;
+        slider.setPointerCapture(e.pointerId);
+        setPos(e.clientX);
+      });
+      slider.addEventListener('pointermove', e => { if (active) setPos(e.clientX); });
+      slider.addEventListener('pointerup',   e => { active = false; try { slider.releasePointerCapture(e.pointerId); } catch {} });
+      slider.addEventListener('pointercancel', () => { active = false; });
+
+      // Initial reveal animation when scrolled into view (skip if reduced motion)
+      if (!prefersReducedMotion) {
+        ScrollTrigger.create({
+          trigger: slider,
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            const obj = { p: 50 };
+            gsap.to(obj, {
+              p: 70, duration: 1.2, ease: 'power2.inOut',
+              yoyo: true, repeat: 1,
+              onUpdate: () => {
+                after.style.clipPath = `inset(0 0 0 ${obj.p}%)`;
+                handle.style.left = obj.p + '%';
+              },
+            });
+          },
+        });
+      }
+    });
+
+    // Divider gleam — animate on scroll into view
+    document.querySelectorAll('.divider').forEach(div => {
+      ScrollTrigger.create({
+        trigger: div,
+        start: 'top 90%',
+        once: true,
+        onEnter: () => div.classList.add('gleam'),
+      });
+    });
+
+    // Marquee — JS pixel-driven loop (no animation-duration jitter)
+    {
+      const track = document.querySelector('.marquee-track');
+      if (track) {
+        const BASE = 1.2; // px per frame at 60fps
+        let pos = 0;
+        let vel = BASE;
+        let targetVel = BASE;
+        let halfW = 0;
+
+        const measure = () => { halfW = track.scrollWidth / 2; };
+        measure();
+        window.addEventListener('resize', measure, { passive: true });
+
+        if (!prefersReducedMotion) {
+          let lastY = window.scrollY;
+          window.addEventListener('scroll', () => {
+            const dy = Math.abs(window.scrollY - lastY);
+            lastY = window.scrollY;
+            targetVel = BASE + Math.min(dy * 0.12, 4);
+          }, { passive: true });
+        }
+
+        const tick = () => {
+          vel += (targetVel - vel) * 0.08;
+          targetVel += (BASE - targetVel) * 0.04;
+          pos -= vel;
+          if (Math.abs(pos) >= halfW) pos += halfW;
+          track.style.transform = `translateX(${pos}px)`;
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }
+
+    // Magnetic buttons — pull toward cursor
+    if (!prefersReducedMotion && window.matchMedia('(pointer:fine)').matches) {
+      const magneticSelector = '.btn-primary, .nav-cta';
+      const STRENGTH = 0.28; // 28% of cursor offset
+      const MAX = 10;        // max px translation
+      document.querySelectorAll(magneticSelector).forEach(btn => {
+        const onMove = e => {
+          const rect = btn.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          let dx = (e.clientX - cx) * STRENGTH;
+          let dy = (e.clientY - cy) * STRENGTH;
+          dx = Math.max(-MAX, Math.min(MAX, dx));
+          dy = Math.max(-MAX, Math.min(MAX, dy));
+          gsap.to(btn, { x: dx, y: dy, duration: 0.4, ease: 'power3.out' });
+        };
+        const onLeave = () => {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+        };
+        btn.addEventListener('mousemove', onMove);
+        btn.addEventListener('mouseleave', onLeave);
+      });
+    }
+  });
+
+  /* ─── CHAT UTILITIES ─── */
+  function appendMsg(container, role, text) {
+    const wrap   = document.createElement('div');
+    wrap.className = 'msg ' + role;
+    if (role === 'scout') {
+      const name = document.createElement('div');
+      name.className = 'msg-name';
+      name.textContent = 'Scout';
+      wrap.appendChild(name);
+    }
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.textContent = text;
+    wrap.appendChild(bubble);
+    container.appendChild(wrap);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function showTyping(typingEl, container) {
+    container.appendChild(typingEl);
+    typingEl.classList.add('active');
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function hideTyping(typingEl) {
+    typingEl.classList.remove('active');
+    if (typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  }
+
+  async function sendMessage(input, messagesEl, typingEl, historyArr, sendBtn) {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.style.height = 'auto';
+    if (sendBtn) { sendBtn.disabled = true; }
+
+    appendMsg(messagesEl, 'user', text);
+    showTyping(typingEl, messagesEl);
+
+    const userMsg = { role: 'user', content: text };
+
+    try {
+      const res = await fetch('/api/chat-scout', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ message: text, history: historyArr }),
+      });
+
+      hideTyping(typingEl);
+
+      if (!res.ok) throw new Error('API ' + res.status);
+      const data  = await res.json();
+      const reply = data.reply || 'Sorry, something went wrong. Try calling us at (713) 555-0194.';
+      appendMsg(messagesEl, 'scout', reply);
+      historyArr.push(userMsg, { role: 'assistant', content: reply });
+    } catch {
+      hideTyping(typingEl);
+      appendMsg(messagesEl, 'scout',
+        'Having trouble connecting right now. You can book your free inspection at cal.com/hiraya-systems-ajfryr/hiraya-booking or call (713) 555-0194.');
+    } finally {
+      if (sendBtn) { sendBtn.disabled = false; }
+    }
+  }
+
+  /* ─── EMBED CHAT ─── */
+  const embedMessages = document.getElementById('embedMessages');
+  const embedTyping   = document.getElementById('embedTyping');
+  const embedInput    = document.getElementById('embedInput');
+  const embedSend     = document.getElementById('embedSend');
+  const embedHistory  = [];
+
+  embedSend.addEventListener('click', () =>
+    sendMessage(embedInput, embedMessages, embedTyping, embedHistory, embedSend));
+
+  embedInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(embedInput, embedMessages, embedTyping, embedHistory, embedSend);
+    }
+  });
+  embedInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  });
+
+  /* ─── TOPIC SHORTCUT ─── */
+  function sendToEmbed(text) {
+    document.getElementById('ask-scout').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      embedInput.value = text;
+      embedInput.dispatchEvent(new Event('input'));
+      sendMessage(embedInput, embedMessages, embedTyping, embedHistory, embedSend);
+    }, 500);
+  }
+
+  /* ─── STORM ALERT DEMO ─── */
+  const STORM_MSGS = [
+    { name: 'Mike R.',   text: 'Hey Mike — hail was just reported near {ZIP}. We offer free damage inspections, same week. Want us to swing by? → cal.com/hiraya-systems-ajfryr/hiraya-booking' },
+    { name: 'Linda C.',  text: 'Linda, storm alert for your area ({ZIP}). Quick free inspection, no obligation. Lone Star will be in your neighborhood this week.' },
+    { name: 'Marcus T.', text: 'Marcus — hail near {ZIP} tonight. Your roof may have damage. Free inspection available now. Just reply YES.' },
+    { name: 'Diana F.',  text: 'Hi Diana! Storm activity near your home ({ZIP}). Grab your free roof check before the backlog fills up: cal.com/hiraya-systems-ajfryr/hiraya-booking' },
+  ];
+
+  let stormRunning = false;
+
+  function stormDelay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  function resetStorm() {
+    ['stormNode1','stormNode2','stormNode3'].forEach(id =>
+      document.getElementById(id).classList.remove('active'));
+    ['stormConn1','stormConn2'].forEach(id =>
+      document.getElementById(id).classList.remove('active'));
+    document.getElementById('stormStatus1').textContent = 'Waiting for zip code…';
+    document.getElementById('stormStatus2').textContent = 'Waiting…';
+    document.getElementById('stormStatus3').textContent = 'Waiting…';
+    document.getElementById('stormResult').classList.remove('visible');
+    document.getElementById('stormLeadForm').classList.remove('visible');
+    document.getElementById('phoneMessages').innerHTML = '';
+  }
+
+  async function runStormDemo() {
+    const zip = document.getElementById('stormZip').value.trim();
+    if (!/^\d{5}$/.test(zip)) {
+      const input = document.getElementById('stormZip');
+      input.focus();
+      input.style.borderColor = 'rgba(232,53,42,0.7)';
+      setTimeout(() => { input.style.borderColor = ''; }, 1400);
+      return;
+    }
+    if (stormRunning) return;
+    stormRunning = true;
+
+    resetStorm();
+    document.getElementById('stormZipHidden').value = zip;
+
+    const btn = document.getElementById('stormRunBtn');
+    btn.disabled = true;
+    btn.textContent = 'Running…';
+
+    await stormDelay(350);
+    document.getElementById('stormNode1').classList.add('active');
+    document.getElementById('stormStatus1').textContent = `Hail detected near ${zip}`;
+    await stormDelay(200);
+    document.getElementById('stormConn1').classList.add('active');
+
+    await stormDelay(800);
+    document.getElementById('stormNode2').classList.add('active');
+    document.getElementById('stormStatus2').textContent = '247 past customers matched';
+    await stormDelay(200);
+    document.getElementById('stormConn2').classList.add('active');
+
+    await stormDelay(800);
+    document.getElementById('stormNode3').classList.add('active');
+    document.getElementById('stormStatus3').textContent = 'Sending texts…';
+
+    const screen = document.getElementById('phoneMessages');
+    for (let i = 0; i < STORM_MSGS.length; i++) {
+      await stormDelay(520);
+      const m = STORM_MSGS[i];
+      const bubble = document.createElement('div');
+      bubble.className = 'sms-bubble';
+      bubble.innerHTML = `<span class="sms-sender">${m.name}</span>${m.text.replace(/\{ZIP\}/g, zip)}`;
+      screen.appendChild(bubble);
+      screen.scrollTop = screen.scrollHeight;
+      requestAnimationFrame(() => requestAnimationFrame(() => bubble.classList.add('visible')));
+    }
+
+    await stormDelay(700);
+    document.getElementById('stormStatus3').textContent = '4 texts delivered';
+    document.getElementById('stormResult').classList.add('visible');
+    await stormDelay(250);
+    document.getElementById('stormLeadForm').classList.add('visible');
+
+    btn.disabled = false;
+    btn.textContent = 'Run Again →';
+    stormRunning = false;
+  }
+
+  document.getElementById('stormForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('stormSubmitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    const formData = new FormData(e.target);
+    try {
+      const res = await fetch('https://formspree.io/f/mrejokod', {
+        method: 'POST', body: formData,
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) {
+        document.getElementById('stormForm').style.display = 'none';
+        document.getElementById('stormFormSuccess').style.display = 'block';
+      } else { throw new Error(); }
+    } catch {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Something went wrong — try again';
+    }
+  });
+
+  /* ─── FLOAT CHAT ─── */
+  const chatFab       = document.getElementById('chatFab');
+  const chatFloat     = document.getElementById('chatFloat');
+  const floatMessages = document.getElementById('floatMessages');
+  const floatTyping   = document.getElementById('floatTyping');
+  const floatInput    = document.getElementById('floatInput');
+  const floatSend     = document.getElementById('floatSend');
+  const floatHistory  = [];
+  let   chatOpen      = false;
+
+  chatFab.addEventListener('click', () => {
+    chatOpen = !chatOpen;
+    chatFab.classList.toggle('open', chatOpen);
+    chatFloat.classList.toggle('open', chatOpen);
+    chatFab.setAttribute('aria-expanded', String(chatOpen));
+    if (chatOpen) setTimeout(() => floatInput.focus(), 260);
+  });
+
+  floatSend.addEventListener('click', () =>
+    sendMessage(floatInput, floatMessages, floatTyping, floatHistory, floatSend));
+
+  floatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(floatInput, floatMessages, floatTyping, floatHistory, floatSend);
+    }
+  });
+  floatInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  });
+</script>
+</body>
+</html>
