@@ -198,13 +198,19 @@
     }
     .dropdown-toggle:hover { color: var(--white); }
     .dropdown-menu {
-      display: none; position: absolute; top: 100%; left: 0;
+      position: absolute; top: 100%; left: 0;
       list-style: none; background: rgba(8,8,8,0.95);
       border: 1px solid var(--border); border-radius: 6px;
-      padding: 4px 0; margin-top: 2px; min-width: 160px;
+      padding: 8px 0; margin-top: 0; min-width: 160px;
       backdrop-filter: blur(8px); z-index: 1000;
+      opacity: 0; pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 0.15s, transform 0.15s;
     }
-    .nav-dropdown:hover .dropdown-menu { display: block; }
+    .dropdown-menu.open {
+      opacity: 1; pointer-events: auto;
+      transform: translateY(0);
+    }
     .dropdown-menu li a {
       display: block; padding: 10px 16px;
       font-family: 'Inter', sans-serif;
@@ -2584,6 +2590,20 @@
       hamburger.setAttribute('aria-expanded', 'false');
     });
   });
+
+  /* Desktop dropdown — JS hover with close delay so gap doesn't dismiss it */
+  const navDropdown = document.querySelector('.nav-dropdown');
+  const dropMenu = document.querySelector('.dropdown-menu');
+  let closeTimer;
+  if (navDropdown && dropMenu) {
+    navDropdown.addEventListener('mouseenter', () => {
+      clearTimeout(closeTimer);
+      dropMenu.classList.add('open');
+    });
+    navDropdown.addEventListener('mouseleave', () => {
+      closeTimer = setTimeout(() => dropMenu.classList.remove('open'), 150);
+    });
+  }
 
   /* Mobile dropdown toggle */
   const mobDropdownToggle = document.querySelector('.mob-dropdown-toggle');
