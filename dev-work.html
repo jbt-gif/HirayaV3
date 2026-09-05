@@ -162,6 +162,22 @@
     padding: 0.28rem 0.7rem;
   }
 
+  .webdesign-note {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .webdesign-note p {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .webdesign-note a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .webdesign-note a:hover { text-decoration: underline; }
+
   @media (max-width: 760px) {
     .case { grid-template-columns: 1fr; }
     .case-media { border-right: none; border-bottom: 1px solid var(--border); }
@@ -230,7 +246,29 @@
       </div>
     </div>
 
+    <div class="case">
+      <div class="case-media">
+        <img src="roofing-analyzer-screenshot.png" alt="AI roof damage analyzer tool, demo brand" />
+      </div>
+      <div class="case-body">
+        <div class="case-type">AI Integration · Serverless Function</div>
+        <h2>AI Roof Damage Analyzer</h2>
+        <p>An industry-demo tool built to show what's possible for a roofing-contractor vertical, not a named client. Upload a roof photo, and a Vercel serverless function sends it to an AI vision model with a structured prompt, returning insurance-ready findings — severity, location, and annotated coordinates as JSON.</p>
+        <div class="catch-label">What it demonstrates</div>
+        <ul class="catch-list">
+          <li>Prompt engineering as a real engineering artifact — a structured system prompt with strict JSON output rules, not a chat-window experiment.</li>
+          <li>CORS-locked serverless API — only approved origins can call it.</li>
+        </ul>
+        <div class="stack"><span>Vercel Functions</span><span>AI Vision API</span><span>JavaScript</span></div>
+      </div>
+    </div>
+
   </div>
+
+  <div class="webdesign-note">
+    <p>I also design and build marketing websites, landing pages, and funnels — see more at <a href="https://hirayasystems.tech">hirayasystems.tech</a> and <a href="https://jbautomations.cloud">jbautomations.cloud</a>.</p>
+  </div>
+
 </div>
 </body>
 </html>
