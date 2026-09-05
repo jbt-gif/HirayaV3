@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Full-Stack Development — Hiraya Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Unbounded:wght@700;800;900&family=Inter:wght@800;900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #000000;
+    --card: #0f0f0f;
+    --border: rgba(255,255,255,0.07);
+    --white: #f0ede8;
+    --body: rgba(255,255,255,0.62);
+    --muted: rgba(255,255,255,0.38);
+    --accent: #2dd4bf;
+    --fs-label: 0.72rem;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 4.5rem 2rem 6rem; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: var(--fs-label);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    margin-bottom: 2.5rem;
+  }
+  .back-link:hover { color: var(--white); }
+
+  .eyebrow {
+    font-size: var(--fs-label);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.1rem;
+  }
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    line-height: 1.08;
+    max-width: 760px;
+    margin-bottom: 1.4rem;
+  }
+  .lede {
+    color: var(--body);
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin-bottom: 3.5rem;
+  }
+
+  .cases { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .case {
+    border: 1px solid rgba(255,255,255,0.14);
+    border-top-color: rgba(255,255,255,0.28);
+    border-radius: 22px;
+    background: linear-gradient(160deg, #0a0a0a 0%, #000000 60%);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.9), 0 8px 20px rgba(0,0,0,0.6);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 42% 58%;
+  }
+  .case.text-only { grid-template-columns: 1fr; }
+
+  .case-media {
+    background: #050505;
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+  }
+  .case-media img {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  }
+
+  .case-body { padding: 2rem 2.2rem; }
+
+  .case-type {
+    font-size: var(--fs-label);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .case-body h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--white);
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.01em;
+  }
+  .case-body p {
+    color: var(--body);
+    font-size: 0.92rem;
+    margin-bottom: 1rem;
+  }
+
+  .catch-label {
+    font-size: var(--fs-label);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+  .catch-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .catch-list li {
+    font-size: 0.86rem;
+    color: var(--body);
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .catch-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .stack span {
+    font-size: 0.72rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.28rem 0.7rem;
+  }
+
+  @media (max-width: 760px) {
+    .case { grid-template-columns: 1fr; }
+    .case-media { border-right: none; border-bottom: 1px solid var(--border); }
+    .wrap { padding: 3rem 1.25rem 4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back-link" href="/">&larr; Hiraya Systems</a>
+
+  <div class="eyebrow">Full-Stack Development</div>
+  <h1>Production web apps, built fast with AI — verified before they ship.</h1>
+  <p class="lede">We use AI coding agents to move quickly, then run a dedicated review pass to catch what AI-generated code misses — before it touches real users or real money.</p>
+
+  <div class="cases">
+
+    <div class="case">
+      <div class="case-media">
+        <img src="apartment-portfolio-screenshot.png" alt="Tenant and rent management dashboard, synthetic data" />
+      </div>
+      <div class="case-body">
+        <div class="case-type">Live · Real Users · Real Payments</div>
+        <h2>Tenant &amp; Rent Management Platform</h2>
+        <p>A live property-management system for a real apartment operator — tenant billing, e-wallet payment reconciliation, contract tracking, automated audit logs.</p>
+        <div class="catch-label">Caught before it shipped</div>
+        <ul class="catch-list">
+          <li>A step-up verification gate for a sensitive account action fell back to "allow" instead of "block" when unconfigured — hard-blocked instead.</li>
+          <li>A "placeholder" payment image was actually a real, live payment destination reused from an old demo — traced and fixed everywhere it was referenced.</li>
+          <li>Five API routes were missing an explicit ownership check — caught in a pre-launch audit, not the initial build.</li>
+        </ul>
+        <div class="stack"><span>Next.js</span><span>Supabase</span><span>Postgres + RLS</span><span>Sentry</span><span>Vercel</span></div>
+      </div>
+    </div>
+
+    <div class="case text-only">
+      <div class="case-body">
+        <div class="case-type">Client Engagement · Staged, Invoiced Delivery</div>
+        <h2>Gift-Scheduling SaaS Platform</h2>
+        <p>Built and maintained for a client — scheduled gift orders, client management, Stripe billing. Delivered in staged, invoiced phases with a dedicated security audit as its own line item.</p>
+        <div class="catch-label">Caught before it shipped</div>
+        <ul class="catch-list">
+          <li>Raw database error messages were leaking to API clients across multiple routes — fixed everywhere after grepping the full codebase, not just the reported route.</li>
+          <li>An unauthenticated account-overwrite bug in the signup flow — closed.</li>
+          <li>Known dependency vulnerabilities — patched.</li>
+        </ul>
+        <div class="stack"><span>Next.js</span><span>Supabase</span><span>Stripe</span><span>Sentry</span><span>Vercel</span></div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="case-media">
+        <img src="inventory-overview-screenshot.png" alt="Multi-branch inventory dashboard, synthetic data" />
+      </div>
+      <div class="case-body">
+        <div class="case-type">Client-Commissioned Build</div>
+        <h2>Fraud-Resistant Inventory Management System</h2>
+        <p>A multi-branch inventory system built around a specific client's real business — receiving, damage &amp; disposal, low-stock alerts, exception reporting. Before writing implementation code, we ran an adversarial fraud audit against our own system design and fixed what we found first.</p>
+        <div class="catch-label">The audit, before the build</div>
+        <ul class="catch-list">
+          <li>35 findings — 14 critical, 12 high, 7 medium, 2 low — each with a real attack scenario.</li>
+          <li>Every finding paired with a system-enforced control, not a policy note nobody follows.</li>
+        </ul>
+        <div class="stack"><span>Next.js</span><span>Prisma</span><span>Postgres</span><span>NextAuth</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
