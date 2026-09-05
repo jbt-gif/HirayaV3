@@ -3,12 +3,38 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Full-Stack Development — Hiraya Systems</title>
+<title>Full-Stack Development — Bernard Tabanao</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Unbounded:wght@700;800;900&family=Inter:wght@800;900&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .corner-glow-wrap { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 3; }
+  .corner-glow {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    filter: blur(130px);
+    opacity: 0.18;
+    animation: cornerPulse 10s ease-in-out infinite alternate;
+  }
+  .corner-glow.tl {
+    top: -120px; left: -120px; width: 400px; height: 400px;
+    background: conic-gradient(from 0deg, #ff0080,#ff6600,#ffff00,#00ff88,#0088ff,#8800ff,#ff0080);
+  }
+  .corner-glow.br {
+    bottom: -120px; right: -120px; width: 340px; height: 340px;
+    background: conic-gradient(from 180deg, #00ffcc,#0066ff,#cc00ff,#ff0066,#ff8800,#00ffcc);
+    animation-delay: -5s;
+  }
+  @keyframes cornerPulse {
+    0%   { opacity: 0.28; transform: scale(1)    rotate(0deg); }
+    100% { opacity: 0.42; transform: scale(1.1)  rotate(22deg); }
+  }
+  @media (max-width: 768px) {
+    .corner-glow { filter: blur(45px); }
+    .corner-glow.tl { filter: blur(55px) saturate(0.40) brightness(0.6); width: 320px; height: 320px; opacity: 0.02; }
+  }
   :root {
     --bg: #000000;
     --card: #0f0f0f;
@@ -29,20 +55,33 @@
   }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 4.5rem 2rem 6rem; }
 
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--muted);
-    text-decoration: none;
-    font-size: var(--fs-label);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-    margin-bottom: 2.5rem;
-  }
-  .back-link:hover { color: var(--white); }
 
+  .top-links {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+  .top-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .top-links a:hover { color: var(--white); }
+  .top-links span { color: rgba(255,255,255,0.15); }
+  .portfolio-label {
+    font-size: var(--fs-label);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .name-tag {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 1.7rem;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.7rem;
+  }
   .eyebrow {
     font-size: var(--fs-label);
     letter-spacing: 0.18em;
@@ -77,6 +116,19 @@
     overflow: hidden;
     display: grid;
     grid-template-columns: 42% 58%;
+    transform: translateY(0);
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s, border-color 0.35s;
+  }
+  .case:hover {
+    transform: translateY(-10px) scale(1.015);
+    border-top-color: rgba(255,255,255,0.65);
+    border-color: rgba(255,255,255,0.22);
+    box-shadow:
+      0 2px 0 rgba(255,255,255,0.22) inset,
+      0 10px 0 rgba(0,0,0,0.95),
+      0 20px 50px rgba(0,0,0,0.85),
+      0 36px 80px rgba(0,0,0,0.5),
+      0 0 20px rgba(255,255,255,0.06);
   }
   .case.text-only { grid-template-columns: 1fr; }
 
@@ -162,6 +214,224 @@
     padding: 0.28rem 0.7rem;
   }
 
+  /* ── Portfolio carousel (copied exactly from hirayasystems.tech) ── */
+  .funnel-strips {
+    position: relative;
+    z-index: 1;
+    margin-top: 4rem;
+    /* break out of max-width container to full viewport, exactly like hirayasystems.tech */
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+  .portfolio-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+    padding: 0 0 1.5rem;
+  }
+  .ptab {
+    padding: 0.38rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.4);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .ptab:hover { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.07); }
+  .ptab.active { color: var(--white); border-color: rgba(255,255,255,0.32); background: rgba(255,255,255,0.1); }
+  .ptab-divider {
+    display: inline-flex; align-items: center;
+    padding: 0 0.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .ptab-divider::before {
+    content: '';
+    width: 1px; height: 14px;
+    background: rgba(255,255,255,0.16);
+    margin-right: 0.6rem;
+  }
+  .funnel-card {
+    width: calc(33.333vw - 14px);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-top-color: rgba(255,255,255,0.28);
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(160deg, #0a0a0a 0%, #000000 50%);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.9), 0 8px 20px rgba(0,0,0,0.6);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .funnel-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 55%; height: 100%;
+    background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.07) 50%, transparent 100%);
+    transform: translateX(-160%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .funnel-card:hover::before { transform: translateX(300%); transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .funnel-card:hover .funnel-card-preview::after { opacity: 1; }
+  @media (max-width: 768px) { .funnel-card { width: 80vw; } }
+  .portfolio-stage { position: relative; }
+  .pcat-hidden { display: none !important; }
+
+  .funnel-strip-wrap { overflow: hidden; position: relative; }
+  .funnel-strip-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: funnelScroll 36s linear infinite;
+  }
+  .funnel-strip-wrap:hover .funnel-strip-track { animation-play-state: paused; }
+  @keyframes funnelScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .pcat-strip-card {
+    width: calc(33.333vw - 14px);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-top-color: rgba(255,255,255,0.28);
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(160deg, #0a0a0a 0%, #000000 50%);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.9), 0 8px 20px rgba(0,0,0,0.6);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: box-shadow 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.35s;
+  }
+  .pcat-strip-card:hover {
+    border-top-color: rgba(255,255,255,0.65);
+    border-color: rgba(255,255,255,0.22);
+    box-shadow: 0 2px 0 rgba(255,255,255,0.22) inset, 0 10px 0 rgba(0,0,0,0.95), 0 20px 50px rgba(0,0,0,0.85), 0 0 20px rgba(255,255,255,0.06);
+  }
+  .pcat-strip-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 55%; height: 100%;
+    background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.07) 50%, transparent 100%);
+    transform: translateX(-160%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .pcat-strip-card:hover::before {
+    transform: translateX(300%);
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .pcat-strip-card:hover .funnel-card-preview::after { opacity: 1; }
+  @media (max-width: 768px) { .pcat-strip-card { width: 80vw; } }
+  .funnel-card-preview { aspect-ratio: 16/9; height: auto; overflow: hidden; position: relative; }
+  .funnel-card-preview img { width: 100%; height: 100%; object-fit: fill; display: block; }
+  .funnel-card-preview::after {
+    content: 'View →';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.25s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .funnel-card-name {
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+  .pcat-db-card { transition: border-color 0.2s, box-shadow 0.2s; }
+  .pcat-db-card:hover { border-color: rgba(255,255,255,0.28); box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.5); }
+  .pcat-db-preview { position: relative; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .pcat-db-preview img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .pcat-db-card:hover .pcat-db-preview img { transform: scale(1.03); }
+  .pcat-db-preview::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.55) 100%);
+    pointer-events: none;
+  }
+  .pcat-db-tag {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .creds-section {
+    margin-top: 2.5rem;
+    padding: 2.2rem 2.2rem 2rem;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-top-color: rgba(255,255,255,0.28);
+    border-radius: 22px;
+    background: linear-gradient(160deg, #0a0a0a 0%, #000000 60%);
+  }
+  .creds-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--white);
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.01em;
+  }
+  .creds-lede {
+    color: var(--body);
+    font-size: 0.92rem;
+    max-width: 720px;
+    margin-bottom: 1.5rem;
+  }
+  .creds-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+  .cred-item {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .cred-img {
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid var(--border);
+  }
+  .cred-item .cred-name,
+  .cred-item .cred-meta {
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+  }
+  .cred-item .cred-name { margin-top: 0.7rem; }
+  .cred-item .cred-meta { margin-bottom: 0.7rem; }
+  .cred-name { font-size: 0.88rem; font-weight: 600; color: var(--white); margin-bottom: 0.2rem; }
+  .cred-meta { font-size: 0.76rem; color: var(--muted); }
+
   .webdesign-note {
     margin-top: 2.5rem;
     padding-top: 2rem;
@@ -182,17 +452,27 @@
     .case { grid-template-columns: 1fr; }
     .case-media { border-right: none; border-bottom: 1px solid var(--border); }
     .wrap { padding: 3rem 1.25rem 4rem; }
+    .creds-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
+<div class="corner-glow-wrap">
+  <div class="corner-glow tl"></div>
+  <div class="corner-glow br"></div>
+</div>
 <div class="wrap">
 
-  <a class="back-link" href="/">&larr; Hiraya Systems</a>
-
+  <div class="top-links">
+    <a href="https://hirayasystems.tech">hirayasystems.tech</a>
+    <span>·</span>
+    <a href="https://jbautomations.cloud">jbautomations.cloud</a>
+  </div>
+  <div class="portfolio-label">Portfolio</div>
+  <div class="name-tag">Bernard Tabanao</div>
   <div class="eyebrow">Full-Stack Development</div>
-  <h1>Production web apps, built fast with AI — verified before they ship.</h1>
-  <p class="lede">We use AI coding agents to move quickly, then run a dedicated review pass to catch what AI-generated code misses — before it touches real users or real money.</p>
+  <h1>I build fast with AI. Then I try to break it before you find out the hard way.</h1>
+  <p class="lede">I use AI coding agents to move fast — but nothing ships until I've run a separate, adversarial review pass on it. The five builds below are what that process actually catches.</p>
 
   <div class="cases">
 
@@ -203,7 +483,7 @@
       <div class="case-body">
         <div class="case-type">Live · Real Users · Real Payments</div>
         <h2>Tenant &amp; Rent Management Platform</h2>
-        <p>A live property-management system for a real apartment operator — tenant billing, e-wallet payment reconciliation, contract tracking, automated audit logs.</p>
+        <p>A live property-management platform handling real tenants and real money — billing, e-wallet reconciliation, contract tracking, and an audit trail built to survive scrutiny.</p>
         <div class="catch-label">Caught before it shipped</div>
         <ul class="catch-list">
           <li>A step-up verification gate for a sensitive account action fell back to "allow" instead of "block" when unconfigured — hard-blocked instead.</li>
@@ -218,7 +498,7 @@
       <div class="case-body">
         <div class="case-type">Client Engagement · Staged, Invoiced Delivery</div>
         <h2>Gift-Scheduling SaaS Platform</h2>
-        <p>Built and maintained for a client — scheduled gift orders, client management, Stripe billing. Delivered in staged, invoiced phases with a dedicated security audit as its own line item.</p>
+        <p>Built and maintained for a paying client — scheduled gift orders, client management, Stripe billing — delivered in staged, invoiced phases. The client liked the process enough to pay for a dedicated security audit as the next one.</p>
         <div class="catch-label">Caught before it shipped</div>
         <ul class="catch-list">
           <li>Raw database error messages were leaking to API clients across multiple routes — fixed everywhere after grepping the full codebase, not just the reported route.</li>
@@ -236,7 +516,7 @@
       <div class="case-body">
         <div class="case-type">Client-Commissioned Build</div>
         <h2>Fraud-Resistant Inventory Management System</h2>
-        <p>A multi-branch inventory system built around a specific client's real business — receiving, damage &amp; disposal, low-stock alerts, exception reporting. Before writing implementation code, we ran an adversarial fraud audit against our own system design and fixed what we found first.</p>
+        <p>A multi-branch inventory system built for one client's real business — receiving, damage &amp; disposal, low-stock alerts, exception reporting. Before writing a line of implementation code, I tried to defraud my own design.</p>
         <div class="catch-label">The audit, before the build</div>
         <ul class="catch-list">
           <li>35 findings — 14 critical, 12 high, 7 medium, 2 low — each with a real attack scenario.</li>
@@ -253,7 +533,7 @@
       <div class="case-body">
         <div class="case-type">AI Integration · Serverless Function</div>
         <h2>AI Roof Damage Analyzer</h2>
-        <p>An industry-demo tool built to show what's possible for a roofing-contractor vertical, not a named client. Upload a roof photo, and a Vercel serverless function sends it to an AI vision model with a structured prompt, returning insurance-ready findings — severity, location, and annotated coordinates as JSON.</p>
+        <p>An industry-demo tool, not a named client's product. Upload a roof photo — a serverless function and a structured AI prompt return insurance-ready findings in seconds: severity, location, annotated coordinates.</p>
         <div class="catch-label">What it demonstrates</div>
         <ul class="catch-list">
           <li>Prompt engineering as a real engineering artifact — a structured system prompt with strict JSON output rules, not a chat-window experiment.</li>
@@ -263,12 +543,618 @@
       </div>
     </div>
 
+    <div class="case">
+      <div class="case-media">
+        <img src="medspa-screenshot.png" alt="Med spa marketing site, demo brand" />
+      </div>
+      <div class="case-body">
+        <div class="case-type">Website Design · Lead Capture</div>
+        <h2>Med Spa Marketing Site</h2>
+        <p>Another industry demo, not a named client — but the booking form is real, wired to live backends (Google Apps Script + Formspree), not a static mockup dressed up to look functional.</p>
+        <div class="stack"><span>HTML/CSS/JS</span><span>Google Apps Script</span><span>Formspree</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="eyebrow">Our Work</div>
+  <h2 class="creds-title">The rest of the shop.</h2>
+  <p class="creds-lede">Automation builds, AI assistants, site builds, funnels, dashboards — work that doesn't need a full case study to prove itself.</p>
+
+  <div class="funnel-strips">
+  <div class="portfolio-tabs">
+    <button class="ptab" data-cat="automation">Automation</button>
+    <button class="ptab" data-cat="ai">AI Assistant</button>
+    <span class="ptab-divider">Creatives</span>
+    <button class="ptab" data-cat="sites">Site Builds</button>
+    <button class="ptab active" data-cat="funnels">Website Funnels</button>
+    <button class="ptab" data-cat="dashboard">Dashboards</button>
+  </div>
+  <div class="portfolio-stage">
+    <div class="pcat-panel pcat-hidden" data-cat="automation">
+    <div class="funnel-strip-wrap"><div class="funnel-strip-track">
+<div class="pcat-strip-card"><div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+        <rect width="480" height="3" fill="#2dd4bf" opacity="0.85"/>
+        <text x="20" y="22" fill="rgba(45,212,191,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · SALES</text>
+        <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(45,212,191,0.1)" stroke-width="0.5"/>
+        <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text>
+        <text x="180" y="52" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+        <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCORE</text>
+        <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">ACTION</text>
+        <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⬡</text>
+        <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Form Lead</text>
+        <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">New submission</text>
+        <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="126,86 134,90 126,94" fill="rgba(45,212,191,0.45)"/>
+        <rect x="135" y="58" width="90" height="64" rx="8" fill="#031110" stroke="rgba(45,212,191,0.4)" stroke-width="1.2"/>
+        <rect x="135" y="58" width="90" height="2" rx="1" fill="#2dd4bf"/>
+        <circle cx="180" cy="83" r="13" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.5)" stroke-width="1"/>
+        <text x="180" y="87" text-anchor="middle" fill="#2dd4bf" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+        <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Enrich + Qualify</text>
+        <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Intent · Budget · ICP</text>
+        <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="246,86 254,90 246,94" fill="rgba(45,212,191,0.45)"/>
+        <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">◆</text>
+        <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Lead Score</text>
+        <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Hot / Warm / Cold</text>
+        <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="366,86 374,90 366,94" fill="rgba(45,212,191,0.45)"/>
+        <rect x="375" y="58" width="90" height="64" rx="8" fill="#06100a" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+        <rect x="375" y="58" width="90" height="2" rx="1" fill="#22c55e" opacity="0.7"/>
+        <text x="420" y="93" text-anchor="middle" fill="rgba(34,197,94,0.6)" font-size="18">✓</text>
+        <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">CRM + Email</text>
+        <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Auto-assigned + sent</text>
+        <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/>
+        <text x="81" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">3× FASTER RESPONSE</text>
+        <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/>
+        <text x="224" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">ZERO MANUAL ENTRY</text>
+        <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/>
+        <text x="367" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">4.5 HRS/WEEK SAVED</text>
+        <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Lead Intelligence Pipeline</text>
+        <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Enrich, score, and route every inbound lead automatically. Zero manual work until it's hot.</text>
+        <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.18)" stroke-width="0.5"/>
+        <text x="407" y="257" text-anchor="middle" fill="rgba(45,212,191,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+      </svg></div><div class="funnel-card-name">Lead Intelligence Pipeline</div></div>
+
+<div class="pcat-strip-card"><div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+        <rect width="480" height="3" fill="#818cf8" opacity="0.85"/>
+        <text x="20" y="22" fill="rgba(129,140,248,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · SUPPORT</text>
+        <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(129,140,248,0.1)" stroke-width="0.5"/>
+        <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text>
+        <text x="180" y="52" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+        <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">ROUTE</text>
+        <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">RESOLVE</text>
+        <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">✉</text>
+        <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Support Ticket</text>
+        <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Email / Chat / Form</text>
+        <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="126,86 134,90 126,94" fill="rgba(129,140,248,0.45)"/>
+        <rect x="135" y="58" width="90" height="64" rx="8" fill="#09090f" stroke="rgba(129,140,248,0.4)" stroke-width="1.2"/>
+        <rect x="135" y="58" width="90" height="2" rx="1" fill="#818cf8"/>
+        <circle cx="180" cy="83" r="13" fill="rgba(129,140,248,0.07)" stroke="rgba(129,140,248,0.5)" stroke-width="1"/>
+        <text x="180" y="87" text-anchor="middle" fill="#818cf8" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+        <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Classify + Analyze</text>
+        <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Intent · Urgency · Tone</text>
+        <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="246,86 254,90 246,94" fill="rgba(129,140,248,0.45)"/>
+        <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⇅</text>
+        <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Smart Route</text>
+        <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Simple / Complex</text>
+        <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="366,86 374,90 366,94" fill="rgba(129,140,248,0.45)"/>
+        <rect x="375" y="58" width="90" height="64" rx="8" fill="#060d10" stroke="rgba(129,140,248,0.3)" stroke-width="1"/>
+        <rect x="375" y="58" width="90" height="2" rx="1" fill="#818cf8" opacity="0.7"/>
+        <text x="420" y="93" text-anchor="middle" fill="rgba(129,140,248,0.6)" font-size="18">⚡</text>
+        <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Auto-Resolve</text>
+        <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Reply or escalate</text>
+        <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/>
+        <text x="81" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">72% DEFLECTION RATE</text>
+        <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/>
+        <text x="224" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">&lt;90s RESPONSE TIME</text>
+        <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/>
+        <text x="367" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">RUNS 24 / 7 / 365</text>
+        <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">AI Support Deflection</text>
+        <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Resolve simple tickets instantly. Escalate complex ones with full context. No agent burnout.</text>
+        <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(129,140,248,0.07)" stroke="rgba(129,140,248,0.18)" stroke-width="0.5"/>
+        <text x="407" y="257" text-anchor="middle" fill="rgba(129,140,248,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+      </svg></div><div class="funnel-card-name">AI Support Deflection</div></div>
+
+<div class="pcat-strip-card"><div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+        <rect width="480" height="3" fill="#f472b6" opacity="0.85"/>
+        <text x="20" y="22" fill="rgba(244,114,182,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · REPORTING</text>
+        <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(244,114,182,0.1)" stroke-width="0.5"/>
+        <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCHEDULE</text>
+        <text x="180" y="52" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+        <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">GENERATE</text>
+        <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">DELIVER</text>
+        <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⏱</text>
+        <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Data Pull</text>
+        <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">CRM · Ads · Sheets</text>
+        <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="126,86 134,90 126,94" fill="rgba(244,114,182,0.45)"/>
+        <rect x="135" y="58" width="90" height="64" rx="8" fill="#120a10" stroke="rgba(244,114,182,0.4)" stroke-width="1.2"/>
+        <rect x="135" y="58" width="90" height="2" rx="1" fill="#f472b6"/>
+        <circle cx="180" cy="83" r="13" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.5)" stroke-width="1"/>
+        <text x="180" y="87" text-anchor="middle" fill="#f472b6" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+        <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Analyze Trends</text>
+        <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Revenue · CAC · Churn</text>
+        <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="246,86 254,90 246,94" fill="rgba(244,114,182,0.45)"/>
+        <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">▦</text>
+        <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Build Report</text>
+        <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Insights + Actions</text>
+        <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="366,86 374,90 366,94" fill="rgba(244,114,182,0.45)"/>
+        <rect x="375" y="58" width="90" height="64" rx="8" fill="#0c0810" stroke="rgba(244,114,182,0.3)" stroke-width="1"/>
+        <rect x="375" y="58" width="90" height="2" rx="1" fill="#f472b6" opacity="0.7"/>
+        <text x="420" y="93" text-anchor="middle" fill="rgba(244,114,182,0.6)" font-size="18">↗</text>
+        <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Slack + Email</text>
+        <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Every Monday 8AM</text>
+        <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/>
+        <text x="81" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">FULLY AUTOMATED</text>
+        <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/>
+        <text x="224" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">ALL DATA SOURCES</text>
+        <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/>
+        <text x="367" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">3 HRS SAVED/WEEK</text>
+        <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Revenue Intelligence Digest</text>
+        <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Pull all your data, analyze trends autonomously, and deliver a sharp weekly digest automatically.</text>
+        <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.18)" stroke-width="0.5"/>
+        <text x="407" y="257" text-anchor="middle" fill="rgba(244,114,182,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+      </svg></div><div class="funnel-card-name">Revenue Intelligence Digest</div></div>
+
+<div class="pcat-strip-card"><div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+        <rect width="480" height="3" fill="#2dd4bf" opacity="0.85"/>
+        <text x="20" y="22" fill="rgba(45,212,191,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · SALES</text>
+        <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(45,212,191,0.1)" stroke-width="0.5"/>
+        <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text>
+        <text x="180" y="52" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+        <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCORE</text>
+        <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">ACTION</text>
+        <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⬡</text>
+        <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Form Lead</text>
+        <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">New submission</text>
+        <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="126,86 134,90 126,94" fill="rgba(45,212,191,0.45)"/>
+        <rect x="135" y="58" width="90" height="64" rx="8" fill="#031110" stroke="rgba(45,212,191,0.4)" stroke-width="1.2"/>
+        <rect x="135" y="58" width="90" height="2" rx="1" fill="#2dd4bf"/>
+        <circle cx="180" cy="83" r="13" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.5)" stroke-width="1"/>
+        <text x="180" y="87" text-anchor="middle" fill="#2dd4bf" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+        <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Enrich + Qualify</text>
+        <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Intent · Budget · ICP</text>
+        <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="246,86 254,90 246,94" fill="rgba(45,212,191,0.45)"/>
+        <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">◆</text>
+        <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Lead Score</text>
+        <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Hot / Warm / Cold</text>
+        <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(45,212,191,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="366,86 374,90 366,94" fill="rgba(45,212,191,0.45)"/>
+        <rect x="375" y="58" width="90" height="64" rx="8" fill="#06100a" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+        <rect x="375" y="58" width="90" height="2" rx="1" fill="#22c55e" opacity="0.7"/>
+        <text x="420" y="93" text-anchor="middle" fill="rgba(34,197,94,0.6)" font-size="18">✓</text>
+        <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">CRM + Email</text>
+        <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Auto-assigned + sent</text>
+        <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/>
+        <text x="81" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">3× FASTER RESPONSE</text>
+        <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/>
+        <text x="224" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">ZERO MANUAL ENTRY</text>
+        <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(45,212,191,0.06)" stroke="rgba(45,212,191,0.15)" stroke-width="0.5"/>
+        <text x="367" y="165" text-anchor="middle" fill="rgba(45,212,191,0.7)" font-size="7.5" font-family="monospace">4.5 HRS/WEEK SAVED</text>
+        <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Lead Intelligence Pipeline</text>
+        <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Enrich, score, and route every inbound lead automatically. Zero manual work until it's hot.</text>
+        <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(45,212,191,0.07)" stroke="rgba(45,212,191,0.18)" stroke-width="0.5"/>
+        <text x="407" y="257" text-anchor="middle" fill="rgba(45,212,191,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+      </svg></div><div class="funnel-card-name">Lead Intelligence Pipeline</div></div>
+
+<div class="pcat-strip-card"><div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+        <rect width="480" height="3" fill="#818cf8" opacity="0.85"/>
+        <text x="20" y="22" fill="rgba(129,140,248,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · SUPPORT</text>
+        <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(129,140,248,0.1)" stroke-width="0.5"/>
+        <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">TRIGGER</text>
+        <text x="180" y="52" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+        <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">ROUTE</text>
+        <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">RESOLVE</text>
+        <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">✉</text>
+        <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Support Ticket</text>
+        <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Email / Chat / Form</text>
+        <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="126,86 134,90 126,94" fill="rgba(129,140,248,0.45)"/>
+        <rect x="135" y="58" width="90" height="64" rx="8" fill="#09090f" stroke="rgba(129,140,248,0.4)" stroke-width="1.2"/>
+        <rect x="135" y="58" width="90" height="2" rx="1" fill="#818cf8"/>
+        <circle cx="180" cy="83" r="13" fill="rgba(129,140,248,0.07)" stroke="rgba(129,140,248,0.5)" stroke-width="1"/>
+        <text x="180" y="87" text-anchor="middle" fill="#818cf8" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+        <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Classify + Analyze</text>
+        <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Intent · Urgency · Tone</text>
+        <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="246,86 254,90 246,94" fill="rgba(129,140,248,0.45)"/>
+        <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⇅</text>
+        <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Smart Route</text>
+        <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Simple / Complex</text>
+        <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(129,140,248,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="366,86 374,90 366,94" fill="rgba(129,140,248,0.45)"/>
+        <rect x="375" y="58" width="90" height="64" rx="8" fill="#060d10" stroke="rgba(129,140,248,0.3)" stroke-width="1"/>
+        <rect x="375" y="58" width="90" height="2" rx="1" fill="#818cf8" opacity="0.7"/>
+        <text x="420" y="93" text-anchor="middle" fill="rgba(129,140,248,0.6)" font-size="18">⚡</text>
+        <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Auto-Resolve</text>
+        <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Reply or escalate</text>
+        <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/>
+        <text x="81" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">72% DEFLECTION RATE</text>
+        <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/>
+        <text x="224" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">&lt;90s RESPONSE TIME</text>
+        <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.15)" stroke-width="0.5"/>
+        <text x="367" y="165" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="7.5" font-family="monospace">RUNS 24 / 7 / 365</text>
+        <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">AI Support Deflection</text>
+        <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Resolve simple tickets instantly. Escalate complex ones with full context. No agent burnout.</text>
+        <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(129,140,248,0.07)" stroke="rgba(129,140,248,0.18)" stroke-width="0.5"/>
+        <text x="407" y="257" text-anchor="middle" fill="rgba(129,140,248,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+      </svg></div><div class="funnel-card-name">AI Support Deflection</div></div>
+
+<div class="pcat-strip-card"><div class="funnel-card-preview"><svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#080808">
+        <rect width="480" height="3" fill="#f472b6" opacity="0.85"/>
+        <text x="20" y="22" fill="rgba(244,114,182,0.5)" font-size="7.5" font-family="monospace" letter-spacing="2">AUTOMATION · REPORTING</text>
+        <line x1="20" y1="30" x2="460" y2="30" stroke="rgba(244,114,182,0.1)" stroke-width="0.5"/>
+        <text x="60" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">SCHEDULE</text>
+        <text x="180" y="52" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="6.5" font-family="monospace">AGENTIC AI</text>
+        <text x="300" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">GENERATE</text>
+        <text x="420" y="52" text-anchor="middle" fill="rgba(255,255,255,0.18)" font-size="6.5" font-family="monospace">DELIVER</text>
+        <rect x="15" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="15" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="60" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">⏱</text>
+        <text x="60" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Data Pull</text>
+        <text x="60" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">CRM · Ads · Sheets</text>
+        <line x1="106" y1="90" x2="128" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="126,86 134,90 126,94" fill="rgba(244,114,182,0.45)"/>
+        <rect x="135" y="58" width="90" height="64" rx="8" fill="#120a10" stroke="rgba(244,114,182,0.4)" stroke-width="1.2"/>
+        <rect x="135" y="58" width="90" height="2" rx="1" fill="#f472b6"/>
+        <circle cx="180" cy="83" r="13" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.5)" stroke-width="1"/>
+        <text x="180" y="87" text-anchor="middle" fill="#f472b6" font-size="7.5" font-family="monospace" font-weight="700">AI</text>
+        <text x="180" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Analyze Trends</text>
+        <text x="180" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Revenue · CAC · Churn</text>
+        <line x1="226" y1="90" x2="248" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="246,86 254,90 246,94" fill="rgba(244,114,182,0.45)"/>
+        <rect x="255" y="58" width="90" height="64" rx="8" fill="#0d0d0d" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="255" y="58" width="90" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+        <text x="300" y="93" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="18">▦</text>
+        <text x="300" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Build Report</text>
+        <text x="300" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Insights + Actions</text>
+        <line x1="346" y1="90" x2="368" y2="90" stroke="rgba(244,114,182,0.35)" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <polygon points="366,86 374,90 366,94" fill="rgba(244,114,182,0.45)"/>
+        <rect x="375" y="58" width="90" height="64" rx="8" fill="#0c0810" stroke="rgba(244,114,182,0.3)" stroke-width="1"/>
+        <rect x="375" y="58" width="90" height="2" rx="1" fill="#f472b6" opacity="0.7"/>
+        <text x="420" y="93" text-anchor="middle" fill="rgba(244,114,182,0.6)" font-size="18">↗</text>
+        <text x="420" y="110" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9" font-family="sans-serif" font-weight="600">Slack + Email</text>
+        <text x="420" y="120" text-anchor="middle" fill="rgba(255,255,255,0.28)" font-size="7.5" font-family="sans-serif">Every Monday 8AM</text>
+        <line x1="15" y1="143" x2="465" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <rect x="15" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/>
+        <text x="81" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">FULLY AUTOMATED</text>
+        <rect x="158" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/>
+        <text x="224" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">ALL DATA SOURCES</text>
+        <rect x="301" y="152" width="132" height="20" rx="5" fill="rgba(244,114,182,0.06)" stroke="rgba(244,114,182,0.15)" stroke-width="0.5"/>
+        <text x="367" y="165" text-anchor="middle" fill="rgba(244,114,182,0.7)" font-size="7.5" font-family="monospace">3 HRS SAVED/WEEK</text>
+        <text x="15" y="198" fill="rgba(255,255,255,0.5)" font-size="9" font-family="sans-serif" font-weight="600">Revenue Intelligence Digest</text>
+        <text x="15" y="213" fill="rgba(255,255,255,0.22)" font-size="8" font-family="sans-serif">Pull all your data, analyze trends autonomously, and deliver a sharp weekly digest automatically.</text>
+        <rect x="350" y="246" width="115" height="15" rx="4" fill="rgba(244,114,182,0.07)" stroke="rgba(244,114,182,0.18)" stroke-width="0.5"/>
+        <text x="407" y="257" text-anchor="middle" fill="rgba(244,114,182,0.45)" font-size="6.5" font-family="monospace" letter-spacing="1">POWERED BY AGENTIC AI</text>
+      </svg></div><div class="funnel-card-name">Revenue Intelligence Digest</div></div>
+    </div></div>
+    </div>
+
+    <div class="pcat-panel pcat-hidden" data-cat="ai">
+    <div class="funnel-strip-wrap"><div class="funnel-strip-track">
+      <div class="pcat-strip-card pcat-db-card" data-funnel="Bernard/index.html">
+        <div class="funnel-card-preview pcat-db-preview">
+          <img src="Bernard/thumb-bernard.svg" alt="Hiraya AI Assistant" />
+          <div class="pcat-db-open">→</div>
+        </div>
+        <div class="funnel-card-name">Hiraya AI Assistant <span class="pcat-db-tag">Live Demo</span></div>
+      </div>
+      <div class="pcat-strip-card pcat-db-card" data-funnel="raya-chat.html">
+        <div class="funnel-card-preview pcat-db-preview">
+          <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#070707">
+            <rect width="480" height="38" fill="rgba(0,0,0,0.65)"/>
+            <circle cx="20" cy="19" r="4" fill="#22c55e" opacity="0.9"/>
+            <circle cx="20" cy="19" r="7" fill="none" stroke="#22c55e" stroke-width="0.8" opacity="0.3"/>
+            <text x="33" y="23" fill="rgba(255,255,255,0.45)" font-size="7.5" font-family="monospace" letter-spacing="1.5">RAYA — AI FAQ</text>
+            <text x="450" y="23" text-anchor="end" fill="rgba(255,255,255,0.18)" font-size="7" font-family="monospace">HIRAYA</text>
+            <rect x="0" y="37" width="480" height="1" fill="rgba(255,255,255,0.06)"/>
+            <rect x="16" y="52" width="210" height="34" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <rect x="16" y="52" width="3" height="34" rx="1" fill="rgba(255,255,255,0.06)"/>
+            <text x="28" y="66" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">Hey! I'm Raya. Ask me anything</text>
+            <text x="28" y="78" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">about Hiraya Systems.</text>
+            <rect x="254" y="96" width="210" height="24" rx="2" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.22)" stroke-width="1"/>
+            <text x="264" y="112" fill="rgba(255,255,255,0.7)" font-size="7.5" font-family="sans-serif">How much does a project cost?</text>
+            <rect x="16" y="130" width="230" height="44" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <rect x="16" y="130" width="3" height="44" rx="1" fill="rgba(255,255,255,0.06)"/>
+            <text x="28" y="144" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">We do custom quotes after a free</text>
+            <text x="28" y="156" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">Discovery Call — no one-size pricing.</text>
+            <text x="28" y="168" fill="rgba(255,255,255,0.45)" font-size="7" font-family="sans-serif">Most start with a 1-week plan phase.</text>
+            <rect x="16" y="188" width="76" height="16" rx="8" fill="transparent" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <text x="54" y="199" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5" font-family="sans-serif">What do you build?</text>
+            <rect x="100" y="188" width="52" height="16" rx="8" fill="transparent" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <text x="126" y="199" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5" font-family="sans-serif">Timeline?</text>
+            <rect x="160" y="188" width="56" height="16" rx="8" fill="transparent" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <text x="188" y="199" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="6.5" font-family="sans-serif">First step?</text>
+            <rect x="16" y="216" width="448" height="1" fill="rgba(255,255,255,0.06)"/>
+            <rect x="16" y="226" width="400" height="26" rx="8" fill="#111" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <text x="30" y="242" fill="rgba(255,255,255,0.2)" font-size="7.5" font-family="sans-serif">Ask me anything...</text>
+            <rect x="428" y="226" width="26" height="26" rx="7" fill="#a78bfa"/>
+            <path d="M441 239l-6-3 2 3-2 3 6-3z" fill="#1a1a2e"/>
+          </svg>
+          <div class="pcat-db-open">→</div>
+        </div>
+        <div class="funnel-card-name">Raya FAQ Chatbot <span class="pcat-db-tag">Live Demo</span></div>
+      </div>
+      <div class="pcat-strip-card pcat-db-card" data-funnel="lead-qualifier.html">
+        <div class="funnel-card-preview pcat-db-preview">
+          <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;background:#070707">
+            <rect width="480" height="38" fill="rgba(0,0,0,0.65)"/>
+            <circle cx="20" cy="19" r="4" fill="#2dd4bf" opacity="0.9"/>
+            <circle cx="20" cy="19" r="7" fill="none" stroke="#2dd4bf" stroke-width="0.8" opacity="0.3"/>
+            <text x="33" y="23" fill="rgba(255,255,255,0.45)" font-size="7.5" font-family="monospace" letter-spacing="1.5">SCOUT — LEAD QUALIFIER</text>
+            <text x="450" y="23" text-anchor="end" fill="rgba(255,255,255,0.18)" font-size="7" font-family="monospace">HIRAYA</text>
+            <rect x="0" y="37" width="480" height="1" fill="rgba(255,255,255,0.06)"/>
+            <rect x="16" y="52" width="200" height="24" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <text x="26" y="66" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">What problem are you trying to solve?</text>
+            <rect x="254" y="84" width="210" height="24" rx="2" fill="rgba(45,212,191,0.08)" stroke="rgba(45,212,191,0.2)" stroke-width="1"/>
+            <text x="264" y="98" fill="rgba(255,255,255,0.7)" font-size="7.5" font-family="sans-serif">I lose leads after hours.</text>
+            <rect x="16" y="116" width="196" height="24" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <text x="26" y="130" fill="rgba(255,255,255,0.75)" font-size="7.5" font-family="sans-serif">What type of business do you run?</text>
+            <rect x="16" y="150" width="300" height="70" rx="2" fill="#141414" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <text x="26" y="166" fill="rgba(255,255,255,0.42)" font-size="7" font-family="monospace" letter-spacing="0.5">SUMMARY</text>
+            <text x="26" y="180" fill="rgba(255,255,255,0.58)" font-size="7" font-family="sans-serif">Business: Auto repair shop, 4 staff</text>
+            <text x="26" y="192" fill="rgba(255,255,255,0.58)" font-size="7" font-family="sans-serif">Goal: Capture after-hours leads</text>
+            <text x="26" y="204" fill="rgba(255,255,255,0.58)" font-size="7" font-family="sans-serif">Best fit: AI Chatbot — 24/7 booking</text>
+            <text x="26" y="216" fill="rgba(255,255,255,0.35)" font-size="7" font-family="sans-serif">Next: Book a Discovery Call</text>
+            <rect x="16" y="232" width="448" height="1" fill="rgba(255,255,255,0.06)"/>
+            <rect x="16" y="240" width="400" height="24" rx="8" fill="#111" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <text x="30" y="254" fill="rgba(255,255,255,0.2)" font-size="7.5" font-family="sans-serif">Tell me about your business...</text>
+            <rect x="428" y="240" width="24" height="24" rx="7" fill="rgba(45,212,191,0.75)"/>
+            <path d="M440 252l-5-3 2 3-2 3 5-3z" fill="#0a1a1a"/>
+          </svg>
+          <div class="pcat-db-open">→</div>
+        </div>
+        <div class="funnel-card-name">Lead Qualifier <span class="pcat-db-tag">Live Demo</span></div>
+      </div>
+    </div></div>
+    </div>
+
+    <div class="pcat-panel pcat-hidden" data-cat="sites">
+    <div class="funnel-strip-wrap"><div class="funnel-strip-track">
+      <div class="pcat-strip-card pcat-db-card" data-funnel="Venta.html">
+        <div class="funnel-card-preview pcat-db-preview"><img src="thumb-vanta.png" alt="Vanta Detail Co." /><div class="pcat-db-open">→</div></div>
+        <div class="funnel-card-name">Vanta Detail Co. <span class="pcat-db-tag">Site Build</span></div>
+      </div>
+      <div class="pcat-strip-card pcat-db-card" data-funnel="Boreas.html">
+        <div class="funnel-card-preview pcat-db-preview"><img src="thumb-boreas.png" alt="Boreas Climate Co." /><div class="pcat-db-open">→</div></div>
+        <div class="funnel-card-name">Boreas Climate Co. <span class="pcat-db-tag">Site Build</span></div>
+      </div>
+      <div class="pcat-strip-card pcat-db-card" data-funnel="Drift.html">
+        <div class="funnel-card-preview pcat-db-preview"><img src="thumb-drift.png" alt="Drift Store" /><div class="pcat-db-open">→</div></div>
+        <div class="funnel-card-name">Drift Store <span class="pcat-db-tag">Site Build</span></div>
+      </div>
+      <div class="pcat-strip-card pcat-db-card" data-funnel="Venta.html">
+        <div class="funnel-card-preview pcat-db-preview"><img src="thumb-vanta.png" alt="Vanta Detail Co." /><div class="pcat-db-open">→</div></div>
+        <div class="funnel-card-name">Vanta Detail Co. <span class="pcat-db-tag">Site Build</span></div>
+      </div>
+      <div class="pcat-strip-card pcat-db-card" data-funnel="Boreas.html">
+        <div class="funnel-card-preview pcat-db-preview"><img src="thumb-boreas.png" alt="Boreas Climate Co." /><div class="pcat-db-open">→</div></div>
+        <div class="funnel-card-name">Boreas Climate Co. <span class="pcat-db-tag">Site Build</span></div>
+      </div>
+      <div class="pcat-strip-card pcat-db-card" data-funnel="Drift.html">
+        <div class="funnel-card-preview pcat-db-preview"><img src="thumb-drift.png" alt="Drift Store" /><div class="pcat-db-open">→</div></div>
+        <div class="funnel-card-name">Drift Store <span class="pcat-db-tag">Site Build</span></div>
+      </div>
+    </div></div>
+    </div>
+
+    <div class="pcat-panel" data-cat="funnels">
+    <div class="funnel-strip-wrap"><div class="funnel-strip-track">
+      <div class="funnel-card" data-funnel="Funnels/nexashop-funnel-embedded (4).html">
+        <div class="funnel-card-preview"><img src="Funnels/thumb-bodoir.png" alt="Nexashop Funnel" /></div>
+        <div class="funnel-card-name">Bodoir</div>
+      </div>
+      <div class="funnel-card" data-funnel="Funnels/Hira construction fun.html">
+        <div class="funnel-card-preview"><img src="Funnels/thumb-hiraya.png" alt="Hiraya Construction Funnel" /></div>
+        <div class="funnel-card-name">Hiraya Construction</div>
+      </div>
+      <div class="funnel-card" data-funnel="Funnels/Limitless Fun.html">
+        <div class="funnel-card-preview"><img src="Funnels/thumb-limitless.png" alt="Limitless Funnel" /></div>
+        <div class="funnel-card-name">Limitless</div>
+      </div>
+      <div class="funnel-card" data-funnel="Funnels/nexashop-funnel-embedded (4).html">
+        <div class="funnel-card-preview"><img src="Funnels/thumb-bodoir.png" alt="Nexashop Funnel" /></div>
+        <div class="funnel-card-name">Bodoir</div>
+      </div>
+      <div class="funnel-card" data-funnel="Funnels/Hira construction fun.html">
+        <div class="funnel-card-preview"><img src="Funnels/thumb-hiraya.png" alt="Hiraya Construction Funnel" /></div>
+        <div class="funnel-card-name">Hiraya Construction</div>
+      </div>
+      <div class="funnel-card" data-funnel="Funnels/Limitless Fun.html">
+        <div class="funnel-card-preview"><img src="Funnels/thumb-limitless.png" alt="Limitless Funnel" /></div>
+        <div class="funnel-card-name">Limitless</div>
+      </div>
+    </div></div>
+    </div>
+
+    <div class="pcat-panel pcat-hidden" data-cat="dashboard">
+    <div class="funnel-strip-wrap"><div class="funnel-strip-track">
+      <div class="pcat-strip-card pcat-db-card"><div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-limitless-db.png" alt="Limitless Autoshop dashboard" /><div class="pcat-db-open">→</div></div><div class="funnel-card-name">Limitless Autoshop <span class="pcat-db-tag">Live</span></div></div>
+      <div class="pcat-strip-card pcat-db-card"><div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-bodoir-db.png" alt="Bodoir e-commerce dashboard" /><div class="pcat-db-open">→</div></div><div class="funnel-card-name">Bodoir <span class="pcat-db-tag">Live</span></div></div>
+      <div class="pcat-strip-card pcat-db-card"><div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-hiraya-db.png" alt="Hiraya Construction dashboard" /><div class="pcat-db-open">→</div></div><div class="funnel-card-name">Hiraya Construction <span class="pcat-db-tag">Live</span></div></div>
+      <div class="pcat-strip-card pcat-db-card"><div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-limitless-db.png" alt="Limitless Autoshop dashboard" /><div class="pcat-db-open">→</div></div><div class="funnel-card-name">Limitless Autoshop <span class="pcat-db-tag">Live</span></div></div>
+      <div class="pcat-strip-card pcat-db-card"><div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-bodoir-db.png" alt="Bodoir e-commerce dashboard" /><div class="pcat-db-open">→</div></div><div class="funnel-card-name">Bodoir <span class="pcat-db-tag">Live</span></div></div>
+      <div class="pcat-strip-card pcat-db-card"><div class="funnel-card-preview pcat-db-preview"><img src="DB/thumb-hiraya-db.png" alt="Hiraya Construction dashboard" /><div class="pcat-db-open">→</div></div><div class="funnel-card-name">Hiraya Construction <span class="pcat-db-tag">Live</span></div></div>
+    </div></div>
+    </div>
+  </div>
+  </div>
+
+  <div class="creds-section">
+    <div class="eyebrow">Automation &amp; AI Integration</div>
+    <h2 class="creds-title">The automation side, backed by paper.</h2>
+    <p class="creds-lede">Full-stack is the main lane, but I also hold completed certifications in n8n, Make, Zapier, and GoHighLevel, and have built real workflow demos with each — AI phone receptionists, RAG pipelines, lead-enrichment automations, content pipelines. To be clear: certified training and personal-portfolio work, not paid client engagements.</p>
+    <div class="creds-grid">
+      <div class="cred-item">
+        <img src="certs/cert-zapier.png" alt="Certificate: No Code Automation with Zapier" class="cred-img" />
+        <div class="cred-name">No Code Automation with Zapier</div>
+        <div class="cred-meta">Technical Virtual Assistants PH · Jan 30, 2026</div>
+      </div>
+      <div class="cred-item">
+        <img src="certs/cert-make.png" alt="Certificate: No Code Automation with Make.com" class="cred-img" />
+        <div class="cred-name">No Code Automation with Make.com</div>
+        <div class="cred-meta">Technical Virtual Assistants PH · Jan 31, 2026</div>
+      </div>
+      <div class="cred-item">
+        <img src="certs/cert-prompt-engineering.png" alt="Certificate: Prompt Engineering" class="cred-img" />
+        <div class="cred-name">Prompt Engineering</div>
+        <div class="cred-meta">Technical Virtual Assistants PH · Jan 31, 2026</div>
+      </div>
+      <div class="cred-item">
+        <img src="certs/cert-highlevel-crm.png" alt="Certificate: HighLevel CRM Full Training" class="cred-img" />
+        <div class="cred-name">HighLevel CRM Full Training</div>
+        <div class="cred-meta">Technical Virtual Assistants PH · Feb 10, 2026</div>
+      </div>
+    </div>
+    <div class="stack"><span>n8n</span><span>Make</span><span>Zapier</span><span>GoHighLevel</span><span>Vapi</span><span>OpenAI</span><span>Claude</span><span>Gemini</span></div>
   </div>
 
   <div class="webdesign-note">
-    <p>I also design and build marketing websites, landing pages, and funnels — see more at <a href="https://hirayasystems.tech">hirayasystems.tech</a> and <a href="https://jbautomations.cloud">jbautomations.cloud</a>.</p>
+    <p>I also design marketing sites and funnels — more of that at <a href="https://hirayasystems.tech">hirayasystems.tech</a> and <a href="https://jbautomations.cloud">jbautomations.cloud</a>.</p>
   </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script>
+  /* ── CARD 3D TILT + MAGNETIC ── */
+  (function () {
+    const cards   = document.querySelectorAll('.funnel-card, .pcat-strip-card');
+    const tilts   = new Map();
+    const hovered = new Set();
+    const magX    = new Map();
+    const magY    = new Map();
+    const magTX   = new Map();
+    const magTY   = new Map();
+    const wraps   = new Map();
+
+    cards.forEach(card => {
+      wraps.set(card, card.closest('.funnel-strip-wrap'));
+      tilts.set(card, 0);
+      magX.set(card, 0);  magY.set(card, 0);
+      magTX.set(card, 0); magTY.set(card, 0);
+
+      card.addEventListener('mouseenter', () => hovered.add(card));
+      card.addEventListener('mouseleave', () => {
+        hovered.delete(card);
+        magTX.set(card, 0);
+        magTY.set(card, 0);
+      });
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width  / 2)) / (r.width  / 2);
+        const dy = (e.clientY - (r.top  + r.height / 2)) / (r.height / 2);
+        magTX.set(card, dx * 7);
+        magTY.set(card, dy * 5);
+      });
+    });
+
+    function tick() {
+      cards.forEach(card => {
+        if (card.closest('.pcat-panel')?.classList.contains('pcat-hidden')) {
+          card.style.transform = '';
+          return;
+        }
+        const wrap = wraps.get(card);
+        const wr   = wrap ? wrap.getBoundingClientRect() : { width: 0 };
+        if (wr.width === 0) { card.style.transform = ''; return; }
+
+        const wc  = wr.left + wr.width / 2;
+        const cr  = card.getBoundingClientRect();
+        const cc  = cr.left + cr.width / 2;
+        const norm = (cc - wc) / (wr.width / 2);
+        const tiltTarget = -norm * 15;
+        const tilt = tilts.get(card) + (tiltTarget - tilts.get(card)) * 0.1;
+        tilts.set(card, tilt);
+
+        const mx = magX.get(card) + (magTX.get(card) - magX.get(card)) * 0.12;
+        const my = magY.get(card) + (magTY.get(card) - magY.get(card)) * 0.12;
+        magX.set(card, mx); magY.set(card, my);
+
+        const isHov = hovered.has(card);
+        card.style.transform = `perspective(800px) translateX(${mx}px) translateY(${isHov ? -8 + my : my}px) scale(${isHov ? 1.015 : 1}) rotateY(${tilt}deg)`;
+      });
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+</script>
+<script>
+  (function () {
+    const tabs = document.querySelectorAll('.ptab');
+    let activePanel = document.querySelector('.pcat-panel:not(.pcat-hidden)');
+    let busy = false;
+
+    function animateOut(panel, onDone) {
+      const wrap = panel.querySelector('.funnel-strip-wrap');
+      const track = panel.querySelector('.funnel-strip-track');
+      if (track) track.style.animationPlayState = 'paused';
+      gsap.to(wrap, { scale: 0.92, rotateZ: 1.5, opacity: 0, duration: 0.22, ease: 'power2.in', onComplete: onDone });
+    }
+
+    function animateIn(panel) {
+      panel.classList.remove('pcat-hidden');
+      const wrap = panel.querySelector('.funnel-strip-wrap');
+      gsap.set(wrap, { scale: 0.92, rotateZ: 1.5, opacity: 0 });
+      gsap.to(wrap, {
+        scale: 1, rotateZ: 0, opacity: 1, duration: 0.38, ease: 'power2.out',
+        onComplete() {
+          gsap.set(wrap, { clearProps: 'all' });
+          const track = panel.querySelector('.funnel-strip-track');
+          if (track) track.style.animationPlayState = 'running';
+          activePanel = panel; busy = false;
+        }
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        if (busy) return;
+        const newPanel = document.querySelector(`.pcat-panel[data-cat="${tab.dataset.cat}"]`);
+        if (newPanel === activePanel) return;
+        busy = true;
+        tabs.forEach(t => t.classList.toggle('active', t === tab));
+        animateOut(activePanel, () => {
+          activePanel.classList.add('pcat-hidden');
+          gsap.set(activePanel, { clearProps: 'all' });
+          animateIn(newPanel);
+        });
+      });
+    });
+  })();
+</script>
 </body>
 </html>
