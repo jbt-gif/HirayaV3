@@ -1,4 +1,7 @@
 {
+  "rewrites": [
+    { "source": "/dev-work", "destination": "/dev-work.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
