@@ -105,6 +105,34 @@
     margin-bottom: 3.5rem;
   }
 
+  .skills-section {
+    margin-bottom: 2.5rem;
+    padding: 1.8rem 2rem;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-top-color: rgba(255,255,255,0.28);
+    border-radius: 22px;
+    background: linear-gradient(160deg, #0a0a0a 0%, #000000 60%);
+  }
+  .skills-grid {
+    column-count: 2;
+    column-gap: 2rem;
+  }
+  .skill-item {
+    font-size: 0.86rem;
+    color: var(--body);
+    line-height: 1.5;
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+  .skill-label {
+    display: block;
+    font-size: var(--fs-label);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+  }
   .cases { display: flex; flex-direction: column; gap: 1.5rem; }
 
   .case {
@@ -453,6 +481,7 @@
     .case-media { border-right: none; border-bottom: 1px solid var(--border); }
     .wrap { padding: 3rem 1.25rem 4rem; }
     .creds-grid { grid-template-columns: 1fr; }
+    .skills-grid { column-count: 1; }
   }
 </style>
 </head>
@@ -473,6 +502,17 @@
   <div class="eyebrow">Full-Stack Development</div>
   <h1>I build fast with AI. Then I try to break it before you find out the hard way.</h1>
   <p class="lede">I use AI coding agents to move fast — but nothing ships until I've run a separate, adversarial review pass on it. The five builds below are what that process actually catches.</p>
+
+  <div class="skills-section">
+    <div class="skills-grid">
+      <div class="skill-item"><span class="skill-label">Frontend</span>Next.js, React, TypeScript, Tailwind CSS</div>
+      <div class="skill-item"><span class="skill-label">Backend / Database</span>Supabase (PostgreSQL, Auth, Storage, Row Level Security), Node.js, Express, Prisma</div>
+      <div class="skill-item"><span class="skill-label">Payments / Integrations</span>Stripe, Xendit, webhook and calendar integrations, REST APIs</div>
+      <div class="skill-item"><span class="skill-label">Infrastructure</span>Vercel, Sentry (monitoring), Git/GitHub</div>
+      <div class="skill-item"><span class="skill-label">Security</span>Application-level security review — unauthenticated access bugs, data-leak vulnerabilities, missing Row Level Security enforcement, dependency vulnerabilities</div>
+      <div class="skill-item"><span class="skill-label">AI-Assisted Development</span>AI coding agents to build fast, then a separate adversarial review pass to catch what they missed before anything ships</div>
+    </div>
+  </div>
 
   <div class="cases">
 
